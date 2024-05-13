@@ -1,0 +1,14 @@
+{
+  "name": "projet-gestionnaire-projet-front",
+  "version": "1.0.0",
+  "description": "Application Unity Manager",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IOSIPOV, LANDRON, TE, ZERROUKI",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}
