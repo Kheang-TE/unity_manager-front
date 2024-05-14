@@ -13,6 +13,9 @@ body{
 p{
   line-height: 2rem;
 }
+i.fa{
+  margin-right: 0.5rem;
+}
 .home-navigation{
   background-color: var(--greylight);
   padding: 1rem 0;
@@ -34,11 +37,11 @@ p{
   text-transform: uppercase;
   color: var(--grey);
   font-size: 1.6rem;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 .home-navigation ul li a:hover{
   color: var(--primary-color);
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 .unity-manager{
   text-align: center;

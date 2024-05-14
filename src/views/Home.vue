@@ -8,8 +8,8 @@
             <h1><img src="/img/unity_manager_logo.png" alt="Unity Manager" title="Unity Manager" class="logo"></h1>
             <h2>The Most Impressive Way To Manage Your Projects</h2>
             <div class="sign">
-              <a href="/signup" title="Sign Up" class="btn-link">Sign Up</a>
-              <a href="/signin" title="Sign In" class="btn-link">Sign In</a>
+              <a href="/signup" title="Sign Up" class="btn-link"><i class="fa"><font-awesome-icon :icon="['fas', 'right-to-bracket']" /></i>Sign Up</a>
+              <a href="/signin" title="Sign In" class="btn-link"><i class="fa"><font-awesome-icon :icon="['fas', 'user']" /></i>Sign In</a>
             </div>
           </div>
         </div>
