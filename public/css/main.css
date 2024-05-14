@@ -76,7 +76,7 @@ i.fa{
   transition: all 0.3s ease;
 }
 .parallax{
-  background-image: url("../img/background_parallax.png");
+  background-image: url("../img/background_parallax.webp");
   height: 50vh;
   background-attachment: fixed;
   background-position: center;
