@@ -1,4 +1,5 @@
 <template>
+  <HomeHeader />
   <main>
     <section class="unity-manager">
       <div class="container">
@@ -33,12 +34,18 @@
         </div>
       </div>
     </section>
-    
   </main>
+  <HomeFooter />
 </template>
 
 <script>
+  import HomeHeader from '@/components/HomeHeader.vue'
+  import HomeFooter from '@/components/HomeFooter.vue'
   export default{
-    name: 'Home'
+    name: 'Home',
+    components: {
+      HomeHeader,
+      HomeFooter
+    }
   }
 </script>
