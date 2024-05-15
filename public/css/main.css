@@ -37,6 +37,7 @@ button.btn:hover{
   padding: 1rem 0;
   position: fixed;
   width: 100%;
+  top: 0;
 }
 .home-navigation ul{
   list-style: none;
@@ -61,29 +62,32 @@ button.btn:hover{
 }
 .unity-manager{
   text-align: center;
-  height: 100vh;
+  min-height: calc(100vh - 70.4px);
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 70.4px;
+  padding: 2rem 0;
 }
 .logo{
   display: block;
-  max-width: 50rem;
+  max-width: 80%;
   margin: 2rem auto;
 }
 .sign{
   margin: 5rem 0;
 }
 .btn-link{
-  display: inline-block;
+  font-size: 1.6rem;
   text-decoration: none!important;
   text-transform: uppercase;
   background-color: var(--primary-color);
   color: var(--white);
-  padding: 1rem 2rem;
-  margin: 0 2rem;
   border-radius: var(--border-radius);
-  font-size: 1.6rem;
+  width: max-content;
+  display: block;
+  margin: 0 auto 2rem;
+  padding: 1rem 2rem;
   transition: var(--transition);
 }
 .btn-link:hover{
@@ -93,7 +97,7 @@ button.btn:hover{
 }
 .parallax{
   background-image: url("../img/background_parallax.webp");
-  height: 50vh;
+  height: 20vh;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -104,7 +108,7 @@ button.btn:hover{
 }
 .social{
   color: var(--greylight);
-  font-size: 3rem;
+  font-size: 2rem;
   text-align: center;
   padding: 1rem 0;
 }
@@ -134,7 +138,15 @@ button.btn:hover{
   color: var(--third-color);
   transition: var(--transition);
 }
-
+@media (min-width: 576px) {
+  .btn-link{
+    display: inline-block;
+    margin: 0 2rem;
+  }
+  .parallax{
+    height: 50vh;
+  }
+}
 /*------------------------------------------------------------------------*/
 /* SIGN UP
 /*------------------------------------------------------------------------*/
