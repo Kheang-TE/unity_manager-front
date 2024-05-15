@@ -155,11 +155,6 @@ button.btn:hover{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-.signup .logo,
-.signin .logo{
-  max-width: 30rem;
 }
 .signup a,
 .signin a{
@@ -206,4 +201,10 @@ button.btn:hover{
 .signin footer{
   width: 100%;
   margin-top: 2rem;
+}
+@media (min-width: 576px) {
+  .signup .logo,
+  .signin .logo{
+    max-width: 50%;
+  }
 }

@@ -30,7 +30,7 @@
                 <button type="submit" class="btn float-end">Create account</button>
               </form>
             </div>
-            <div class="form-footer">
+            <div class="form-footer text-center">
               <a href="/"><i class="fa"><font-awesome-icon :icon="['fas', 'house']" /></i>Back to homepage</a>
             </div>
           </div>
@@ -41,10 +41,10 @@
     <footer>
       <div class="container">
         <div class="row">
-          <div class="col">
+          <div class="col-12 col-sm-6 text-center text-sm-start">
             <p>Copyrights &copy; 2024</p>
           </div>
-          <div class="col text-end">
+          <div class="col-12 col-sm-6 text-center text-sm-end">
             <p>Powered by <a href="https://oclock.io/" target="_blank" title="O'clock">O'clock</a></p>
           </div>
         </div>
