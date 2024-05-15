@@ -3,10 +3,11 @@
   --second-color: #202c3f;
   --third-color: #ffab27;
   --white: #fff;
-  --greylight:#ccc;
+  --greylight:#eee;
   --grey: #666;
   --transition: all 0.3s ease;
-}
+  --border-radius: 0.5rem;
+} 
 body{
   color: var(--grey)!important;
 }
@@ -16,6 +17,21 @@ p{
 i.fa{
   margin-right: 0.5rem;
 }
+button.btn{
+  color: var(--white);
+  background-color: var(--grey);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+button.btn:hover{
+  background-color: var(--third-color);
+  color: var(--white);
+  transition: var(--transition);
+}
+
+/*------------------------------------------------------------------------*/
+/* HOMEPAGE
+/*------------------------------------------------------------------------*/
 .home-navigation{
   background-color: var(--greylight);
   padding: 1rem 0;
@@ -66,7 +82,7 @@ i.fa{
   color: var(--white);
   padding: 1rem 2rem;
   margin: 0 2rem;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   font-size: 1.6rem;
   transition: var(--transition);
 }
@@ -117,4 +133,65 @@ i.fa{
 .home-footer a:hover{
   color: var(--third-color);
   transition: var(--transition);
+}
+
+/*------------------------------------------------------------------------*/
+/* SIGN UP
+/*------------------------------------------------------------------------*/
+.signup, .signin{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.signup .logo,
+.signin .logo{
+  max-width: 30rem;
+}
+.signup a,
+.signin a{
+  text-decoration: none;
+  color: var(--grey);
+  transition: var(--transition);
+}
+.signup a:hover, .signup a:focus,
+.signin a:hover, .signin a:focus{
+  color: var(--primary-color);
+  transition: var(--transition);
+}
+.signup header,
+.signin header{
+  text-align: center;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
+}
+.form-header{
+  background-color: var(--primary-color);
+  color: var(--white);
+  text-align: center;
+  padding: 1rem 2rem;
+  border-top-right-radius: var(--border-radius);
+  border-top-left-radius: var(--border-radius);
+}
+.form-body{
+  background-color: var(--greylight);
+  padding: 2rem;
+}
+.form-control{
+  border-radius: var(--border-radius);
+  display: block;
+  margin-bottom: 1.5rem;
+  padding: 1rem .75rem;
+  width: 100%;
+}
+.form-footer{
+  padding: 2rem;
+}
+.signup footer,
+.signin footer{
+  width: 100%;
+  margin-top: 2rem;
 }
