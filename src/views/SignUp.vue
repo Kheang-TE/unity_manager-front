@@ -1,10 +1,11 @@
 <template>
+  <div class="background-wall"></div>
   <div class="signup">
     <header class="container">
       <div class="row">
         <div class="col">
           <div class="logo-container">
-            <img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo">
+            <a href="/" rel="home"><img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo"></a>
           </div>
           <h1>Create account</h1>
           <p>We will be happy to count you among us!</p>
@@ -14,7 +15,7 @@
 
     <main class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-7 col-">
+        <div class="col-lg-7 col">
           <div class="form-container">
             <div class="form-header">
               Please fill in all fields to register
@@ -30,23 +31,23 @@
                 <button type="submit" class="btn float-end">Create account</button>
               </form>
             </div>
-            <div class="form-footer text-center">
-              <a href="/"><i class="fa"><font-awesome-icon :icon="['fas', 'house']" /></i>Back to homepage</a>
-            </div>
           </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <a href="/"><i class="fa"><font-awesome-icon :icon="['fas', 'house']" /></i>Back to homepage</a>
         </div>
       </div>
     </main>
 
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-sm-6 text-center text-sm-start">
-            <p>Copyrights &copy; 2024</p>
-          </div>
-          <div class="col-12 col-sm-6 text-center text-sm-end">
-            <p>Powered by <a href="https://oclock.io/" target="_blank" title="O'clock">O'clock</a></p>
-          </div>
+    <footer class="container mt-5">
+      <div class="row">
+        <div class="col-12 col-sm-6 text-center text-sm-start">
+          <p>Copyrights &copy; 2024</p>
+        </div>
+        <div class="col-12 col-sm-6 text-center text-sm-end">
+          <p>Powered by <a href="https://oclock.io/" target="_blank" title="O'clock">O'clock</a></p>
         </div>
       </div>
     </footer>

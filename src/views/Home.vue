@@ -2,10 +2,13 @@
   <HomeHeader />
   <main>
     <section class="unity-manager">
+      <div class="background-wall"></div>
       <div class="container">
         <div class="row">
           <div class="col">
-            <h1 class="logo-container"><img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo"></h1>
+            <h1 class="logo-container">
+              <img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo">
+            </h1>
             <h2>The Most Impressive Way To Manage Your Projects</h2>
             <div class="sign">
               <a href="/signup" title="Sign Up" class="btn-link"><i class="fa"><font-awesome-icon :icon="['fas', 'right-to-bracket']" /></i>Sign Up</a>
