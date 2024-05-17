@@ -9,7 +9,6 @@
 <script>
   import HomeNavigation from './HomeNavigation.vue'
   export default {
-    name: 'MainHeader',
     components: {
       HomeNavigation
     }

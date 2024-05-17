@@ -2,7 +2,7 @@
 <template>
   <div class="offcanvas offcanvas-start" :class="{ show: isOpen }" tabindex="-1" style="visibility: visible;">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Sidebar</h5>
+      <h5 class="offcanvas-title"><img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo"></h5>
       <button type="button" class="btn-close" @click="closeSidebar"></button>
     </div>
     <div class="offcanvas-body">

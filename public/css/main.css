@@ -73,7 +73,7 @@ section{
   margin-top: 70.4px;
   padding: 2rem 0;
 }
-.logo{
+.logo-container .logo{
   display: block;
   max-width: 80%;
   margin: 2rem auto;
@@ -228,16 +228,72 @@ section{
 /*------------------------------------------------------------------------*/
 /* BOARD
 /*------------------------------------------------------------------------*/
-.board{
-  font-size: 2rem;
-}
 #board-header{
-  background-color: var(--second-color);
-  color: var(--white)
-}
-.board-container{
   background-color: var(--greylight);
+  color: var(--white);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+.board .board-header-btn{
+  font-size: 1.75rem;
+  background: none;
+  color: var(--grey);
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+.board img.logo{
+  height: 3rem;
+  width: auto;
+}
+.board .offcanvas{
+  overflow: hidden;
+}
+#board-content{
+  padding: calc(64px + 1rem) 1rem 1rem;
   height: 100vh;
   display: flex;
   flex-direction: wrap;
+  overflow: auto;
+}
+.list{
+  margin-right: 1rem;
+  min-width: 320px;
+  width: 320px;
+  height: auto;
+}
+.new-list > .list-body{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-header{
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1rem;
+  position: relative;
+}
+.list-controls{
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.list-body{
+  background-color: var(--greylight);
+  padding: 1rem;
+}
+.list-body .card{
+  margin-bottom: 1rem;
+}
+.list-body .card:last-child{
+  margin-bottom:0;
 }
