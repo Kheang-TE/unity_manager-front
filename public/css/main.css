@@ -224,3 +224,20 @@ section{
     max-width: 50%;
   }
 }
+
+/*------------------------------------------------------------------------*/
+/* BOARD
+/*------------------------------------------------------------------------*/
+.board{
+  font-size: 2rem;
+}
+#board-header{
+  background-color: var(--second-color);
+  color: var(--white)
+}
+.board-container{
+  background-color: var(--greylight);
+  height: 100vh;
+  display: flex;
+  flex-direction: wrap;
+}

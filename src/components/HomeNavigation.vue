@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import { RouterLink} from 'vue-router'
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   export default {
     name: 'HomeNavigation'
