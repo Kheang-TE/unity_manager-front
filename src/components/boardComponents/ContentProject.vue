@@ -3,12 +3,23 @@
     <div class="list-header">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
-          <font-awesome-icon :icon="['fas', 'ellipsis']" />
+          <b-dropdown no-caret>
+            <template #button-content>
+              <font-awesome-icon :icon="['fas', 'ellipsis']" />
+            </template>
+            <b-dropdown-item >
+              <b-link v-b-modal.edit>Edit</b-link>
+            </b-dropdown-item>
+            <b-dropdown-item>Delete</b-dropdown-item>
+          </b-dropdown>
           <b-button v-b-toggle="list.id.toString()" variant="none">
             <font-awesome-icon :icon="['fas', 'angle-up']" />
           </b-button>
         </div>
     </div>
+    <b-modal id="edit" centered>
+
+    </b-modal>
     <b-collapse :id="list.id.toString()" class="list-body" visible>
       <b-card v-for="card in list.cards">
         <p class="card-text">{{card.name}}</p>
@@ -18,7 +29,7 @@
   </div>
   <a class="list new-list" @click.prevent="addList">
     <div class="list-body">
-      <font-awesome-icon :icon="['fas', 'plus']" />[Add new list]
+      <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
     </div>
   </a>
 </template>
