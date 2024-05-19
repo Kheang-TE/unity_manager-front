@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  import { ref } from 'vue'
   import Chat from '@/components/boardComponents/Chat.vue'
   import DropdownUser from '@/components/boardComponents/DropdownUser.vue'
   import Sidebar from '@/components/boardComponents/Sidebar.vue'

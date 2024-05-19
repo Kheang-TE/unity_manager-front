@@ -258,9 +258,24 @@ section{
 }
 
 /* Dropdown */
+.board .dropdown-item{
+  color: var(--grey);
+  transition: var(--transition);
+}
 .board .dropdown-item:focus, .board .dropdown-item:hover{
   background-color: var(--third-color);
   color: var(--white);
+  transition: var(--transition);
+}
+.dropdown-menu a{
+  display: block;
+  text-decoration: none;
+  color: var(--grey);
+  transition: var(--transition);
+}
+.dropdown-menu a:focus, .dropdown-menu a:hover{
+  color: var(--white);
+  transition: var(--transition);
 }
 
 /* Sidebar*/
@@ -286,6 +301,7 @@ section{
 
 /* Board content */
 #board-content{
+  font-size: .875rem;
   padding: calc(74px + 1rem) 1rem 1rem;
   height: 100vh;
   display: flex;
@@ -342,9 +358,26 @@ section{
   border: none;
   transition: var(--transition);
 }
+.list-controls .btn > svg{
+  transition: var(--transition);
+}
+.list-controls .btn.collapsed > svg{
+  transform: rotate(180deg);
+  transition: var(--transition);
+}
 .list-controls .btn:hover, .list-controls .btn:focus{
   color: var(--white);
   background: var(--second-color);
+  transition: var(--transition);
+}
+.list-controls a, .card-controls a{
+  display: block;
+  color: var(--grey);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.list-controls a:hover, .card-controls a:hover{
+  color: var(--white);
   transition: var(--transition);
 }
 .list-body{
@@ -357,4 +390,31 @@ section{
 }
 .list-body .card:last-child{
   margin-bottom:0;
+}
+
+.card-header{
+  position: relative;
+}
+.card-header h5{
+  font-size: .875rem;
+  margin-bottom: 0;
+}
+.card-controls{
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.card-controls .btn{
+  color: var(--grey);
+  background: none;
+  border: none;
+  transition: var(--transition);
+}
+.card-controls .btn:hover, .card-controls .btn:focus{
+  color: var(--white);
+  background: var(--second-color);
+  transition: var(--transition);
 }

@@ -3,26 +3,63 @@
     <div class="list-header">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
-          <b-dropdown no-caret>
-            <template #button-content>
-              <font-awesome-icon :icon="['fas', 'ellipsis']" />
-            </template>
-            <b-dropdown-item >
-              <b-link v-b-modal.edit>Edit</b-link>
-            </b-dropdown-item>
-            <b-dropdown-item>Delete</b-dropdown-item>
-          </b-dropdown>
-          <b-button v-b-toggle="list.id.toString()" variant="none">
-            <font-awesome-icon :icon="['fas', 'angle-up']" />
-          </b-button>
-        </div>
+        <b-dropdown no-caret>
+          <template #button-content>
+            <font-awesome-icon :icon="['fas', 'ellipsis']" />
+          </template>
+          <b-dropdown-item >
+            <b-link v-b-modal="'edit-list-'+list.id.toString()">Edit</b-link>
+            <b-modal :id="'edit-list-'+list.id.toString()" centered>
+              <template #title>
+                Edit list : {{list.name}}
+              </template>
+            </b-modal>
+          </b-dropdown-item>
+          <b-dropdown-item>
+            <b-link v-b-modal="'delete-list-'+list.id.toString()">Delete</b-link>
+            <b-modal :id="'delete-list-'+list.id.toString()" centered>
+              <template #title>
+                Delete list : {{list.name}}
+              </template>
+              <p>Are you sure you want to delete this list ?</p>
+            </b-modal>
+          </b-dropdown-item>
+        </b-dropdown>
+        <b-button v-b-toggle="list.id.toString()" variant="none">
+          <font-awesome-icon :icon="['fas', 'angle-up']" />
+        </b-button>
+      </div>
     </div>
-    <b-modal id="edit" centered>
-
-    </b-modal>
+    
     <b-collapse :id="list.id.toString()" class="list-body" visible>
       <b-card v-for="card in list.cards">
-        <p class="card-text">{{card.name}}</p>
+        <div class="card-header">
+          <h5>{{card.name}}</h5>
+          <div class="card-controls">
+            <b-dropdown no-caret>
+              <template #button-content>
+                <font-awesome-icon :icon="['fas', 'ellipsis']" />
+              </template>
+              <b-dropdown-item >
+                <b-link v-b-modal="'edit-card-'+card.id.toString()">Edit</b-link>
+                <b-modal :id="'edit-card-'+card.id.toString()" centered>
+                  <template #title>
+                    Edit card : {{card.name}}
+                  </template>
+                </b-modal>
+              </b-dropdown-item>
+              <b-dropdown-item>
+                <b-link v-b-modal="'delete-card-'+card.id.toString()">Delete</b-link>
+                <b-modal :id="'delete-card-'+card.id.toString()" centered>
+                  <template #title>
+                    Delete card : {{card.name}}
+                  </template>
+                  <p>Are you sure you want to delete this card ?</p>
+                </b-modal>
+              </b-dropdown-item>
+            </b-dropdown>
+          </div>
+        </div>
         <p>{{card.description}}</p>
       </b-card>
     </b-collapse>
