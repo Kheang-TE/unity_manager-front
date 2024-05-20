@@ -10,7 +10,6 @@ const httpServer = createServer(expressApp);
 const io = new WebsocketServer(httpServer, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
   },
 });
 

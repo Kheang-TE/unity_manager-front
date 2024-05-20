@@ -6,7 +6,7 @@
 * @return {type} undefined
 */
 const users = [];
-const messages = [];
+let messages = [];
 
 export default (io) => {
   io.on("connection", (socket) => {
@@ -19,7 +19,6 @@ export default (io) => {
     users.push(user);
 
     socket.emit("userState", user);
-
     io.emit("chatState", { users, messages });
 
     socket.on("send", async (message) => {
@@ -33,12 +32,18 @@ export default (io) => {
           message: response,
         };
         messages.push(serverMessage);
-        socket.emit("message", serverMessage);
+        io.emit("message", serverMessage);
       } else {
         const userMessage = { user, message };
         messages.push(userMessage);
-        socket.broadcast.emit("message", userMessage);
+        io.emit("message", userMessage);
       }
+    });
+
+    // Handle clear messages event
+    socket.on("clearMessages", () => {
+      messages = [];
+      io.emit("chatState", { users, messages });
     });
 
     socket.on("disconnect", () => {

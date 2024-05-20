@@ -1,16 +1,18 @@
 <template>
-  <div class="chat-container" v-if="showChat">
-    <div class="header">
-      Chat with all collaborators
-    </div>
-    <div class="userlist">
-      <b-dropdown text="Show all users" variant="light" size="sm">
-        <b-dropdown-item disabled>Show all users</b-dropdown-item>
-        <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
-          {{ user.id === currentUser.id ? 'Me' : user.username }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </div>
+ <div class="chat-container" v-if="showChat">
+      <div class="header">
+        Chat with all collaborators
+       <button @click="showModal" class="btn btn-danger clear-btn" id="clearBtn"><i class="fas fa-trash-alt"></i>
+  </button>
+      </div>
+      <div class="userlist">
+        <b-dropdown text="Show all users" variant="light" size="sm">
+          <b-dropdown-item disabled>Show all users</b-dropdown-item>
+          <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
+            {{ user.id === currentUser.id ? 'Me' : user.username }}
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
     <div class="chat-messages" ref="chatMessages">
       <div class="message" v-for="msg in messages" :key="msg.text">
         <div class="text-style">
@@ -26,14 +28,45 @@
     </div>
   </div>
   <button id="btn-Chat-Close" type="button" :class="chatButtonClass" @click="toggleChat">
-    {{ showChat ? '': 'Chat' }}
+    {{ showChat ? '' : 'Chat' }}
   </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirm Deletion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete all messages?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" @click="clearMessages">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script>
 import io from 'socket.io-client';
 
+/**
+ * Component for managing chat functionality.
+ * @module ChatManager
+ * @exports default
+ */
 export default {
+  /**
+   * Data properties for the chat manager component.
+   * @returns {object} Data object.
+   */
   data() {
     return {
       showChat: false,
@@ -54,36 +87,23 @@ export default {
   created() {
     this.socket = io('http://localhost:4000');
 
-    /**
-     * Event listener for 'message' events.
-     * Adds the received message to the messages array and scrolls to the bottom of the chat.
-     * @param {Object} payload - The payload containing the user and the message.
-     * @param {Object} payload.user - The user who sent the message.
-     * @param {string} payload.message - The message text.
-     */
+    // Reset messages when component is created
+    this.resetMessages();
+
+    // Event listener for receiving new messages
     this.socket.on('message', ({ user, message }) => {
       this.messages.push({ user, text: message });
       this.scrollToBottom();
     });
 
-    /**
-     * Event listener for 'chatState' events.
-     * Updates the users and messages arrays and scrolls to the bottom of the chat.
-     * @param {Object} data - The data containing the current chat state.
-     * @param {Array} data.users - The list of users.
-     * @param {Array} data.messages - The list of messages.
-     */
+    // Event listener for receiving chat state
     this.socket.on('chatState', (data) => {
       this.users = data.users;
       this.messages = data.messages.map(msg => ({ user: msg.user, text: msg.message }));
       this.scrollToBottom();
     });
 
-    /**
-     * Event listener for 'userState' events.
-     * Updates the current user state.
-     * @param {Object} userFromServer - The current user object.
-     */
+    // Event listener for receiving user state
     this.socket.on('userState', (userFromServer) => {
       this.currentUser = userFromServer;
     });
@@ -91,15 +111,26 @@ export default {
 
   /**
    * Lifecycle hook called when the component is updated.
-   * Scrolls to the bottom of the chat.
+   * Scrolls to the bottom of the chat window.
    */
   updated() {
     this.scrollToBottom();
   },
 
+  /**
+   * Methods for interacting with the chat manager component.
+   * @namespace methods
+   */
   methods: {
     /**
-     * Toggles the chat window visibility.
+     * Resets the messages array.
+     */
+    resetMessages() {
+      this.messages = [];
+    },
+
+    /**
+     * Toggles the visibility of the chat window.
      */
     toggleChat() {
       this.showChat = !this.showChat;
@@ -111,8 +142,7 @@ export default {
     },
 
     /**
-     * Sends a message.
-     * Emits the message to the server and adds it to the messages array.
+     * Sends a message through the socket connection.
      */
     sendMessage() {
       if (this.message.trim() === '') return;
@@ -148,9 +178,26 @@ export default {
         }
       });
     },
+
+    /**
+     * Shows the modal dialog.
+     */
+    showModal() {
+      $('#confirmModal').modal('show');
+    },
+
+    /**
+     * Clears the messages array and hides the modal dialog.
+     */
+    clearMessages() {
+      this.resetMessages();
+      $('#confirmModal').modal('hide');
+    },
   },
 };
+
 </script>
+
 
 <style scoped>
 .chat-container {
@@ -170,6 +217,8 @@ export default {
      padding: 10px;
      background-color: #f5f5f5;
      font-weight: bold;
+     display: flex;
+     justify-content: space-between;
    }
 
    .username {
@@ -254,4 +303,4 @@ export default {
      top: 20px;
      right: 20px;
    }
-   </style>
+</style>
