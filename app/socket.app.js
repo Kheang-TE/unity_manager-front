@@ -17,7 +17,7 @@ export default (io) => {
     };
 
     users.push(user);
-
+ 
     socket.emit("userState", user);
     io.emit("chatState", { users, messages });
 
@@ -40,7 +40,6 @@ export default (io) => {
       }
     });
 
-    // Handle clear messages event
     socket.on("clearMessages", () => {
       messages = [];
       io.emit("chatState", { users, messages });

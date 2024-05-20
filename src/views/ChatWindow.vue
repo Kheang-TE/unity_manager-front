@@ -2,13 +2,13 @@
  <div class="chat-container" v-if="showChat">
       <div class="header">
         Chat with all collaborators
-       <button @click="showModal" class="btn btn-danger clear-btn" id="clearBtn"><i class="fas fa-trash-alt"></i>
+       <button @click="showModal" class="btn btn-danger clear-btn" id="clearBtn"><i class="bi bi-trash3-fill"></i>
   </button>
       </div>
       <div class="userlist">
         <b-dropdown text="Show all users" variant="light" size="sm">
-          <b-dropdown-item disabled>Show all users</b-dropdown-item>
-          <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
+          <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
+          <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)"><i class="bi bi-person-circle"></i>
             {{ user.id === currentUser.id ? 'Me' : user.username }}
           </b-dropdown-item>
         </b-dropdown>
@@ -16,7 +16,7 @@
     <div class="chat-messages" ref="chatMessages">
       <div class="message" v-for="msg in messages" :key="msg.text">
         <div class="text-style">
-          <span class="username" :class="{ 'me-username': msg.user.id === currentUser.id }">{{ msg.user.id ===
+          <span class="username" :class="{ 'me-username': msg.user.id === currentUser.id }"><i class="bi bi-person-circle"></i> {{ msg.user.id ===
             currentUser.id ? 'Me' : msg.user.username }}</span>
           <span class="text">{{ msg.text }}</span>
         </div>
@@ -24,11 +24,11 @@
     </div>
     <div class="chat-input">
       <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage" />
-      <button @click="sendMessage" class="btn btn-secondary custom-btn-color">SEND</button>
+      <button @click="sendMessage" class="btn btn-secondary custom-btn-color"><i class="bi bi-send-fill"></i></button>
     </div>
   </div>
-  <button id="btn-Chat-Close" type="button" :class="chatButtonClass" @click="toggleChat">
-    {{ showChat ? '' : 'Chat' }}
+   <button id="btn-Chat-Close" type="button" :class="chatButtonClass" @click="toggleChat">
+    {{ showChat ? '' : '' }}
   </button>
 
   <!-- Modal -->
@@ -53,7 +53,6 @@
   </div>
 </template>
 
-
 <script>
 import io from 'socket.io-client';
 
@@ -63,6 +62,7 @@ import io from 'socket.io-client';
  * @exports default
  */
 export default {
+  name: 'ChatWindow',
   /**
    * Data properties for the chat manager component.
    * @returns {object} Data object.
@@ -77,7 +77,7 @@ export default {
       messages: [],
       message: '',
       activeChat: null,
-    };
+    }
   },
 
   /**
@@ -86,9 +86,6 @@ export default {
    */
   created() {
     this.socket = io('http://localhost:4000');
-
-    // Reset messages when component is created
-    this.resetMessages();
 
     // Event listener for receiving new messages
     this.socket.on('message', ({ user, message }) => {
@@ -128,16 +125,16 @@ export default {
     resetMessages() {
       this.messages = [];
     },
-
     /**
      * Toggles the visibility of the chat window.
+     * Updates the button class accordingly.
      */
     toggleChat() {
       this.showChat = !this.showChat;
       if (this.showChat) {
         this.chatButtonClass = 'btn btn-close';
       } else {
-        this.chatButtonClass = 'btn btn-secondary chat-toggle';
+        this.chatButtonClass = 'bi bi-chat-dots-fill';
       }
     },
 
@@ -147,7 +144,6 @@ export default {
     sendMessage() {
       if (this.message.trim() === '') return;
       this.socket.emit('send', this.message);
-      this.messages.push({ user: this.currentUser, text: this.message });
       this.message = '';
       this.scrollToBottom();
     },
@@ -156,7 +152,7 @@ export default {
      * Selects a user for a private chat.
      * @param {string} userId - The ID of the user to select.
      */
-    selectUser(userId) {
+    selectUser(userId) {                 // revoir cette fonction !!!!!!!!!
       this.selectedUser = userId;
       const existingChat = this.activeChat && this.activeChat.user.id === userId;
       if (!existingChat) {
@@ -178,10 +174,9 @@ export default {
         }
       });
     },
-
-    /**
-     * Shows the modal dialog.
-     */
+     /**
+    * Shows the modal dialog.
+    */
     showModal() {
       $('#confirmModal').modal('show');
     },
@@ -195,7 +190,6 @@ export default {
     },
   },
 };
-
 </script>
 
 
@@ -302,5 +296,8 @@ export default {
      position: fixed;
      top: 20px;
      right: 20px;
+     border: none;
+     background-color: #fff;
+     font-size: 20px;
    }
 </style>
