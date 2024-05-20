@@ -6,6 +6,7 @@
           <ul>
             <li><RouterLink to="/signup"><i class="fa"><font-awesome-icon :icon="['fas', 'right-to-bracket']" /></i>Sign Up</RouterLink></li>
             <li><RouterLink to="/signin"><i class="fa"><font-awesome-icon :icon="['fas', 'user']" /></i>Sign In</RouterLink></li>
+            <li><RouterLink to="/chat"><i class="fa"><font-awesome-icon :icon="['fas', 'user']" /></i>CHAT</RouterLink></li>
           </ul>
         </div>
       </div>
