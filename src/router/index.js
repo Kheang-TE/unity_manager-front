@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import SignUp from '../views/SignUp.vue'
 import SignIn from '../views/SignIn.vue'
+import Board from '../views/Board.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/signin',
       name: 'sign in',
       component: SignIn
+    },
+    {
+      path: '/board',
+      name: 'board',
+      component: Board
     },
     {
       path: '/:pathMatch(.*)*',
