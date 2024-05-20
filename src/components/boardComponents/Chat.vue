@@ -9,7 +9,7 @@
         <template #title>
           Add new collaborator
         </template>
-        
+
       </b-modal>
     </template>
   </b-offcanvas>
@@ -18,5 +18,5 @@
 <script>
 export default {
   name: 'Chat',
-}
+};
 </script>
