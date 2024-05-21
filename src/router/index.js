@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import SignUp from '../views/SignUp.vue'
-import SignIn from '../views/SignIn.vue'
-import Board from '../views/Board.vue'
-import NotFound from '../views/NotFound.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home.vue';
+import SignUp from '../views/SignUp.vue';
+import SignIn from '../views/SignIn.vue';
+import Board from '../views/Board.vue';
+import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,28 +11,28 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
     },
     {
       path: '/signup',
       name: 'sign up',
-      component: SignUp
+      component: SignUp,
     },
     {
       path: '/signin',
       name: 'sign in',
-      component: SignIn
+      component: SignIn,
     },
     {
       path: '/board',
       name: 'board',
-      component: Board
+      component: Board,
     },
     {
       path: '/:pathMatch(.*)*',
-      component: NotFound
-    }
-  ]
-})
+      component: NotFound,
+    },
+  ],
+});
 
-export default router
+export default router;
