@@ -62,6 +62,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * Handles the sign-in process by calling the signin API with the provided email and password.
+     * If the sign-in is successful, it redirects the user to the 'board' route.
+     *
+     * @return {Promise<void>} A promise that resolves when the sign-in process is complete.
+     */
     handleSignin() {
       signin(this.email, this.password).then(() => {
         this.$router.push({ name: 'board' });
