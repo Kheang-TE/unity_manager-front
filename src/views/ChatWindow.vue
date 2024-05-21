@@ -2,8 +2,12 @@
  <div class="chat-container" v-if="showChat">
       <div class="header">
         Chat with all collaborators
-       <button @click="showModal" class="btn btn-danger clear-btn" id="clearBtn"><i class="bi bi-trash3-fill"></i>
-  </button>
+        <div class="buttons">
+          <button id="btn-Chat-Close" type="button" :class="chatButtonClass" @click="toggleChat">
+          </button>
+       <button @click="showModal" id="clearBtn"><i class="bi bi-trash3-fill"></i>
+       </button>
+      </div>
       </div>
       <div class="userlist">
         <b-dropdown text="Show all users" variant="light" size="sm">
@@ -27,10 +31,10 @@
       <button @click="sendMessage" class="btn btn-secondary custom-btn-color"><i class="bi bi-send-fill"></i></button>
     </div>
   </div>
-   <button id="btn-Chat-Close" type="button" :class="chatButtonClass" @click="toggleChat">
-    {{ showChat ? '' : '' }}
-  </button>
-
+  <button id="btn-Chat-Open" type="button"  @click="toggleChat">
+      <i class="bi bi-chat-dots-fill"></i>
+    </button>
+   
   <!-- Modal -->
   <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -133,8 +137,6 @@ export default {
       this.showChat = !this.showChat;
       if (this.showChat) {
         this.chatButtonClass = 'btn btn-close';
-      } else {
-        this.chatButtonClass = 'bi bi-chat-dots-fill';
       }
     },
 
@@ -292,12 +294,24 @@ export default {
      border-radius: 3px;
    }
 
-   #btn-Chat-Close {
-     position: fixed;
+   #btn-Chat-Open {
+    position: fixed;
      top: 20px;
      right: 20px;
      border: none;
      background-color: #fff;
-     font-size: 20px;
+     font-size: 25px;
+     color: #666666;
+   }
+
+   #clearBtn {
+     border: none;
+     background-color: #F5F5F5;
+     font-size: 22px;
+     color: #666666;
+   }
+
+   #btn-Chat-Close {
+    font-size: 20px;
    }
 </style>
