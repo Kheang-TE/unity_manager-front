@@ -17,12 +17,12 @@
         <div class="col-lg-7">
           <div class="form-container">
             <div class="form-header">
-              Log in to access your projects 
+              Log in to access your projects
             </div>
             <div class="form-body">
-              <form action="" method="POST">
-                <input type="email" class="form-control" name="email"  placeholder="Email">
-                <input type="password" class="form-control" name="password" placeholder="Password">
+              <form @submit.prevent="handleSignin">
+                <input type="email"  v-model="email" class="form-control" name="email"  placeholder="Email">
+                <input type="password" v-model="password" class="form-control" name="password" placeholder="Password">
                 <a href="/signup" class="float-start"><i class="fa"><font-awesome-icon :icon="['fas', 'arrow-left']" /></i>Create account</a>
                 <button type="submit" class="btn float-end">Connect</button>
               </form>
@@ -51,7 +51,22 @@
 </template>
 
 <script>
-  export default{
-    name: 'SignUp'
-  }
+import { signin } from '../api/user.js';
+
+export default {
+  name: 'SignIn',
+  data() {
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    handleSignin() {
+      signin(this.email, this.password).then(() => {
+        this.$router.push({ name: 'board' });
+      });
+    },
+  },
+};
 </script>
