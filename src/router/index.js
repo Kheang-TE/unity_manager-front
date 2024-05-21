@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import SignUp from '../views/SignUp.vue'
 import SignIn from '../views/SignIn.vue'
 import ChatWindow from '../views/ChatWindow.vue'
+import Board from '../views/Board.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
@@ -29,10 +30,15 @@ const router = createRouter({
       component: ChatWindow,
     },
     {
-      path: "/:pathMatch(.*)*",
-      component: NotFound,
+      path: '/board',
+      name: 'board',
+      component: Board
     },
-  ],
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFound
+    }
+  ]
 });
 
 export default router
