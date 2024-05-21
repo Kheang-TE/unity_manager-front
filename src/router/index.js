@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import SignUp from '../views/SignUp.vue'
@@ -6,10 +7,12 @@ import ChatWindow from '../views/ChatWindow.vue'
 import Board from '../views/Board.vue'
 import NotFound from '../views/NotFound.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+
       path: "/",
       name: "home",
       component: Home,
@@ -32,13 +35,14 @@ const router = createRouter({
     {
       path: '/board',
       name: 'board',
-      component: Board
+      component: Board,
     },
     {
       path: '/:pathMatch(.*)*',
-      component: NotFound
-    }
-  ]
+      component: NotFound,
+    },
+  ],
+
 });
 
-export default router
+export default router;
