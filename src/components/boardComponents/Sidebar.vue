@@ -3,7 +3,7 @@
   <b-offcanvas id="sidebar" title="Projects" :backdrop="false">
     <ul>
       <li v-for="project in projects" :key="project.id">
-        <a href="#" @click.prevent=fetchProject(project.id)>{{ project.name }}</a>
+        <a href="#" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
       </li>
     </ul>
   </b-offcanvas>
@@ -23,9 +23,9 @@ export default {
     this.projects = await getProjects();
   },
   methods: {
-    fetchProject(id) {
-      getProject(id).then((response) => {
-        console.log(response);
+    selectProject(projectId) {
+      getProject(projectId).then((project) => {
+        this.$emit('projectSelected', project);
       });
     },
   },
