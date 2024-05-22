@@ -63,7 +63,7 @@
 
 <script>
 import { ref } from 'vue';
-import signup from '@/api/user.js';
+import { signup } from '@/api/user.js';
 
 export default {
   name: 'SignUp',

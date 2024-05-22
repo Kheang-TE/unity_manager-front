@@ -1,34 +1,36 @@
 <template>
   <div class="board">
+    <Sidebar @projectSelected="handleProjectSelected"/>
     <div class="background-wall"></div>
     <BoardHeader/>
     <div id="board-content">
-      <ContentProject />
+      <ContentProject :project="selectedProject" />
     </div>
   </div>
 </template>
 
 <script>
-  import BoardHeader from "@/components/BoardHeader.vue"
-  import ContentProject from "@/components/boardComponents/ContentProject.vue"
-  export default {
-    name: "Board",
-    components: {
-    },
+import BoardHeader from '@/components/BoardHeader.vue';
+import ContentProject from '@/components/boardComponents/ContentProject.vue';
+import Sidebar from '@/components/boardComponents/Sidebar.vue';
+
+export default {
+  name: 'Board',
+  components: {
+    Sidebar,
+    BoardHeader,
+    ContentProject,
+  },
+  data() {
+    return {
+      selectedProject: null,
+    };
+  },
   methods: {
-    add: function() {
-      this.list.push({ name: "Juan " + id, id: id++ });
+    handleProjectSelected(project) {
+      console.log('from Board', project);
+      this.selectedProject = project;
     },
-    replace: function() {
-      this.list = [{ name: "Edgard", id: id++ }];
-    },
-    add2: function() {
-      this.list2.push({ name: "Juan " + id, id: id++ });
-    },
-    replace2: function() {
-      this.list2 = [{ name: "Edgard", id: id++ }];
-    }
-  }
+  },
 };
 </script>
-<style scoped></style>
