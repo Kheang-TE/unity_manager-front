@@ -81,7 +81,7 @@ section{
 .sign{
   margin: 5rem 0;
 }
-.btn-link{
+.btn-link, .btn-link:visited{
   font-size: 1.6rem;
   text-decoration: none!important;
   text-transform: uppercase;
@@ -94,7 +94,7 @@ section{
   padding: 1rem 2rem;
   transition: var(--transition);
 }
-.btn-link:hover{
+.btn-link:hover, .btn-link:active{
   background-color: var(--third-color);
   color: var(--white)!important;
   transition: all 0.3s ease;
@@ -232,6 +232,8 @@ section{
 .board .navbar{
   background-color: var(--greylight);
   color: var(--white);
+  padding-left: 1rem;
+  padding-right: 1rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -319,6 +321,9 @@ section{
 }
 .new-list{
   font-size: 1.5rem;
+  text-decoration: none;
+}
+.new-list:hover{
   text-decoration: none;
 }
 .new-list > .list-body{
