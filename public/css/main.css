@@ -277,6 +277,7 @@ section{
 }
 .dropdown-menu a:focus, .dropdown-menu a:hover{
   color: var(--white);
+  text-decoration: none;
   transition: var(--transition);
 }
 
@@ -287,8 +288,48 @@ section{
 #sidebar h5{
   text-align: center;
 }
-#sidebar img.logo{
-  width: 65%;
+#sidebar button.add-new-project{
+  background-color: var(--grey);
+  transition: var(--transition);
+}
+#sidebar button.add-new-project:hover,
+#sidebar button.add-new-project:focus{
+  background-color: var(--primary-color);
+  transition: var(--transition);
+}
+#sidebar .projects-list{
+  list-style-type: none;
+  margin-left: 1rem;
+  padding: 0;
+}
+#sidebar .project-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+#sidebar .project-control button{
+  margin-right: .5rem;
+  border: none;
+}
+#sidebar .project-control button:last-child{
+  margin-right: 0;
+}
+#sidebar .project-control button.project-control-edit{
+  background-color: var(--primary-color);
+}
+#sidebar .project-control button.project-control-delete{
+  background-color: red;
+}
+#sidebar .project-link, #sidebar .project-link:visited{
+  color: var(--grey);
+  text-decoration: none;
+  transition: var(--transition);
+}
+#sidebar .project-link:hover, #sidebar .project-link:focus{
+  color: var(--third-color);
+  transition: var(--transition);
+  padding-left: 1rem;
 }
 
 /* Chat */
