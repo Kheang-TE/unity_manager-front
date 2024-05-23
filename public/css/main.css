@@ -5,6 +5,7 @@
   --white: #fff;
   --greylight:#eee;
   --grey: #666;
+  --red: #b63638;
   --transition: all 0.3s ease;
   --border-radius: 0.5rem;
 } 
@@ -319,7 +320,7 @@ section{
   background-color: var(--primary-color);
 }
 #sidebar .project-control button.project-control-delete{
-  background-color: red;
+  background-color: var(--red);
 }
 #sidebar .project-link, #sidebar .project-link:visited{
   color: var(--grey);
