@@ -362,27 +362,26 @@ section{
 .list:last-child{
   margin-right: 0;
 }
-.new-list{
+button.new-list{
+  background-color: var(--greylight);
   font-size: 1.5rem;
-  text-decoration: none;
-}
-.new-list:hover{
-  text-decoration: none;
-}
-.new-list > .list-body{
   color: var(--grey);
-  height: 100%;
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  width: 320px;
+  height: fit-content;
+  padding: 1rem;
+  border: none;
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
-.new-list > .list-body:hover{
-  background-color: var(--primary-color);
-  color: var(--white);
+button.new-list:hover{
+  background-color: var(--third-color);
+  text-decoration: none;
   transition: var(--transition);
 }
 .list-header{
@@ -438,6 +437,15 @@ section{
 }
 .list-body .card:last-child{
   margin-bottom:0;
+}
+button.add-card{
+  background-color: var(--grey);
+  border: none;
+  transition: var(--transition);
+}
+button.add-card:hover{
+  background-color: var(--third-color);
+  transition: var(--transition);
 }
 
 .card-header{

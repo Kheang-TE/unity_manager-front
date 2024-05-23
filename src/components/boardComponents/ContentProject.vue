@@ -8,19 +8,22 @@
           <template #button-content>
             <font-awesome-icon :icon="['fas', 'ellipsis']" />
           </template>
-          <b-dropdown-item >
-            <b-link v-b-modal="'edit-list-'+list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-'+list.id.toString()" centered>
+          <b-dropdown-item>
+            <b-link v-b-modal="'add-card-list-' + list.id">Add new card</b-link>
+          </b-dropdown-item>
+          <b-dropdown-item>
+            <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
+            <b-modal :id="'edit-list-' + list.id.toString()" centered>
               <template #title>
-                Edit list : {{list.name}}
+                Edit list : {{ list.name }}
               </template>
             </b-modal>
           </b-dropdown-item>
           <b-dropdown-item>
-            <b-link v-b-modal="'delete-list-'+list.id.toString()">Delete</b-link>
-            <b-modal :id="'delete-list-'+list.id.toString()" centered>
+            <b-link v-b-modal="'delete-list-' + list.id.toString()">Delete</b-link>
+            <b-modal :id="'delete-list-' + list.id.toString()" centered>
               <template #title>
-                Delete list : {{list.name}}
+                Delete list : {{ list.name }}
               </template>
               <p>Are you sure you want to delete this list ?</p>
             </b-modal>
@@ -35,25 +38,25 @@
     <b-collapse :id="list.id.toString()" class="list-body" visible>
       <b-card v-for="card in list.cards">
         <div class="card-header">
-          <h5>{{card.name}}</h5>
+          <h5>{{ card.name }}</h5>
           <div class="card-controls">
             <b-dropdown no-caret>
               <template #button-content>
                 <font-awesome-icon :icon="['fas', 'ellipsis']" />
               </template>
-              <b-dropdown-item >
-                <b-link v-b-modal="'edit-card-'+card.id.toString()">Edit</b-link>
-                <b-modal :id="'edit-card-'+card.id.toString()" centered>
+              <b-dropdown-item>
+                <b-link v-b-modal="'edit-card-' + card.id.toString()">Edit</b-link>
+                <b-modal :id="'edit-card-' + card.id.toString()" centered>
                   <template #title>
-                    Edit card : {{card.name}}
+                    Edit card : {{ card.name }}
                   </template>
                 </b-modal>
               </b-dropdown-item>
               <b-dropdown-item>
-                <b-link v-b-modal="'delete-card-'+card.id.toString()">Delete</b-link>
-                <b-modal :id="'delete-card-'+card.id.toString()" centered>
+                <b-link v-b-modal="'delete-card-' + card.id.toString()">Delete</b-link>
+                <b-modal :id="'delete-card-' + card.id.toString()" centered>
                   <template #title>
-                    Delete card : {{card.name}}
+                    Delete card : {{ card.name }}
                   </template>
                   <p>Are you sure you want to delete this card ?</p>
                 </b-modal>
@@ -61,15 +64,22 @@
             </b-dropdown>
           </div>
         </div>
-        <p>{{card.description}}</p>
+        <p>{{ card.description }}</p>
       </b-card>
+
+      <b-button class="add-card" v-b-modal="'add-card-list-' + list.id">[+] Add new card</b-button>
+      <b-modal :id="'add-card-list-' + list.id" title="Add new card to list" centered>
+      </b-modal>
     </b-collapse>
   </div>
-  <a class="list new-list" @click.prevent="addList">
-    <div class="list-body">
-      <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
-    </div>
-  </a>
+
+  <!-- Add new list -->
+  <b-button class="new-list" @click.prevent="addList" v-b-modal.add-new-list>
+    <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
+  </b-button>
+  <b-modal id="add-new-list" title="Add new list" centered>
+
+  </b-modal>
 </template>
 
 <script>
