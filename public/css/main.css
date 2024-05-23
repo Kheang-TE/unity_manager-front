@@ -42,6 +42,7 @@ section{
   position: fixed;
   width: 100%;
   top: 0;
+  z-index: 10;
 }
 .home-navigation ul{
   list-style: none;
@@ -464,4 +465,23 @@ section{
   color: var(--white);
   background: var(--second-color);
   transition: var(--transition);
+}
+
+/*------------------------------------------------------------------------*/
+/* MODAL
+/*------------------------------------------------------------------------*/
+.modal-footer button{
+  background-color: var(--grey);
+  border: none;
+  transition: var(--transition);
+}
+.modal-footer button:hover{
+  background-color: var(--second-color);
+  transition: var(--transition);
+}
+.modal-footer button:last-child{
+  background-color: var(--primary-color);
+}
+.modal-footer button:last-child:hover{
+  background-color: var(--third-color);
 }
