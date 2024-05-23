@@ -5,6 +5,7 @@
   --white: #fff;
   --greylight:#eee;
   --grey: #666;
+  --red: #b63638;
   --transition: all 0.3s ease;
   --border-radius: 0.5rem;
 } 
@@ -81,7 +82,7 @@ section{
 .sign{
   margin: 5rem 0;
 }
-.btn-link{
+.btn-link, .btn-link:visited{
   font-size: 1.6rem;
   text-decoration: none!important;
   text-transform: uppercase;
@@ -94,7 +95,7 @@ section{
   padding: 1rem 2rem;
   transition: var(--transition);
 }
-.btn-link:hover{
+.btn-link:hover, .btn-link:active{
   background-color: var(--third-color);
   color: var(--white)!important;
   transition: all 0.3s ease;
@@ -232,6 +233,8 @@ section{
 .board .navbar{
   background-color: var(--greylight);
   color: var(--white);
+  padding-left: 1rem;
+  padding-right: 1rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -275,6 +278,7 @@ section{
 }
 .dropdown-menu a:focus, .dropdown-menu a:hover{
   color: var(--white);
+  text-decoration: none;
   transition: var(--transition);
 }
 
@@ -285,8 +289,48 @@ section{
 #sidebar h5{
   text-align: center;
 }
-#sidebar img.logo{
-  width: 65%;
+#sidebar button.add-new-project{
+  background-color: var(--grey);
+  transition: var(--transition);
+}
+#sidebar button.add-new-project:hover,
+#sidebar button.add-new-project:focus{
+  background-color: var(--primary-color);
+  transition: var(--transition);
+}
+#sidebar .projects-list{
+  list-style-type: none;
+  margin-left: 1rem;
+  padding: 0;
+}
+#sidebar .project-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+#sidebar .project-control button{
+  margin-right: .5rem;
+  border: none;
+}
+#sidebar .project-control button:last-child{
+  margin-right: 0;
+}
+#sidebar .project-control button.project-control-edit{
+  background-color: var(--primary-color);
+}
+#sidebar .project-control button.project-control-delete{
+  background-color: var(--red);
+}
+#sidebar .project-link, #sidebar .project-link:visited{
+  color: var(--grey);
+  text-decoration: none;
+  transition: var(--transition);
+}
+#sidebar .project-link:hover, #sidebar .project-link:focus{
+  color: var(--third-color);
+  transition: var(--transition);
+  padding-left: 1rem;
 }
 
 /* Chat */
@@ -319,6 +363,9 @@ section{
 }
 .new-list{
   font-size: 1.5rem;
+  text-decoration: none;
+}
+.new-list:hover{
   text-decoration: none;
 }
 .new-list > .list-body{
