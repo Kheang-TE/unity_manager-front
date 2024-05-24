@@ -5,7 +5,7 @@
       <b-button v-b-modal.new-collaborator>
         <font-awesome-icon :icon="['fas', 'plus']" />
       </b-button>
-      <b-modal id="new-collaborator" centered >
+      <b-modal id="new-collaborator" centered>
         <template #title>
           Add new collaborator
         </template>
@@ -13,42 +13,86 @@
       </b-modal>
     </template>
     <div class="userlist">
-        <b-dropdown text="Show all users" variant="light" size="sm">
-          <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
-          <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)"><i class="bi bi-person-circle"></i>
-            {{ user.id === currentUser.id ? 'Me' : user.username }}
-          </b-dropdown-item>
-        </b-dropdown>
-      </div>
-    <div class="chat-messages" ref="chatMessages">
-      <div class="message" v-for="msg in messages" :key="msg.text">
+      <b-dropdown text="Show all users" variant="light" size="sm">
+        <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
+        <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
+          <i class="bi bi-person-circle"></i> {{ 'Me'  }}
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
+    <div v-if="boardStore.selectedProject" class="chat-messages" ref="chatMessages">
+      <div class="message" v-for="message in boardStore.selectedProject.messages" :key="message._id">
         <div class="text-style">
-          <span class="username" :class="{ 'me-username': msg.user.id === currentUser.id }"><i class="bi bi-person-circle"></i> {{ msg.user.id ===
-            currentUser.id ? 'Me' : msg.user.username }}</span>
-          <span class="text">{{ msg.text }}</span>
+          <span class="username" :class="{ 'me-username': message.user_id === currentUser.id }">
+            <i class="bi bi-person-circle"></i> {{ userStore.user }}
+          </span>
+          <span class="text">{{ message.content }}</span>
         </div>
+      </div>
+    </div>
+    <div v-if="boardStore.selectedProject" class="chat-input">
+      <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage" />
+      <button @click="sendMessage" class="btn btn-secondary">Send</button>
+    </div>
+  </b-offcanvas>
+</template>
+<!-- <template>
+ <div class="userlist">
+      <b-dropdown text="Show all users" variant="light" size="sm">
+        <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
+        <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
+          <i class="bi bi-person-circle"></i> {{ user.username || user.id  }}
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
+  <div v-if="store.selectedProject" class="chat-messages" ref="chatMessages">
+    <div class="message" v-for="message in store.selectedProject.messages" :key="message._id">
+      <div class="text-style">
+        <span class="username">
+          {{ message.user_id }}:
+        </span>
+        <span class="text">{{ message.content }}</span>
       </div>
     </div>
     <div class="chat-input">
       <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage" />
-      <button @click="sendMessage" class="btn btn-secondary custom-btn-color"><i class="bi bi-send-fill"></i></button>
+      <button @click="sendMessage" class="btn btn-secondary">Send</button>
     </div>
-  </b-offcanvas>
-
-</template>
+  </div>
+</template> -->
 
 <script>
-import io from 'socket.io-client';
-
 /**
  * Component for managing chat functionality.
  * @module ChatManager
  * @exports default
  */
+import { initializeOnMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
+import { postMessage, getMessagesbyProject } from '@/api/message.js';
+import useBoardStore from '../../store/board.store';
+import { useUserStore } from '../../store/user.store';
+
 export default {
-  name: 'Chat',
+  setup() {
+    const boardStore = useBoardStore();
+    const userStore = useUserStore();
+    return { boardStore, userStore };
+  },
+  props: {
+    project: {
+      type: Object,
+      default: null,
+    },
+  },
+  watch: {
+    project: {
+      immediate: true,
+
+    },
+  },
   data() {
     return {
+      selectedProject: null,
       showChat: false,
       chatButtonClass: 'btn btn-secondary chat-toggle',
       currentUser: null,
@@ -65,25 +109,11 @@ export default {
    * Initializes the socket connection and sets up event listeners.
    */
   created() {
-    this.socket = io('http://localhost:4000');
+    initializeChatState(this.handleChatStateReceived);
 
-    // Event listener for receiving new messages
-    this.socket.on('message', ({ user, message }) => {
-      this.messages.push({ user, text: message });
-      this.scrollToBottom();
-    });
+    initializeOnMessageReceived(this.handleMessageReceived);
 
-    // Event listener for receiving chat state
-    this.socket.on('chatState', (data) => {
-      this.users = data.users;
-      this.messages = data.messages.map((msg) => ({ user: msg.user, text: msg.message }));
-      this.scrollToBottom();
-    });
-
-    // Event listener for receiving user state
-    this.socket.on('userState', (userFromServer) => {
-      this.currentUser = userFromServer;
-    });
+    initializeUserState(this.handleUserStateReceived);
   },
 
   /**
@@ -99,47 +129,82 @@ export default {
    * @namespace methods
    */
   methods: {
-    /**
-     * Resets the messages array.
-     */
-    resetMessages() {
-      this.messages = [];
-    },
-    /**
-     * Toggles the visibility of the chat window.
-     * Updates the button class accordingly.
-     */
-    toggleChat() {
-      this.showChat = !this.showChat;
-      if (this.showChat) {
-        this.chatButtonClass = 'btn btn-close';
+
+    async handleMessageReceived() {
+      if (this.selectedProject.id) {
+        const messages = await getMessagesbyProject(this.selectedProject.id);
+        this.selectedProject.messages = { ...this.selectedProject.messages };
+        this.scrollToBottom();
       }
+    },
+    handleChatStateReceived(data) {
+      this.users = data.users;
+      this.messages = data.messages.map((msg) => ({ user: msg.user, text: msg.message }));
+      this.scrollToBottom();
+    },
+
+    handleUserStateReceived(userFromServer) {
+      this.currentUser = userFromServer;
+    },
+    sendMessage() {
+      const trimmedMessage = this.message.trim(); // Remove leading/trailing whitespace
+
+      if (!trimmedMessage) return; // Do nothing if the message is empty
+
+      postMessage({
+        content: trimmedMessage,
+        project_id: this.project.id,
+      })
+        .then(() => {
+          this.message = '';
+        })
+        .catch((error) => {
+          console.error('Error sending message:', error);
+        });
     },
 
     /**
-     * Sends a message through the socket connection.
+     * Resets the messages array.
      */
-    sendMessage() {
-      if (this.message.trim() === '') return;
-      this.socket.emit('send', this.message);
-      this.message = '';
-      this.scrollToBottom();
-    },
+    // resetMessages() {
+    //   this.messages = [];
+    // },
+    // /**
+    //  * Toggles the visibility of the chat window.
+    //  * Updates the button class accordingly.
+    //  */
+    // toggleChat() {
+    //   this.showChat = !this.showChat;
+    //   if (this.showChat) {
+    //     this.chatButtonClass = 'btn btn-close';
+    //   }
+    // },
+
+    /**
+     * Sends a message through the socket connection.
+    //  */
+    // sendMessage() {
+    //   if (this.message.trim() === '') return;
+
+    //   this.socket.emit('sendMessage', this.message);
+    //   this.message = '';
+    //   this.scrollToBottom();
+    // },
 
     /**
      * Selects a user for a private chat.
      * @param {string} userId - The ID of the user to select.
      */
-    selectUser(userId) { // revoir cette fonction !!!!!!!!!
-      this.selectedUser = userId;
-      const existingChat = this.activeChat && this.activeChat.user.id === userId;
-      if (!existingChat) {
-        this.activeChat = {
-          user: this.users.find((user) => user.id === userId),
-          messages: [],
-        };
-      }
-    },
+    // selectUser(userId) { // revoir cette fonction !!!!!!!!!
+    //   this.selectedUser = userId;
+    //   const existingChat = this.activeChat && this.activeChat.user.id === userId;
+    //   if (!existingChat) {
+    //     this.activeChat = {
+    //       user: this.users.find((user) => user.id === userId),
+    //       messages: [],
+    //     };
+    //   }
+    // },
 
     /**
      * Scrolls the chat window to the bottom.
@@ -154,7 +219,7 @@ export default {
     },
     /**
     * Shows the modal dialog.
-    */
+    // */
     showModal() {
       $('#confirmModal').modal('show');
     },
@@ -162,10 +227,10 @@ export default {
     /**
      * Clears the messages array and hides the modal dialog.
      */
-    clearMessages() {
-      this.resetMessages();
-      $('#confirmModal').modal('hide');
-    },
+    // clearMessages() {
+    //   this.resetMessages();
+    //   $('#confirmModal').modal('hide');
+    // },
   },
 };
 
