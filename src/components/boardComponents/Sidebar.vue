@@ -1,6 +1,6 @@
 <!-- src/components/Sidebar.vue -->
 <template>
-  <b-offcanvas id="sidebar" title="Projects" :backdrop="false">
+  <b-offcanvas id="sidebar" class="col-sm-12" title="Projects" :backdrop="false">
     <template #title>
       Projects
 
