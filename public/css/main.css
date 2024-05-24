@@ -501,3 +501,18 @@ button.add-card:hover{
 .modal-footer button:last-child:hover{
   background-color: var(--third-color);
 }
+
+/*------------------------------------------------------------------------*/
+/* ACCORDION
+/*------------------------------------------------------------------------*/
+#account .accordion-button{
+  color: var(--grey);
+  background-color: var(--greylight);
+}
+#account .accordion-button:not(.collapsed){
+  color: var(--greylight);
+  background-color: var(--primary-color);
+}
+#account .accordion-button:focus{
+  box-shadow: none;
+}
