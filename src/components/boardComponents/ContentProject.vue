@@ -11,6 +11,9 @@
             <font-awesome-icon :icon="['fas', 'ellipsis']" />
           </template>
           <b-dropdown-item>
+            <b-link v-b-modal="'add-card-list-' + list.id">Add new card</b-link>
+          </b-dropdown-item>
+          <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
             <b-modal
               :id="'edit-list-' + list.id.toString()"
@@ -120,13 +123,25 @@
         </div>
         <p>{{ card.description }}</p>
       </b-card>
+
+      <b-button class="add-card" v-b-modal="'add-card-list-' + list.id"
+        >[+] Add new card</b-button
+      >
+      <b-modal
+        :id="'add-card-list-' + list.id"
+        title="Add new card to list"
+        centered
+      >
+      </b-modal>
     </b-collapse>
   </div>
-  <a class="list new-list" @click.prevent="addList">
-    <div class="list-body">
-      <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
-    </div>
-  </a>
+
+  <!-- Add new list -->
+  <b-button class="new-list" v-b-modal.add-new-list>
+    <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
+  </b-button>
+  <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
+  </b-modal>
 </template>
 
 <script>
