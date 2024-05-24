@@ -74,10 +74,10 @@
   </div>
 
   <!-- Add new list -->
-  <b-button class="new-list" @click.prevent="addList" v-b-modal.add-new-list>
+  <b-button class="new-list" v-b-modal.add-new-list>
     <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
   </b-button>
-  <b-modal id="add-new-list" title="Add new list" centered>
+  <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
 
   </b-modal>
 </template>
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     addList() {
-      this.lists.push({ id: this.lists.length + 1, name: `List ${this.lists.length + 1}`, cards: [] });
+      console.log(this.project);
     },
     updateProject(project) {
       this.projectSelected = project;
