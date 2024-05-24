@@ -351,6 +351,10 @@ section{
   width: 100%;
 }
 
+@media (min-width: 768px){
+  #sidebar, #chat{width: 400px;}
+}
+
 /* Board content */
 #board-content{
   font-size: .875rem;
@@ -359,6 +363,11 @@ section{
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+/* List */
+.list-container{
+  display: flex;
+  flex-direction: column;
 }
 .list{
   margin-bottom: 1rem;
@@ -435,12 +444,6 @@ button.new-list:hover{
   padding: 1rem;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
-.list-body .card{
-  margin-bottom: 1rem;
-}
-.list-body .card:last-child{
-  margin-bottom:0;
-}
 button.add-card{
   background-color: var(--grey);
   border: none;
@@ -451,6 +454,14 @@ button.add-card:hover{
   transition: var(--transition);
 }
 
+/* Card */
+.card-container{
+  display: flex;
+  flex-direction: column;
+}
+.card{
+  margin-bottom: 1rem;
+}
 .card-header{
   position: relative;
 }
@@ -479,13 +490,11 @@ button.add-card:hover{
 }
 @media (min-width: 576px){
   #board-content{flex-direction: row;}
+  .list-container{flex-direction: row;}
   .list{
     min-width: 320px;
     margin-right: 1rem;
   }
-}
-@media (min-width: 768px){
-  #sidebar, #chat{width: 400px;}
 }
 
 /*------------------------------------------------------------------------*/
