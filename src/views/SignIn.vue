@@ -52,8 +52,13 @@
 
 <script>
 import { signin } from '../api/user.js';
+import { useUserStore } from '@/store/user.store';
 
 export default {
+  setup() {
+    const store = useUserStore();
+    return { store };
+  },
   name: 'SignIn',
   data() {
     return {
@@ -69,7 +74,8 @@ export default {
      * @return {Promise<void>} A promise that resolves when the sign-in process is complete.
      */
     handleSignin() {
-      signin(this.email, this.password).then(() => {
+      signin(this.email, this.password).then((response) => {
+        this.store.setUser(response.firstname);
         this.$router.push({ name: 'board' });
       });
     },
