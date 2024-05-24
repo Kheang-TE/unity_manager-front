@@ -480,7 +480,7 @@ button.add-card:hover{
   }
 }
 @media (min-width: 768px){
-  #sidebar, #chat{width: auto;}
+  #sidebar, #chat{width: 400px;}
 }
 
 /*------------------------------------------------------------------------*/
