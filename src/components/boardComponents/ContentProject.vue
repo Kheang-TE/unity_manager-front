@@ -1,5 +1,5 @@
 <template>
-  <div v-if="project" v-for="list in project.lists" class="list">
+  <div v-if="boardStore.selectedProject" v-for="list in boardStore.selectedProject.lists" class="list">
     <!-- TODO : SOC -->
     <div class="list-header">
       <h2>{{ list.name }}</h2>
@@ -33,7 +33,7 @@
     </div>
 
     <b-collapse :id="list.id.toString()" class="list-body" visible>
-      <b-card v-for="card in list.cards">
+      <b-card v-for="card in boardStore.selectedProject.lists.cards">
         <div class="card-header">
           <h5>{{card.name}}</h5>
           <div class="card-controls">
@@ -73,24 +73,39 @@
 </template>
 
 <script>
+import useBoardStore from '../../store/board.store.js';
+
 export default {
+  setup() {
+    const boardStore = useBoardStore();
+    return { boardStore };
+  },
   props: {
     project: {
       type: Object,
       default: null,
     },
   },
+  watch: {
+    project: {
+      immediate: true,
+      handler(newProject) {
+        console.log('ContentProject received project:', newProject);
+      },
+    },
+  },
   data() {
     return {
-      projectSelected: null,
+      selectedProject: this.project,
     };
   },
   methods: {
     addList() {
       this.lists.push({ id: this.lists.length + 1, name: `List ${this.lists.length + 1}`, cards: [] });
     },
+
     updateProject(project) {
-      this.projectSelected = project;
+      this.store.selectedProject = { ...project };
     },
   },
 };
