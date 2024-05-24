@@ -10,8 +10,17 @@
           </template>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-' + list.id.toString()" centered>
+            <b-modal
+              :id="'edit-list-' + list.id.toString()"
+              centered
+              @ok="submitUpdateList(list.id)"
+            >
               <template #title> Edit list : {{ list.name }} </template>
+              <b-form @submit.prevent="submitUpdateList(list.id)">
+                <b-form-group label="List Name">
+                  <b-form-input v-model="list.name"></b-form-input>
+                </b-form-group>
+              </b-form>
             </b-modal>
           </b-dropdown-item>
           <b-dropdown-item>
@@ -21,14 +30,10 @@
             <b-modal
               :id="'delete-list-' + list.id.toString()"
               centered
-              hide-footer
+              @ok="deleteList(list.id)"
             >
-              <template #title>Delete list : {{ list.name }}</template>
+              <template #title> Delete list : {{ list.name }} </template>
               <p>Are you sure you want to delete this list ?</p>
-
-              <b-button variant="danger" @click="deleteList(list.id)"
-                >OK</b-button
-              >
             </b-modal>
           </b-dropdown-item>
         </b-dropdown>
@@ -90,8 +95,8 @@ export default {
   methods: {
     async addList() {
       try {
-        console.log(newId);
         const newId = this.project.lists.length + 1;
+        console.log(newId);
         const newList = {
           id: newId,
           name: `List ${newId}`,
@@ -99,6 +104,7 @@ export default {
           code_color: '',
           project_id: this.project.id,
         };
+
         const createdList = await createList(newList);
 
         if (createdList) {
@@ -124,6 +130,25 @@ export default {
         }
       } catch (error) {
         console.error('Error deleting the list:', error);
+      }
+    },
+    async submitUpdateList(listId) {
+      try {
+        const index = this.project.lists.findIndex((l) => l.id === listId);
+        if (index !== -1) {
+          const updatedList = await updateList(listId, {
+            name: this.project.lists[index].name,
+          });
+          if (updatedList) {
+            this.project.lists[index] = updatedList;
+          } else {
+            console.error('Error updating the list');
+          }
+        } else {
+          console.error('List not found');
+        }
+      } catch (error) {
+        console.error('Error updating the list:', error);
       }
     },
   },

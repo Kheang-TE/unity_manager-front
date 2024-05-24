@@ -18,8 +18,8 @@ export async function createList(listData) {
 
 export async function deleteList(listId) {
   try {
-    const response = await axios.delete(`/lists/${listId}`);
-    return response.data;
+    await axios.delete(`/lists/${listId}`);
+    return true;
   } catch (error) {
     console.error(error);
     return null;
@@ -28,7 +28,12 @@ export async function deleteList(listId) {
 
 export async function updateList(listId, listData) {
   try {
-    const response = await axios.put(`/lists/${listId}`, listData);
+    const response = await axios.patch(`/lists/${listId}`, {
+      name: listData.name,
+      position: listData.position,
+      code_color: '#267699',
+      project_id: listData.project_id,
+    });
     return response.data;
   } catch (error) {
     console.error(error);
