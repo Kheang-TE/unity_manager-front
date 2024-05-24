@@ -54,8 +54,12 @@ export default {
     return { store };
   },
   name: 'Sidebar',
-  async created() {
-    this.store.projects = await getProjects();
+  created() {
+    getProjects().then(
+      (projects) => {
+        this.store.projects = projects;
+      },
+    );
   },
   methods: {
     selectProject(projectId) {

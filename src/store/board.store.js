@@ -5,7 +5,6 @@ const useBoardStore = defineStore('board', {
     selectedProject: {
       id: null,
       name: '',
-      lists: [],
     },
     projects: [],
   }),

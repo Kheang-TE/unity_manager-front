@@ -1,6 +1,5 @@
-<template>
-  <div v-if="boardStore.selectedProject" v-for="list in boardStore.selectedProject.lists" class="list">
-    <!-- TODO : SOC -->
+<template v-if="boardStore.selectedProject">
+  <div v-for="list in boardStore.selectedProject.lists" class="list">
     <div class="list-header">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
@@ -12,16 +11,16 @@
             <b-link v-b-modal="'add-card-list-' + list.id">Add new card</b-link>
           </b-dropdown-item>
           <b-dropdown-item>
-            <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-' + list.id.toString()" centered>
+            <b-link v-b-modal="'edit-list-' + list.id">Edit</b-link>
+            <b-modal :id="'edit-list-' + list.id" centered>
               <template #title>
                 Edit list : {{ list.name }}
               </template>
             </b-modal>
           </b-dropdown-item>
           <b-dropdown-item>
-            <b-link v-b-modal="'delete-list-' + list.id.toString()">Delete</b-link>
-            <b-modal :id="'delete-list-' + list.id.toString()" centered>
+            <b-link v-b-modal="'delete-list-' + list.id">Delete</b-link>
+            <b-modal :id="'delete-list-' + list.id" centered>
               <template #title>
                 Delete list : {{ list.name }}
               </template>
@@ -29,14 +28,14 @@
             </b-modal>
           </b-dropdown-item>
         </b-dropdown>
-        <b-button v-b-toggle="list.id.toString()" variant="none">
+        <b-button v-b-toggle="list.id" variant="none">
           <font-awesome-icon :icon="['fas', 'angle-up']" />
         </b-button>
       </div>
     </div>
 
-    <b-collapse :id="list.id.toString()" class="list-body" visible>
-      <b-card v-for="card in boardStore.selectedProject.lists.cards">
+    <b-collapse :id="list.id" class="list-body" visible>
+      <b-card v-for="card in list.cards">
         <div class="card-header">
           <h5>{{ card.name }}</h5>
           <div class="card-controls">
@@ -45,16 +44,16 @@
                 <font-awesome-icon :icon="['fas', 'ellipsis']" />
               </template>
               <b-dropdown-item>
-                <b-link v-b-modal="'edit-card-' + card.id.toString()">Edit</b-link>
-                <b-modal :id="'edit-card-' + card.id.toString()" centered>
+                <b-link v-b-modal="'edit-card-' + card.id">Edit</b-link>
+                <b-modal :id="'edit-card-' + card.id" centered>
                   <template #title>
                     Edit card : {{ card.name }}
                   </template>
                 </b-modal>
               </b-dropdown-item>
               <b-dropdown-item>
-                <b-link v-b-modal="'delete-card-' + card.id.toString()">Delete</b-link>
-                <b-modal :id="'delete-card-' + card.id.toString()" centered>
+                <b-link v-b-modal="'delete-card-' + card.id">Delete</b-link>
+                <b-modal :id="'delete-card-' + card.id" centered>
                   <template #title>
                     Delete card : {{ card.name }}
                   </template>
@@ -77,46 +76,18 @@
   <b-button class="new-list" v-b-modal.add-new-list>
     <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
   </b-button>
-  <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
+  <b-modal id="add-new-list" title="Add new list" centered >
 
   </b-modal>
 </template>
 
 <script>
-import useBoardStore from '../../store/board.store.js';
+import useBoardStore from '@/store/board.store';
 
 export default {
   setup() {
     const boardStore = useBoardStore();
     return { boardStore };
-  },
-  props: {
-    project: {
-      type: Object,
-      default: null,
-    },
-  },
-  watch: {
-    project: {
-      immediate: true,
-      handler(newProject) {
-        console.log('ContentProject received project:', newProject);
-      },
-    },
-  },
-  data() {
-    return {
-      selectedProject: this.project,
-    };
-  },
-  methods: {
-    addList() {
-      console.log(this.project);
-    },
-
-    updateProject(project) {
-      this.store.selectedProject = { ...project };
-    },
   },
 };
 </script>
