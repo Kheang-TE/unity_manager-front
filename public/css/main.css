@@ -262,6 +262,9 @@ section{
 }
 
 /* Dropdown */
+.board .dropdown-menu{
+  z-index: 10;
+}
 .board .dropdown-item{
   color: var(--grey);
   transition: var(--transition);
@@ -287,6 +290,7 @@ section{
 #sidebar{
   top: 74px;
   width: 100%;
+  z-index: 1;
 }
 #sidebar h5{
   text-align: center;
@@ -339,6 +343,7 @@ section{
 #chat{
   top: 74px;
   width: 100%;
+  z-index: 1;
 }
 #chat .offcanvas-title{
   display: flex;
