@@ -5,8 +5,7 @@
     <div class="background-wall"></div>
     <BoardHeader />
     <div id="board-content">
-      <draggable v-if="selectedProject" v-model="selectedProject.lists" class="list-container" @start="drag = true"
-        @end="drag = false">
+      <draggable v-if="selectedProject" v-model="selectedProject.lists" class="list-container" v-bind="dragOptions">
         <template #item="{ element: list }">
           <List :list="list" />
         </template>
@@ -46,6 +45,15 @@ export default {
     handleProjectSelected(project) {
       console.log('from Board', project);
       this.selectedProject = { ...project };
+    },
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'lists',
+        disabled: false,
+      };
     },
   },
 };

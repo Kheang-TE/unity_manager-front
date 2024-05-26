@@ -35,7 +35,7 @@
     </div>
 
     <b-collapse :id="list.id.toString()" class="list-body" visible>
-      <draggable v-model="list.cards" class="card-container">
+      <draggable v-model="list.cards" class="card-container" group="cards" v-bind="dragOptions">
         <template #item="{ element: card }">
           <Card :card="card" />
         </template>
@@ -64,15 +64,15 @@ export default {
     draggable,
     Card,
   },
-  // data() {
-  //   return {
-  //     projectSelected: null,
-  //   };
-  // },
-  // methods: {
-  //   updateProject(project) {
-  //     this.projectSelected = project;
-  //   },
-  // },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'cards',
+        disabled: false,
+      };
+    },
+  },
 };
 </script>
+<style></style>
