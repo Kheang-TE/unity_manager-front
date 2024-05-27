@@ -57,14 +57,14 @@ export default {
   created() {
     getProjects().then(
       (projects) => {
-        this.store.projects = projects;
+        useBoardStore().projects = projects;
       },
     );
   },
   methods: {
     selectProject(projectId) {
       getProject(projectId).then((project) => {
-        this.store.selectedProject = project;
+        useBoardStore().setSelectedProject(project);
       });
     },
   },

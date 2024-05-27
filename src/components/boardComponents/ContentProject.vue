@@ -1,5 +1,5 @@
-<template v-if="boardStore.selectedProject">
-  <div v-for="list in boardStore.selectedProject.lists" class="list">
+<template>
+  <div  v-for="list in boardStore.selectedProject.lists" class="list">
     <div class="list-header">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
@@ -81,13 +81,9 @@
   </b-modal>
 </template>
 
-<script>
+<script setup >
 import useBoardStore from '@/store/board.store';
 
-export default {
-  setup() {
-    const boardStore = useBoardStore();
-    return { boardStore };
-  },
-};
+const boardStore = useBoardStore();
+
 </script>

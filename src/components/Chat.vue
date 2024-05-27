@@ -1,4 +1,4 @@
-<template>
+<template v-if="boardStore.selectedProject">
   <b-offcanvas id="chat" placement="end" :backdrop="false">
     <template #title>
       Collaborators
@@ -16,51 +16,26 @@
       <b-dropdown text="Show all users" variant="light" size="sm">
         <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
         <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
-          <i class="bi bi-person-circle"></i> {{ 'Me'  }}
+          <i class="bi bi-person-circle"></i> {{  userStore.user.pseudo || 'Me'  }}
         </b-dropdown-item>
       </b-dropdown>
     </div>
-    <div v-if="boardStore.selectedProject" class="chat-messages" ref="chatMessages">
+    <div class="chat-messages" ref="chatMessages">
       <div class="message" v-for="message in boardStore.selectedProject.messages" :key="message._id">
         <div class="text-style">
           <span class="username" :class="{ 'me-username': message.user_id === currentUser.id }">
-            <i class="bi bi-person-circle"></i> {{ userStore.user }}
+            <i class="bi bi-person-circle"></i> {{ userStore.user.length || 'unknown user' }}
           </span>
           <span class="text">{{ message.content }}</span>
         </div>
       </div>
-    </div>
-    <div v-if="boardStore.selectedProject" class="chat-input">
-      <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage" />
-      <button @click="sendMessage" class="btn btn-secondary">Send</button>
+      <div class="chat-input">
+        <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage()" />
+        <button @click="sendMessage()" class="btn btn-secondary">Send</button>
+      </div>
     </div>
   </b-offcanvas>
 </template>
-<!-- <template>
- <div class="userlist">
-      <b-dropdown text="Show all users" variant="light" size="sm">
-        <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
-        <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
-          <i class="bi bi-person-circle"></i> {{ user.username || user.id  }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </div>
-  <div v-if="store.selectedProject" class="chat-messages" ref="chatMessages">
-    <div class="message" v-for="message in store.selectedProject.messages" :key="message._id">
-      <div class="text-style">
-        <span class="username">
-          {{ message.user_id }}:
-        </span>
-        <span class="text">{{ message.content }}</span>
-      </div>
-    </div>
-    <div class="chat-input">
-      <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage" />
-      <button @click="sendMessage" class="btn btn-secondary">Send</button>
-    </div>
-  </div>
-</template> -->
-
 <script>
 /**
  * Component for managing chat functionality.
@@ -69,8 +44,8 @@
  */
 import { initializeOnMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
 import { postMessage, getMessagesbyProject } from '@/api/message.js';
-import useBoardStore from '../../store/board.store';
-import { useUserStore } from '../../store/user.store';
+import useBoardStore from '../store/board.store';
+import { useUserStore } from '../store/user.store';
 
 export default {
   setup() {
@@ -103,11 +78,6 @@ export default {
       activeChat: null,
     };
   },
-
-  /**
-   * Lifecycle hook called when the component is created.
-   * Initializes the socket connection and sets up event listeners.
-   */
   created() {
     initializeChatState(this.handleChatStateReceived);
 
@@ -129,13 +99,13 @@ export default {
    * @namespace methods
    */
   methods: {
+    updateProject(project) {
+      this.store.selectedProject = { ...project };
+    },
 
     async handleMessageReceived() {
-      if (this.selectedProject.id) {
-        const messages = await getMessagesbyProject(this.selectedProject.id);
-        this.selectedProject.messages = { ...this.selectedProject.messages };
-        this.scrollToBottom();
-      }
+      useBoardStore().selectedProject.messages = await getMessagesbyProject(useBoardStore().selectedProject.id);
+      this.scrollToBottom();
     },
     handleChatStateReceived(data) {
       this.users = data.users;
@@ -146,14 +116,21 @@ export default {
     handleUserStateReceived(userFromServer) {
       this.currentUser = userFromServer;
     },
-    sendMessage() {
-      const trimmedMessage = this.message.trim(); // Remove leading/trailing whitespace
 
-      if (!trimmedMessage) return; // Do nothing if the message is empty
+    /**
+     * Sends a message to the server after removing leading and trailing whitespace.
+     *
+     * @return {Promise<void>} A promise that resolves when the message is successfully sent,
+     *                         and rejects with an error if there was an issue sending the message.
+     */
+    async sendMessage() {
+      const trimmedMessage = this.message.trim();
+
+      if (!trimmedMessage) return;
 
       postMessage({
         content: trimmedMessage,
-        project_id: this.project.id,
+        project_id: useBoardStore().selectedProject.id,
       })
         .then(() => {
           this.message = '';
