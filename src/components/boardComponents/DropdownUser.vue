@@ -49,8 +49,8 @@ import { useUserStore } from '@/store/user.store.js';
 
 export default {
   setup() {
-    const userStore = useUserStore();
-    return { userStore };
+    const store = useUserStore();
+    return { store };
   },
   data() {
     return {

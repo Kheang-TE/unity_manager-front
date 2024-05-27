@@ -1,4 +1,4 @@
-<template v-if="boardStore.selectedProject">
+<template>
   <b-offcanvas id="chat" placement="end" :backdrop="false">
     <template #title>
       Collaborators
@@ -21,7 +21,7 @@
       </b-dropdown>
     </div>
     <div class="chat-messages" ref="chatMessages">
-      <div class="message" v-for="message in boardStore.selectedProject.messages" :key="message._id">
+      <div class="message" v-if="boardStore.selectedProject" v-for="message in boardStore.selectedProject.messages" :key="message._id">
         <div class="text-style">
           <span class="username" :class="{ 'me-username': message.user_id === currentUser.id }">
             <i class="bi bi-person-circle"></i> {{ userStore.user.length || 'unknown user' }}

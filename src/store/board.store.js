@@ -2,10 +2,7 @@ import { defineStore } from 'pinia';
 
 const useBoardStore = defineStore('board', {
   state: () => ({
-    selectedProject: {
-      id: null,
-      name: '',
-    },
+    selectedProject: null,
     projects: [],
   }),
   actions: {
