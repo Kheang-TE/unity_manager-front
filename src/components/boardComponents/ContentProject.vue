@@ -121,7 +121,7 @@
             </b-dropdown>
           </div>
         </div>
-        <p>{{ card.description }}</p>
+        <p>{{ card.content }}</p>
       </b-card>
 
       <b-button class="add-card" v-b-modal="'add-card-list-' + list.id"
@@ -156,10 +156,16 @@ export default {
   },
   data() {
     return {
-      newCardTitle: '',
-      newCardDescription: '',
+      card: {
+        id: 0,
+        name: '',
+        content: '',
+        position: 0,
+        list_id: 0,
+      },
     };
   },
+
   methods: {
     async addList() {
       try {
@@ -178,10 +184,10 @@ export default {
         if (createdList) {
           this.project.lists.push(createdList);
         } else {
-          console.error('Error creating list');
+          console.error('Error creating the list');
         }
       } catch (error) {
-        console.error('Error creating list :', error);
+        console.error('Error creating the list :', error);
       }
     },
 
@@ -194,10 +200,10 @@ export default {
             this.project.lists.splice(index, 1);
           }
         } else {
-          console.error('Error deleting list');
+          console.error('Error deleting the list');
         }
       } catch (error) {
-        console.error('Error deleting list:', error);
+        console.error('Error deleting the list:', error);
       }
     },
     async submitUpdateList(listId) {
@@ -210,16 +216,15 @@ export default {
           if (updatedList) {
             this.project.lists[index] = updatedList;
           } else {
-            console.error('Error updating list');
+            console.error('Error updating the list');
           }
         } else {
           console.error('List not found');
         }
       } catch (error) {
-        console.error('Error updating list:', error);
+        console.error('Error updating the list:', error);
       }
     },
-
     async submitAddCard(listId) {
       try {
         const listIndex = this.project.lists.findIndex(
@@ -227,16 +232,14 @@ export default {
         );
         if (listIndex !== -1) {
           const newCard = {
-            name: this.newCardTitle,
-            content: this.newCardDescription,
+            name: card.name,
             position: 1,
-            list_id: this.listId,
+            content: card.content,
+            list_id: listId,
           };
           const createdCard = await createCard(newCard);
           if (createdCard) {
             this.project.lists[listIndex].cards.push(createdCard);
-            this.newCardTitle = '';
-            this.newCardDescription = '';
           } else {
             console.error('Error creating the card');
           }
@@ -248,11 +251,32 @@ export default {
       }
     },
 
+    async updateCard(cardId) {
+      try {
+        const index = this.project.cards.findIndex((c) => c.id === cardId);
+        if (index !== -1) {
+          const updatedCard = await updateCard(cardId, {
+            name: this.project.cards[index].name,
+          });
+          if (updatedCard) {
+            this.project.cards[index] = updatedCard;
+          } else {
+            console.error('Error updating the card');
+          }
+        } else {
+          console.error('card not found');
+        }
+      } catch (error) {
+        console.error('Error updating the card:', error);
+      }
+    },
+
     async deleteCard(cardId) {
       try {
         const deletedCard = await deleteCard(cardId);
         if (deletedCard) {
-          const index = this.project.cards.findIndex((l) => l.id === cardId);
+          const index = this.project.cards.findIndex((c) => c.id === cardId);
+          console.log(cardId);
           if (index !== -1) {
             this.project.cards.splice(index, 1);
           }
@@ -263,11 +287,6 @@ export default {
         console.error('Error deleting card:', error);
       }
     },
-  },
-  data() {
-    return {
-      listToDelete: null,
-    };
   },
 };
 </script>
