@@ -13,7 +13,7 @@
 
     </template>
     <ul class="projects-list">
-      <li v-for="project in projects" :key="project.id" class="project-item">
+      <li v-for="project in store.projects" :key="project.id" class="project-item">
         <a href="#" class="project-link" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
         <div class="project-control">
 
@@ -44,23 +44,27 @@
   </b-offcanvas>
 </template>
 
-<script>
+<script >
 import { getProjects, getProject } from '@/api/project.js';
+import useBoardStore from '../../store/board.store';
 
 export default {
-  name: 'Sidebar',
-  data() {
-    return {
-      projects: [],
-    };
+  setup() {
+    const store = useBoardStore();
+    return { store };
   },
-  async created() {
-    this.projects = await getProjects();
+  name: 'Sidebar',
+  created() {
+    getProjects().then(
+      (projects) => {
+        this.store.projects = projects;
+      },
+    );
   },
   methods: {
     selectProject(projectId) {
       getProject(projectId).then((project) => {
-        this.$emit('projectSelected', project);
+        this.store.setSelectedProject(project);
       });
     },
   },

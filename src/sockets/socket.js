@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 
 // Établir une connexion WebSocket. Assurez-vous que l'URL est correcte.
 const socket = io('http://localhost:4000');
+
 const connecting = (firstname) => {
   try {
     socket.emit('connecting', firstname);
@@ -15,7 +16,7 @@ const joinProjectRoom = (projectData) => {
   try {
     socket.emit('joinProject', projectData);
     socket.project = projectData.id;
-    console.log(`Joined project room: ${projectData.id}`);
+    console.log(socket);
   } catch (error) { console.error(error); }
 };
 
@@ -24,15 +25,34 @@ const leaveProjectRoom = (projectId) => {
   console.log(`Left project room: ${projectId}`);
 };
 
-const sendMessage = (projectId, message) => {
-  socket.emit('sendMessage', { projectId, message });
+const sendMessage = (message) => {
+  console.log('sending message', message);
+  try {
+    socket.emit('sendMessage', { message });
+  } catch (error) { console.error(error); }
 };
-
-socket.on('receiveMessage', (message) => {
-  console.log('New message received:', message);
-  // Potentiellement, gérer l'affichage du message dans l'UI ici
-});
+function initializeOnMessageReceived(onMessageReceived) {
+  socket.on('receiveMessage', (message) => {
+    if (onMessageReceived) {
+      onMessageReceived(message);
+    }
+  });
+}
+function initializeChatState(onChatStateReceived) {
+  socket.on('chatState', (data) => {
+    if (onChatStateReceived) {
+      onChatStateReceived(data);
+    }
+  });
+}
+function initializeUserState(onUserStateReceived) {
+  socket.on('userState', (userFromServer) => {
+    if (onUserStateReceived) {
+      onUserStateReceived(userFromServer);
+    }
+  });
+}
 
 export {
-  connecting, joinProjectRoom, leaveProjectRoom, sendMessage, socket,
+  sendMessage, initializeUserState, initializeChatState, initializeOnMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
 };

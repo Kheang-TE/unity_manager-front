@@ -1,4 +1,5 @@
 <template>
+
    <b-navbar fixed="top">
     <b-navbar-brand>
       <b-button v-b-toggle.sidebar><font-awesome-icon :icon="['fas', 'bars']" /></b-button>
@@ -11,14 +12,20 @@
   </b-navbar>
   <Sidebar />
   <Chat />
+
 </template>
 
 <script>
-import Chat from '@/components/boardComponents/Chat.vue';
+import useBoardStore from '@/store/board.store.js';
 import DropdownUser from '@/components/boardComponents/DropdownUser.vue';
 import Sidebar from '@/components/boardComponents/Sidebar.vue';
+import Chat from '@/components/Chat.vue';
 
 export default {
+  setup() {
+    const store = useBoardStore();
+    return { store };
+  },
   name: 'BoardHeader',
   components: {
     Chat,

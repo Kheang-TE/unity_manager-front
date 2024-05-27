@@ -45,8 +45,13 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/user.store.js';
+
 export default {
-  name: 'DropdownUser',
+  setup() {
+    const store = useUserStore();
+    return { store };
+  },
   data() {
     return {
       email: 'johnDoe@domain.com',
