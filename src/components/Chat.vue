@@ -23,7 +23,7 @@
     <div class="chat-messages" ref="chatMessages">
       <div class="message" v-if="boardStore.selectedProject" v-for="message in boardStore.selectedProject.messages" :key="message._id">
         <div class="text-style">
-          <span class="username" :class="{ 'me-username': message.user_id === currentUser.id }">
+          <span class="username" :class="{ 'me-username': message.user_id }">
             <i class="bi bi-person-circle"></i> {{ userStore.user.length || 'unknown user' }}
           </span>
           <span class="text">{{ message.content }}</span>

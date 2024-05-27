@@ -17,7 +17,7 @@ export async function getProject(projectId) {
 
 export async function getProjects() {
   try {
-    const response = await axios.get('/projects/user');
+    const response = await axios.get('/projects');
     return response.data;
   } catch (error) {
     console.error(error);
