@@ -42,8 +42,8 @@
  * @module ChatManager
  * @exports default
  */
-import { initializeOnMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
-import { postMessage, getMessagesbyProject } from '@/api/message.js';
+import { initializeMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
+import { createMessage, getMessagesbyProject } from '@/api/message.js';
 import useBoardStore from '../store/board.store';
 import { useUserStore } from '../store/user.store';
 
@@ -81,7 +81,7 @@ export default {
   created() {
     initializeChatState(this.handleChatStateReceived);
 
-    initializeOnMessageReceived(this.handleMessageReceived);
+    initializeMessageReceived(this.handleMessageReceived);
 
     initializeUserState(this.handleUserStateReceived);
   },
@@ -128,7 +128,7 @@ export default {
 
       if (!trimmedMessage) return;
 
-      postMessage({
+      createMessage({
         content: trimmedMessage,
         project_id: useBoardStore().selectedProject.id,
       })
