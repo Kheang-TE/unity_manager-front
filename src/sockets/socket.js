@@ -27,7 +27,7 @@ const leaveProjectRoom = (projectId) => {
 // -----------------cards------------------------------
 const emitBoardEdition = () => {
   try {
-    socket.emit('cardEvent');
+    socket.emit('boardEvent');
   } catch (error) { console.error(error); }
 };
 
