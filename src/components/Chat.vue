@@ -45,7 +45,7 @@
 import { initializeMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
 import { createMessage, getMessagesbyProject } from '@/api/message.js';
 import useBoardStore from '../store/board.store';
-import { useUserStore } from '../store/user.store';
+import useUserStore from '../store/user.store';
 
 export default {
   setup() {

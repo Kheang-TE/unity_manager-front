@@ -50,7 +50,7 @@
 
 <script >
 import useBoardStore from '../../store/board.store';
-import { useUserStore } from '../../store/user.store';
+import useUserStore from '../../store/user.store';
 import { initializeBoardEvents } from '@/sockets/socket.js';
 
 export default {
