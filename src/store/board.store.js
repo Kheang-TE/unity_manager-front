@@ -18,8 +18,8 @@ const useBoardStore = defineStore('board', {
       });
     },
     addProject(project) {
-      createProject(project).then(() => {
-        this.projects.push(project);
+      createProject(project).then((result) => {
+        this.projects.push(result);
       });
     },
   },
