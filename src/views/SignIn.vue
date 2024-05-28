@@ -52,7 +52,7 @@
 
 <script>
 import { signin } from '../api/user.js';
-import { useUserStore } from '@/store/user.store';
+import useUserStore from '@/store/user.store';
 
 export default {
   setup() {
