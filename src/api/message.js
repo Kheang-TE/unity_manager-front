@@ -1,7 +1,7 @@
-import { sendMessage } from '@/sockets/socket.js';
+import { emitMessageCreation } from '@/sockets/socket.js';
 import axios from './axios';
 
-export async function postMessage(messageData) {
+export async function createMessage(messageData) {
   try {
     const { project_id, content } = messageData;
     const message = await axios.post('/messages/', {
@@ -9,7 +9,7 @@ export async function postMessage(messageData) {
       content,
     });
     if (message) {
-      sendMessage(content);
+      emitMessageCreation();
     }
     return message.data;
   } catch (error) {

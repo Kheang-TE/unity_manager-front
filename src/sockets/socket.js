@@ -24,14 +24,27 @@ const leaveProjectRoom = (projectId) => {
   socket.emit('leaveProject', projectId);
   console.log(`Left project room: ${projectId}`);
 };
-
-const sendMessage = (message) => {
-  console.log('sending message', message);
+// -----------------cards------------------------------
+const emitBoardEdition = () => {
   try {
-    socket.emit('sendMessage', { message });
+    socket.emit('cardEvent');
   } catch (error) { console.error(error); }
 };
-function initializeOnMessageReceived(onMessageReceived) {
+
+function initializeBoardEvents(refreshBoard) {
+  socket.on('refreshBoard', () => {
+    if (refreshBoard) {
+      refreshBoard();
+    }
+  });
+}
+// ---------------messages----------------------------
+const emitMessageCreation = () => {
+  try {
+    socket.emit('messageCreation');
+  } catch (error) { console.error(error); }
+};
+function initializeMessageReceived(onMessageReceived) {
   socket.on('receiveMessage', (message) => {
     if (onMessageReceived) {
       onMessageReceived(message);
@@ -54,5 +67,5 @@ function initializeUserState(onUserStateReceived) {
 }
 
 export {
-  sendMessage, initializeUserState, initializeChatState, initializeOnMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
+  emitBoardEdition, emitMessageCreation, initializeBoardEvents, initializeUserState, initializeChatState, initializeMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
 };
