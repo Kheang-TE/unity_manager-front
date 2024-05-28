@@ -66,14 +66,7 @@ export default {
           code_color: '',
           project_id: useBoardStore().selectedProject.id,
         };
-
-        const createdList = await createList(list);
-
-        if (createdList) {
-          this.list.push(createdList);
-        } else {
-          console.error('Error creating the list');
-        }
+        await createList(list);
       } catch (error) {
         console.error('Error creating the list :', error);
       }
