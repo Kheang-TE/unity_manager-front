@@ -75,7 +75,7 @@ export default {
      */
     handleSignin() {
       signin(this.email, this.password).then((response) => {
-        useUserStore().setUser(response.firstname);
+        useUserStore().setUser(response);
         this.$router.push({ name: 'board' });
       });
     },

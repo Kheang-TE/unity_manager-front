@@ -14,6 +14,7 @@
               centered
               @ok="updateCardFromDatabase(card)"
             >
+            <!-- Edit the card -->
               <template #title> Edit card : {{ card.name }} </template>
               <b-form @submit.prevent="updateCardFromDatabase(card)">
                 <b-form-group label="Card Title">
@@ -29,6 +30,7 @@
             <b-link v-b-modal="'delete-card-' + card.id.toString()"
               >Delete</b-link
             >
+            <!-- Delete the card -->
             <b-modal
               :id="'delete-card-' + card.id.toString()"
               centered
