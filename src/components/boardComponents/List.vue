@@ -129,14 +129,7 @@ export default {
           content: this.newCard.content,
           list_id: id,
         };
-
-        const createdCard = await createCard(newCard);
-
-        if (createdCard) {
-          this.card.push(createdCard);
-        } else {
-          console.error('Error creating the card');
-        }
+        await createCard(newCard);
       } catch (error) {
         console.error('Error creating the card :', error);
       }
