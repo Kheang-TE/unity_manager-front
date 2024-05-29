@@ -20,7 +20,10 @@
               <template #title> Edit list : {{ list.name }} </template>
               <b-form @submit.prevent="submitUpdateList(list)">
                 <b-form-group label="List Color">
-                <b-form-input type="color" v-model="this.editList.code_color"></b-form-input>
+                  <b-form-input
+                    type="color"
+                    v-model="this.editList.code_color"
+                  ></b-form-input>
                 </b-form-group>
                 <b-form-group label="List Name">
                   <b-form-input v-model="this.editList.name"></b-form-input>
