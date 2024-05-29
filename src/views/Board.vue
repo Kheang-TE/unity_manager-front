@@ -32,7 +32,8 @@ import List from '@/components/boardComponents/List.vue';
 import useBoardStore from '@/store/board.store';
 import BoardHeader from '@/components/BoardHeader.vue';
 import Sidebar from '@/components/boardComponents/Sidebar.vue';
-import { createList } from '@/api/list.js';
+import { createList, getListByProject } from '@/api/list.js';
+import { initializeBoardEvents } from '@/sockets/socket';
 
 export default {
   setup() {
@@ -50,10 +51,13 @@ export default {
     BoardHeader,
     List,
   },
+  created() {
+    initializeBoardEvents(this.refreshBoard);
+  },
   methods: {
-    // handleProjectSelected() {
-    //   this.selectedProject = { ...useBoardStore().selectedProject };
-    // },
+    async refreshBoard() {
+      useBoardStore().selectedProject.lists = await getListByProject(useBoardStore().selectedProject.id);
+    },
     async addList() {
       try {
         const list = {
@@ -62,14 +66,7 @@ export default {
           code_color: '',
           project_id: useBoardStore().selectedProject.id,
         };
-
-        const createdList = await createList(list);
-
-        if (createdList) {
-          this.list.push(createdList);
-        } else {
-          console.error('Error creating the list');
-        }
+        await createList(list);
       } catch (error) {
         console.error('Error creating the list :', error);
       }

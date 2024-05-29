@@ -47,9 +47,10 @@
 </template>
 
 <script>
-import { useUserStore } from '@/store/user.store.js';
+import  useUserStore  from '@/store/user.store.js';
 import { updateUser } from '@/api/user.js';
 import { signOut } from '@/api/user.js';
+
 
 export default {
   setup() {

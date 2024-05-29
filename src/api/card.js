@@ -1,15 +1,18 @@
 import axios from './axios';
+import { emitBoardEdition } from '@/sockets/socket.js';
 
 export async function createCard(cardData) {
   try {
-    const response = await axios.post('/cards', {
+    const card = await axios.post('/cards', {
       name: cardData.name,
       content: cardData.content,
       position: cardData.position,
       list_id: cardData.list_id,
     });
-    console.log('new Card : ', response.data);
-    return response.data;
+    if (card) {
+      emitBoardEdition();
+    }
+    return card.data;
   } catch (error) {
     console.error(error);
     return null;
@@ -18,8 +21,11 @@ export async function createCard(cardData) {
 
 export async function deleteCard(cardId) {
   try {
-    await axios.delete(`/cards/${cardId}`);
-    return true;
+    const deletedCard = await axios.delete(`/cards/${cardId}`);
+    if (deletedCard) {
+      emitBoardEdition();
+    }
+    return deletedCard.data;
   } catch (error) {
     console.error(error);
     return null;
@@ -28,13 +34,17 @@ export async function deleteCard(cardId) {
 
 export async function updateCard(cardData) {
   try {
-    const response = await axios.patch(`/cards/${cardData.id}`, {
+    const card = await axios.patch(`/cards/${cardData.id}`, {
       name: cardData.name,
       position: cardData.position,
       content: cardData.content,
       list_id: cardData.list_id,
     });
-    return response.data;
+
+    if (card) {
+      emitBoardEdition();
+    }
+    return card.data;
   } catch (error) {
     console.error(error);
     return null;

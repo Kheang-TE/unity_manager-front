@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore("user", {
+ const useUserStore = defineStore("user", {
   state: () => ({
     user: JSON.parse(localStorage.getItem("user")) || {
       id: null,
@@ -46,3 +46,5 @@ export const useUserStore = defineStore("user", {
     },
   },
 });
+
+export default useUserStore

@@ -8,12 +8,16 @@
       <b-button v-b-modal.new-project class="add-new-project">
         <font-awesome-icon :icon="['fas', 'plus']" />
       </b-button>
-      <b-modal id="new-project" title="Create new project" centered>
+      <b-modal id="new-project" title="Create new project" centered @ok="submitNewProject(this.newProject)">
+        <template #title >Add new project</template>
+        <b-form-group label="Project Name">
+        <b-form-input  v-model="this.newProject.name"></b-form-input>
+        </b-form-group>
       </b-modal>
 
     </template>
     <ul class="projects-list">
-      <li v-for="project in store.projects" :key="project.id" class="project-item">
+      <li v-for="project in boardStore.projects" :key="project.id" class="project-item">
         <a href="#" class="project-link" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
         <div class="project-control">
 
@@ -45,27 +49,32 @@
 </template>
 
 <script >
-import { getProjects, getProject } from '@/api/project.js';
 import useBoardStore from '../../store/board.store';
+import useUserStore from '../../store/user.store';
+import { initializeBoardEvents } from '@/sockets/socket.js';
 
 export default {
   setup() {
-    const store = useBoardStore();
-    return { store };
+    const boardStore = useBoardStore();
+    const newProject = {
+      owner_id: useUserStore().user.id,
+    };
+    return { boardStore, newProject };
   },
   name: 'Sidebar',
   created() {
-    getProjects().then(
-      (projects) => {
-        this.store.projects = projects;
-      },
-    );
+    initializeBoardEvents(this.refreshBoard);
+    this.boardStore.fetchProjects();
   },
   methods: {
+    async refreshBoard() {
+      useBoardStore().fetchProjects();
+    },
+    submitNewProject(newProject) {
+      this.boardStore.addProject(newProject);
+    },
     selectProject(projectId) {
-      getProject(projectId).then((project) => {
-        this.store.setSelectedProject(project);
-      });
+      this.boardStore.setSelectedProject(projectId);
     },
   },
 };

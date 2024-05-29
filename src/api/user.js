@@ -1,6 +1,6 @@
 import axios from './axios.js';
 import { connecting } from '@/sockets/socket';
-import { useUserStore } from "@/store/user.store.js";
+import  useUserStore  from "@/store/user.store.js";
 
 export const signup = async (user) => {
   try {

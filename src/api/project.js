@@ -1,4 +1,4 @@
-import { joinProjectRoom } from '@/sockets/socket';
+import { joinProjectRoom, emitBoardEdition } from '@/sockets/socket';
 import axios from './axios';
 
 export async function getProject(projectId) {
@@ -17,10 +17,21 @@ export async function getProject(projectId) {
 
 export async function getProjects() {
   try {
-    const response = await axios.get('/projects');
+    const response = await axios.get('/projects/user');
     return response.data;
   } catch (error) {
     console.error(error);
+    return null;
+  }
+}
+
+export async function createProject(projectData) {
+  console.log(projectData);
+  try {
+    const project = await axios.post('/projects', projectData);
+    return project.data;
+  } catch (error) {
+    console.error(error.response.data);
     return null;
   }
 }
