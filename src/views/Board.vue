@@ -8,9 +8,9 @@
     </div>
     <div id="board-content">
       <draggable v-if="boardStore.selectedProject" v-model="boardStore.selectedProject.lists" class="list-container"
-        item-key="id" v-bind="dragOptions" @end="updatePosition">
+        item-key="id" v-bind="dragOptions" @end="updatePositionList">
         <template #item="{ element: list }">
-          <List :list="list" />
+          <List :list="list" :key="list.id" />
         </template>
       </draggable>
       <b-button class="new-list" v-b-modal.add-new-list>
@@ -35,16 +35,19 @@ import BoardHeader from '@/components/BoardHeader.vue';
 import Sidebar from '@/components/boardComponents/Sidebar.vue';
 import { createList, getListByProject, updateList } from '@/api/list.js';
 import { initializeBoardEvents } from '@/sockets/socket';
+import { updateCard } from '@/api/card';
 
 export default {
   setup() {
     const boardStore = useBoardStore();
     const newList = {};
     const editList = {};
+    const editCard = {};
     return {
       boardStore,
       newList,
       editList,
+      editCard,
     };
   },
   name: 'Board',
@@ -59,7 +62,7 @@ export default {
   },
   methods: {
     async refreshBoard() {
-      useBoardStore().selectedProject.lists = await getListByProject(useBoardStore().selectedProject.id);
+      this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
     },
     async addList() {
       try {
@@ -82,20 +85,20 @@ export default {
      * @param {number} event.newIndex - The new index of the moved element.
      * @return {void} This function does not return anything.
      */
-    updatePosition(event) {
-      const movedElement = this.boardStore.selectedProject.lists[event.newIndex];
-      const beforeElement = this.boardStore.selectedProject.lists[event.newIndex - 1];
-      const afterElement = this.boardStore.selectedProject.lists[event.newIndex + 1];
+    updatePositionList(event) {
+      const movedList = this.boardStore.selectedProject.lists[event.newIndex];
+      const beforeList = this.boardStore.selectedProject.lists[event.newIndex - 1];
+      const afterList = this.boardStore.selectedProject.lists[event.newIndex + 1];
 
-      if (!beforeElement) {
-        movedElement.position = afterElement.position / 2;
-      } else if (!afterElement) {
-        movedElement.position = beforeElement.position + 1;
+      if (!beforeList) {
+        movedList.position = afterList.position / 2;
+      } else if (!afterList) {
+        movedList.position = this.boardStore.selectedProject.lists.length;
       } else {
-        movedElement.position = (beforeElement.position + afterElement.position) / 2;
+        movedList.position = (beforeList.position + afterList.position) / 2;
       }
 
-      this.savePositions(movedElement);
+      this.savePositionList(movedList);
     },
 
     /**
@@ -109,20 +112,21 @@ export default {
      * @param {string} movedElement.project_id - The ID of the project the moved list belongs to.
      * @return {Promise} A promise that resolves when the list has been successfully updated, or rejects with an error.
      */
-    async savePositions(movedElement) {
+    async savePositionList(movedList) {
       try {
         await updateList({
-          id: movedElement.id,
+          id: movedList.id,
           name: this.editList.name,
           code_color: this.editList.code_color,
-          position: movedElement.position,
-          project_id: movedElement.project_id,
+          position: movedList.position,
+          project_id: movedList.project_id,
         });
       } catch (error) {
         console.error('Error updating the list :', error);
       }
     },
   },
+
   computed: {
     /**
      * Returns an object containing options for dragging.

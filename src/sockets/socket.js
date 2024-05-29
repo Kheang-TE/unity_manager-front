@@ -67,5 +67,14 @@ function initializeUserState(onUserStateReceived) {
 }
 
 export {
-  emitBoardEdition, emitMessageCreation, initializeBoardEvents, initializeUserState, initializeChatState, initializeMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
+  emitBoardEdition,
+  emitMessageCreation,
+  initializeBoardEvents,
+  initializeUserState,
+  initializeChatState,
+  initializeMessageReceived,
+  connecting,
+  joinProjectRoom,
+  leaveProjectRoom,
+  socket,
 };
