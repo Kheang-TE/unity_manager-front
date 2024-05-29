@@ -1,27 +1,50 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-const useUserStore = defineStore('user', {
+ const useUserStore = defineStore("user", {
   state: () => ({
-    // Define user object with values set to localStorage values if it exists or else set to an empty object
-    user: JSON.parse(localStorage.getItem('user')) || {
+    user: JSON.parse(localStorage.getItem("user")) || {
       id: null,
-      firstname: '',
-      lastname: '',
+      firstname: "",
+      lastname: "",
+      email: "",
+      code_color: "",
     },
   }),
   actions: {
     persistToLocalStorage() {
-      localStorage.setItem('user', JSON.stringify(this.user));
+      localStorage.setItem("user", JSON.stringify(this.user));
     },
     setUser(user) {
-      this.user = {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
+      console.log("setUser called with:", user);
+      if (
+        user.id &&
+        user.firstname &&
+        user.lastname &&
+        user.email &&
+        user.code_color
+      ) {
+        this.user = {
+          id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          code_color: user.code_color,
+        };
+        this.persistToLocalStorage();
+        console.log("Updated user state:", this.user);
+      }
+    },
+    $reset() {
+      this.$state.user = {
+        id: null,
+        firstname: "",
+        lastname: "",
+        email: "",
+        code_color: "",
       };
-      this.persistToLocalStorage();
+      localStorage.removeItem("user");
     },
   },
 });
 
-export default useUserStore;
+export default useUserStore
