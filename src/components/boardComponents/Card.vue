@@ -14,14 +14,22 @@
               centered
               @ok="updateCardFromDatabase(card)"
             >
-            <!-- Edit the card -->
+              <!-- Edit the card -->
               <template #title> Edit card : {{ card.name }} </template>
               <b-form @submit.prevent="updateCardFromDatabase(card)">
                 <b-form-group label="Card Title">
                   <b-form-input v-model="this.editCard.name"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Card Description">
-                  <b-form-textarea v-model="this.editCard.content"></b-form-textarea>
+                  <b-form-textarea
+                    v-model="this.editCard.content"
+                  ></b-form-textarea>
+                </b-form-group>
+                <b-form-group label="Select Tag">
+                  <b-form-select> </b-form-select>
+                </b-form-group>
+                <b-form-group label="Create a new tag">
+                  <font-awesome-icon :icon="['fas', 'pen']" />
                 </b-form-group>
               </b-form>
             </b-modal>
@@ -44,6 +52,9 @@
       </div>
     </div>
     <p>{{ card.content }}</p>
+    <div class="tag">
+      <span class="tag-name">Urgent</span>
+    </div>
   </b-card>
 </template>
 
@@ -55,6 +66,7 @@ export default {
   setup() {
     const newCard = {};
     const editCard = {};
+
     return {
       editCard,
       newCard,
@@ -77,6 +89,7 @@ export default {
           content: this.newCard.content,
           list_id: listId,
         };
+
         await createCard(newCard);
       } catch (error) {
         console.error('Error creating the card:', error);
@@ -111,3 +124,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.tag {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #ff000d; /* Change this to the desired color */
+  color: white;
+  border-radius: 5px;
+}
+
+.tag-name {
+  font-size: 11px;
+  font-weight: bold;
+  margin: 0.25rem 0.25rem;
+}
+</style>

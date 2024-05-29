@@ -74,10 +74,16 @@
         <template #title> Add Card to List: {{ list.name }} </template>
         <b-form @submit.prevent="submitAddCard(list.id)">
           <b-form-group label="Card Title">
-            <b-form-input v-model="this.newCard.name"></b-form-input>
+            <b-form-input v-model="newCard.name"></b-form-input>
           </b-form-group>
           <b-form-group label="Card Description">
-            <b-form-textarea v-model="this.newCard.content"></b-form-textarea>
+            <b-form-textarea v-model="newCard.content"></b-form-textarea>
+          </b-form-group>
+          <b-form-group label="Select Tag">
+            <b-form-select> </b-form-select>
+          </b-form-group>
+          <b-form-group label="Create a new tag">
+            <font-awesome-icon :icon="['fas', 'pen']" />
           </b-form-group>
         </b-form>
       </b-modal>
