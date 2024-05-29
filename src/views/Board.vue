@@ -3,26 +3,28 @@
     <Sidebar />
     <BoardHeader />
     <div class="background-wall"></div>
-    <div id="board-header">
-      <h1>{{ boardStore.selectedProject?.name }}</h1>
-    </div>
     <div id="board-content">
-      <draggable v-if="boardStore.selectedProject" v-model="boardStore.selectedProject.lists" class="list-container"
-        item-key="id" v-bind="dragOptions" @end="updatePositionList">
-        <template #item="{ element: list }">
-          <List :list="list" :key="list.id" />
-        </template>
-      </draggable>
-      <b-button class="new-list" v-b-modal.add-new-list>
-        <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
-      </b-button>
-      <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
-        <b-form @submit.prevent="addList">
-          <b-form-group label="List Name">
-            <b-form-input v-model="this.newList.name"></b-form-input>
-          </b-form-group>
-        </b-form>
-      </b-modal>
+      <header id="board-header">
+        <h1>{{ boardStore.selectedProject?.name }}</h1>
+      </header>
+      <div id="board-body">
+        <draggable v-if="boardStore.selectedProject" v-model="boardStore.selectedProject.lists" class="list-container"
+          item-key="id" v-bind="dragOptions" @end="updatePositionList">
+          <template #item="{ element: list }">
+            <List :list="list" :key="list.id" />
+          </template>
+        </draggable>
+        <b-button v-if="boardStore.selectedProject" class="new-list" v-b-modal.add-new-list>
+          <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
+        </b-button>
+        <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
+          <b-form @submit.prevent="addList">
+            <b-form-group label="List Name">
+              <b-form-input v-model="this.newList.name"></b-form-input>
+            </b-form-group>
+          </b-form>
+        </b-modal>
+      </div>
     </div>
   </div>
 </template>

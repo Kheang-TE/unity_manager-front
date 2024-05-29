@@ -357,12 +357,20 @@ section{
 
 /* Board content */
 #board-content{
-  font-size: .875rem;
-  padding: calc(74px + 1rem) 1rem 1rem;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: 74px;
+  padding: 0 1rem;
+  height: calc(100vh - 74px);
   overflow: auto;
+}
+#board-header{
+  padding: .5rem 1rem;
+}
+#board-body{
+  font-size: .875rem;
+  display: flex;
+  flex-direction: column;
 }
 /* List */
 .list-container{
@@ -489,7 +497,7 @@ button.add-card:hover{
   transition: var(--transition);
 }
 @media (min-width: 576px){
-  #board-content{flex-direction: row;}
+  #board-body{flex-direction: row;}
   .list-container{flex-direction: row;}
   .list{
     min-width: 320px;
