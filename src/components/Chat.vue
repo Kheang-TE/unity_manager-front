@@ -1,5 +1,5 @@
 <template>
-  <b-offcanvas id="chat" placement="end" :backdrop="false">
+  <b-offcanvas v-if="project.id" id="chat" placement="end" :backdrop="false">
     <template #title>
       Collaborators
       <b-button v-b-modal.new-collaborator>
@@ -15,16 +15,16 @@
     <div class="userlist">
       <b-dropdown text="Show all users" variant="light" size="sm">
         <b-dropdown-item disabled><i class="bi bi-people-fill"></i></b-dropdown-item>
-        <b-dropdown-item v-for="user in users" :key="user.id" @click="selectUser(user.id)">
-          <i class="bi bi-person-circle"></i> {{  userStore.user.pseudo || 'Me'  }}
+        <b-dropdown-item  v-if="collaborators"  v-for="collaborator in collaborators" :key="collaborator.id" @click="selectUser(user.id)">
+          <i class="bi bi-person-circle"></i> {{  collaborator.firstname +' '+collaborator.lastname || 'Me'  }}
         </b-dropdown-item>
       </b-dropdown>
     </div>
     <div class="chat-messages" ref="chatMessages">
-      <div class="message" v-if="boardStore.selectedProject" v-for="message in boardStore.selectedProject.messages" :key="message._id">
+      <div class="message"  v-for="message in messages" :key="message._id">
         <div class="text-style">
           <span class="username" :class="{ 'me-username': message.user_id }">
-            <i class="bi bi-person-circle"></i> {{ userStore.user.length || 'unknown user' }}
+            <i class="bi bi-person-circle"></i> {{ message.user ? message.user.firstname + ' ' + message.user.lastname : 'Unknown user' }}
           </span>
           <span class="text">{{ message.content }}</span>
         </div>
@@ -42,6 +42,7 @@
  * @module ChatManager
  * @exports default
  */
+import { computed } from 'vue';
 import { initializeMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
 import { createMessage, getMessagesbyProject } from '@/api/message.js';
 import useBoardStore from '../store/board.store';
@@ -51,19 +52,12 @@ export default {
   setup() {
     const boardStore = useBoardStore();
     const userStore = useUserStore();
-    return { boardStore, userStore };
-  },
-  props: {
-    project: {
-      type: Object,
-      default: null,
-    },
-  },
-  watch: {
-    project: {
-      immediate: true,
-
-    },
+    const collaborators = computed(() => boardStore.collaborators);
+    const messages = computed(() => boardStore.messages);
+    const project = computed(() => boardStore.project);
+    return {
+      boardStore, userStore, collaborators, messages, project,
+    };
   },
   data() {
     return {
@@ -73,7 +67,6 @@ export default {
       currentUser: null,
       users: [],
       selectedUser: '',
-      messages: [],
       message: '',
       activeChat: null,
     };

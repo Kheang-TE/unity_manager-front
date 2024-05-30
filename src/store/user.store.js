@@ -1,50 +1,42 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
- const useUserStore = defineStore("user", {
+const useUserStore = defineStore('user', {
   state: () => ({
-    user: JSON.parse(localStorage.getItem("user")) || {
+    user: JSON.parse(localStorage.getItem('user')) || {
       id: null,
-      firstname: "",
-      lastname: "",
-      email: "",
-      code_color: "",
+      firstname: null,
+      lastname: null,
+      email: null,
+      code_color: null,
     },
   }),
   actions: {
     persistToLocalStorage() {
-      localStorage.setItem("user", JSON.stringify(this.user));
+      localStorage.setItem('user', JSON.stringify(this.user));
     },
     setUser(user) {
-      console.log("setUser called with:", user);
-      if (
-        user.id &&
-        user.firstname &&
-        user.lastname &&
-        user.email &&
-        user.code_color
-      ) {
-        this.user = {
-          id: user.id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          code_color: user.code_color,
-        };
-        this.persistToLocalStorage();
-        console.log("Updated user state:", this.user);
-      }
+      console.log('user : ', user);
+      this.user = { ...this.user, ...user };
+      this.persistToLocalStorage();
     },
-    $reset() {
+    logout() {
       this.$state.user = {
         id: null,
-        firstname: "",
-        lastname: "",
-        email: "",
-        code_color: "",
+        firstname: null,
+        lastname: null,
+        email: null,
+        code_color: null,
       };
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
     },
+  },
+  getters: {
+    getUser: (state) => state.user,
+    fullname: (state) => `${state.user.firstname} ${state.user.lastname}`,
+    initials: (state) => `${state.user.firstname[0]}${state.user.lastname[0]}`,
+    isLoggedIn: (state) => state.user.id !== null,
+    isAdmin: (state) => state.user.isAdmin === 'true',
   },
 });
 
-export default useUserStore
+export default useUserStore;
