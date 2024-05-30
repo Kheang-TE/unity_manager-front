@@ -16,16 +16,11 @@
 </template>
 
 <script>
-import useBoardStore from '@/store/board.store.js';
 import DropdownUser from '@/components/boardComponents/DropdownUser.vue';
 import Sidebar from '@/components/boardComponents/Sidebar.vue';
 import Chat from '@/components/Chat.vue';
 
 export default {
-  setup() {
-    const store = useBoardStore();
-    return { store };
-  },
   name: 'BoardHeader',
   components: {
     Chat,
