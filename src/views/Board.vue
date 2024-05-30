@@ -1,6 +1,5 @@
 <template>
   <div class="board">
-    <Sidebar />
     <BoardHeader />
     <div class="background-wall"></div>
     <div id="board-content">

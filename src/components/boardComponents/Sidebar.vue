@@ -9,16 +9,18 @@
         <font-awesome-icon :icon="['fas', 'plus']" />
       </b-button>
       <b-modal id="new-project" title="Create new project" centered @ok="submitNewProject(this.newProject)">
-        <template #title >Add new project</template>
-        <b-form-group label="Project Name">
-        <b-form-input  v-model="this.newProject.name"></b-form-input>
-        </b-form-group>
+        <template #title>Add new project</template>
+        <b-form @submit.prevent="submitNewProject">
+          <b-form-group label="Project Name">
+            <b-form-input v-model="this.newProject.name"></b-form-input>
+          </b-form-group>
+        </b-form>
       </b-modal>
 
     </template>
     <ul class="projects-list">
       <li v-for="project in boardStore.projects" :key="project.id" class="project-item">
-        <a href="#" class="project-link" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
+        <a href="#" class="project-link" @click.prevent="selectProject(project.id)">{{ project.name }}</a>
         <div class="project-control">
 
           <!-- Edit the project -->
@@ -48,7 +50,7 @@
   </b-offcanvas>
 </template>
 
-<script >
+<script>
 import useBoardStore from '../../store/board.store';
 import useUserStore from '../../store/user.store';
 import { initializeBoardEvents } from '@/sockets/socket.js';
@@ -62,6 +64,11 @@ export default {
     return { boardStore, newProject };
   },
   name: 'Sidebar',
+  data() {
+    return {
+      isSidebarVisible: false,
+    };
+  },
   created() {
     initializeBoardEvents(this.refreshBoard);
     this.boardStore.fetchProjects();
@@ -72,6 +79,7 @@ export default {
     },
     submitNewProject(newProject) {
       this.boardStore.addProject(newProject);
+      this.newProject.name = '';
     },
     selectProject(projectId) {
       this.boardStore.setSelectedProject(projectId);
