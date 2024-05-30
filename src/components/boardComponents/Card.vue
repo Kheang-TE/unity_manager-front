@@ -25,9 +25,8 @@
                     v-model="this.editCard.content"
                   ></b-form-textarea>
                 </b-form-group>
-                <b-form-group label="Select Tag">
-                  <b-form-select> </b-form-select>
-                </b-form-group>
+                <b-form-group label="Select Tag"> </b-form-group>
+
                 <b-form-group label="Create a new tag">
                   <font-awesome-icon :icon="['fas', 'pen']" />
                 </b-form-group>

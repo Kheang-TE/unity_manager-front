@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="list-header">
+    <div class="list-header" :style="{ 'background-color': list.code_color }">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
         <b-dropdown no-caret>
@@ -19,14 +19,17 @@
             >
               <template #title> Edit list : {{ list.name }} </template>
               <b-form @submit.prevent="submitUpdateList(list)">
+                <b-form-group label="List Name">
+                  <b-form-input
+                    v-model="this.editList.name"
+                    id="name"
+                  ></b-form-input>
+                </b-form-group>
                 <b-form-group label="List Color">
                   <b-form-input
                     type="color"
                     v-model="this.editList.code_color"
                   ></b-form-input>
-                </b-form-group>
-                <b-form-group label="List Name">
-                  <b-form-input v-model="this.editList.name"></b-form-input>
                 </b-form-group>
               </b-form>
             </b-modal>
@@ -79,8 +82,16 @@
           <b-form-group label="Card Description">
             <b-form-textarea v-model="newCard.content"></b-form-textarea>
           </b-form-group>
-          <b-form-group label="Select Tag">
-            <b-form-select> </b-form-select>
+          <b-form-group label="Select Tag Color">
+            <ul class="tag-list-color">
+              <li
+                :style="{ 'background-color': color.code }"
+                v-for="(color, index) in colors"
+                :key="index"
+                @click="selectColor(color)"
+                :class="{ selected: color === selectedColor }"
+              ></li>
+            </ul>
           </b-form-group>
           <b-form-group label="Create a new tag">
             <font-awesome-icon :icon="['fas', 'pen']" />
@@ -102,9 +113,22 @@ export default {
   setup() {
     const newCard = {};
     const editList = {};
+    const colors = [
+      { name: 'Red Orange', code: '#FF5733' },
+      { name: 'Lime Green', code: '#33FF57' },
+      { name: 'Royal Blue', code: '#3357FF' },
+      { name: 'Goldenrod', code: '#F0A202' },
+      { name: 'Turquoise', code: '#03C6C7' },
+      { name: 'Crimson', code: '#C70039' },
+      { name: 'Dark Magenta', code: '#900C3F' },
+      { name: 'Purple', code: '#581845' },
+      { name: 'Sunflower', code: '#FFC300' },
+      { name: 'Light Green', code: '#DAF7A6' },
+    ];
     return {
       newCard,
       editList,
+      colors,
     };
   },
   props: {
@@ -130,6 +154,11 @@ export default {
     },
   },
   methods: {
+    selectColor(color) {
+      this.selectedColor = color;
+
+      // Ajoutez ici votre logique pour utiliser la couleur sélectionnée
+    },
     async submitAddCard(id) {
       try {
         const newCard = {
@@ -168,3 +197,8 @@ export default {
   },
 };
 </script>
+
+<style>
+.color-list {
+}
+</style>

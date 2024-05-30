@@ -6,7 +6,7 @@ export async function createList(listData) {
     const list = await axios.post('/lists', {
       name: listData.name,
       position: listData.position,
-      code_color: '#267699',
+      code_color: listData.code_color,
       project_id: listData.project_id,
     });
 

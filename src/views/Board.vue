@@ -1,15 +1,20 @@
 <template>
   <div class="board">
-    <Sidebar/>
-    <BoardHeader/>
+    <Sidebar />
+    <BoardHeader />
     <div class="background-wall"></div>
     <div id="board-header">
       <h1>{{ boardStore.selectedProject?.name }}</h1>
     </div>
     <div id="board-content">
-      <draggable  v-if="boardStore.selectedProject"  v-model="boardStore.selectedProject.lists" class="list-container" v-bind="dragOptions">
+      <draggable
+        v-if="boardStore.selectedProject"
+        v-model="boardStore.selectedProject.lists"
+        class="list-container"
+        v-bind="dragOptions"
+      >
         <template #item="{ element: list }">
-          <List :list="list"/>
+          <List :list="list" />
         </template>
       </draggable>
       <b-button class="new-list" v-b-modal.add-new-list>
@@ -19,6 +24,12 @@
         <b-form @submit.prevent="addList">
           <b-form-group label="List Name">
             <b-form-input v-model="this.newList.name"></b-form-input>
+          </b-form-group>
+          <b-form-group label="List Color">
+            <b-form-input
+              type="color"
+              v-model="this.newList.code_color"
+            ></b-form-input>
           </b-form-group>
         </b-form>
       </b-modal>
@@ -56,23 +67,25 @@ export default {
   },
   methods: {
     async refreshBoard() {
-      useBoardStore().selectedProject.lists = await getListByProject(useBoardStore().selectedProject.id);
+      useBoardStore().selectedProject.lists = await getListByProject(
+        useBoardStore().selectedProject.id
+      );
     },
     async addList() {
       try {
         const list = {
           name: this.newList.name,
           position: 1,
-          code_color: '',
+          code_color: this.newList.code_color,
           project_id: useBoardStore().selectedProject.id,
         };
+        console.log(list);
         await createList(list);
       } catch (error) {
         console.error('Error creating the list :', error);
       }
     },
     computed: {
-
       dragOptions() {
         return {
           animation: 200,

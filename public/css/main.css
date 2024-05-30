@@ -1,25 +1,25 @@
-:root{
+:root {
   --primary-color: #267699;
   --second-color: #202c3f;
   --third-color: #ffab27;
   --white: #fff;
-  --greylight:#eee;
+  --greylight: #eee;
   --grey: #666;
   --red: #b63638;
   --transition: all 0.3s ease;
   --border-radius: 0.5rem;
-} 
-body{
-  background-color: var(--white);
-  color: var(--grey)!important;
 }
-p{
+body {
+  background-color: var(--white);
+  color: var(--grey) !important;
+}
+p {
   line-height: 2rem;
 }
-i.fa{
+i.fa {
   margin-right: 0.5rem;
 }
-.background-wall{
+.background-wall {
   background: url('../img/background-wall.jpg') no-repeat center center;
   background-size: cover;
   opacity: 0.5;
@@ -30,13 +30,13 @@ i.fa{
   height: 100%;
   z-index: -1;
 }
-section{
+section {
   background-color: var(--white);
 }
 /*------------------------------------------------------------------------*/
 /* HOMEPAGE
 /*------------------------------------------------------------------------*/
-.home-navigation{
+.home-navigation {
   background-color: var(--greylight);
   padding: 1rem 0;
   position: fixed;
@@ -44,28 +44,28 @@ section{
   top: 0;
   z-index: 10;
 }
-.home-navigation ul{
+.home-navigation ul {
   list-style: none;
   margin: 0;
   padding: 0;
   float: right;
 }
-.home-navigation ul li{
+.home-navigation ul li {
   display: inline-block;
   margin: 0 1rem;
 }
-.home-navigation ul li a{
+.home-navigation ul li a {
   text-decoration: none;
   text-transform: uppercase;
   color: var(--grey);
   font-size: 1.6rem;
   transition: var(--transition);
 }
-.home-navigation ul li a:hover{
+.home-navigation ul li a:hover {
   color: var(--primary-color);
   transition: var(--transition);
 }
-.unity-manager{
+.unity-manager {
   background: none;
   text-align: center;
   min-height: calc(100vh - 70.4px);
@@ -75,17 +75,18 @@ section{
   margin-top: 70.4px;
   padding: 2rem 0;
 }
-.logo-container .logo{
+.logo-container .logo {
   display: block;
   max-width: 80%;
   margin: 2rem auto;
 }
-.sign{
+.sign {
   margin: 5rem 0;
 }
-.btn-link, .btn-link:visited{
+.btn-link,
+.btn-link:visited {
   font-size: 1.6rem;
-  text-decoration: none!important;
+  text-decoration: none !important;
   text-transform: uppercase;
   background-color: var(--primary-color);
   color: var(--white);
@@ -96,67 +97,69 @@ section{
   padding: 1rem 2rem;
   transition: var(--transition);
 }
-.btn-link:hover, .btn-link:active{
+.btn-link:hover,
+.btn-link:active {
   background-color: var(--third-color);
-  color: var(--white)!important;
+  color: var(--white) !important;
   transition: all 0.3s ease;
 }
-.parallax{
-  background-image: url("../img/background_parallax.webp");
+.parallax {
+  background-image: url('../img/background_parallax.webp');
   height: 20vh;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
-.introduce{
+.introduce {
   padding: 5rem 0;
 }
-.social{
+.social {
   color: var(--white);
   font-size: 2rem;
   text-align: center;
   padding: 1rem 0;
 }
-.social-list{
+.social-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.social-list li{
+.social-list li {
   display: inline-block;
   margin-right: 2rem;
 }
-.social-list li:last-child{
+.social-list li:last-child {
   margin-right: 0;
 }
-.home-footer{
+.home-footer {
   background-color: var(--second-color);
   color: var(--greylight);
   padding: 1rem 0;
 }
-.home-footer a{
+.home-footer a {
   color: var(--white);
   text-decoration: none;
-  transition: var(--transition)
+  transition: var(--transition);
 }
-.home-footer a:hover{
+.home-footer a:hover {
   color: var(--third-color);
   transition: var(--transition);
 }
 @media (min-width: 576px) {
-  .btn-link{
+  .btn-link {
     display: inline-block;
     margin: 0 2rem;
   }
-  .parallax{
+  .parallax {
     height: 50vh;
   }
 }
 /*------------------------------------------------------------------------*/
 /* SIGN UP
 /*------------------------------------------------------------------------*/
-.signup, .signin{
+.signup,
+.signin {
   color: var(--grey);
   display: flex;
   flex-direction: column;
@@ -166,55 +169,57 @@ section{
   position: relative;
 }
 .signup a,
-.signin a{
+.signin a {
   text-decoration: none;
   color: var(--grey);
   transition: var(--transition);
 }
-.signup a:hover, .signup a:focus,
-.signin a:hover, .signin a:focus{
+.signup a:hover,
+.signup a:focus,
+.signin a:hover,
+.signin a:focus {
   color: var(--primary-color);
   transition: var(--transition);
 }
 .signup header,
-.signin header{
+.signin header {
   text-align: center;
 }
-.form-container{
+.form-container {
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(2px);
-  box-shadow: 0 2px 10px 1px rgba(0,0,0,.1);
+  box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.1);
 }
-.form-header{
-  background-color: rgba(38, 118, 153, .3);
+.form-header {
+  background-color: rgba(38, 118, 153, 0.3);
   backdrop-filter: blur(5px);
   color: var(--white);
   text-align: center;
   padding: 1rem 2rem;
   border-bottom: 0;
 }
-.form-body{
+.form-body {
   padding: 2rem;
 }
-.form-control{
+.form-control {
   border-radius: var(--border-radius);
   display: block;
   margin-bottom: 1.5rem;
-  padding: 1rem .75rem;
+  padding: 1rem 0.75rem;
   width: 100%;
 }
-.form-control:focus{
-  box-shadow: none!important;
-  outline: solid 2px var(--primary-color)!important;
+.form-control:focus {
+  box-shadow: none !important;
+  outline: solid 2px var(--primary-color) !important;
 }
-.form-body .btn{
+.form-body .btn {
   color: var(--white);
   background-color: var(--grey);
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
-.form-body .btn:hover{
+.form-body .btn:hover {
   background-color: var(--third-color);
   color: var(--white);
   transition: var(--transition);
@@ -222,7 +227,7 @@ section{
 
 @media (min-width: 576px) {
   .signup .logo,
-  .signin .logo{
+  .signin .logo {
     max-width: 50%;
   }
 }
@@ -231,7 +236,7 @@ section{
 /* BOARD
 /*------------------------------------------------------------------------*/
 /* Navbar */
-.board .navbar{
+.board .navbar {
   background-color: var(--greylight);
   color: var(--white);
   padding-left: 1rem;
@@ -242,122 +247,129 @@ section{
   width: 100%;
   z-index: 10;
 }
-.board .navbar img.logo{
+.board .navbar img.logo {
   height: 3rem;
   width: auto;
 }
-.board .navbar .btn{
+.board .navbar .btn {
   color: var(--white);
   background-color: var(--grey);
   border: none;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
   transition: var(--transition);
 }
-.board .navbar .btn:last-child{
+.board .navbar .btn:last-child {
   margin-right: 0;
 }
-.board .navbar .btn:hover{
+.board .navbar .btn:hover {
   background-color: var(--primary-color);
   transition: var(--transition);
 }
 
 /* Dropdown */
-.board .dropdown-menu{
+.board .dropdown-menu {
   z-index: 10;
 }
-.board .dropdown-item{
+.board .dropdown-item {
   color: var(--grey);
   transition: var(--transition);
 }
-.board .dropdown-item:focus, .board .dropdown-item:hover{
+.board .dropdown-item:focus,
+.board .dropdown-item:hover {
   background-color: var(--third-color);
   color: var(--white);
   transition: var(--transition);
 }
-.dropdown-menu a{
+.dropdown-menu a {
   display: block;
   text-decoration: none;
   color: var(--grey);
   transition: var(--transition);
 }
-.dropdown-menu a:focus, .dropdown-menu a:hover{
+.dropdown-menu a:focus,
+.dropdown-menu a:hover {
   color: var(--white);
   text-decoration: none;
   transition: var(--transition);
 }
 
 /* Sidebar*/
-#sidebar{
+#sidebar {
   top: 74px;
   width: 100%;
   z-index: 1;
 }
-#sidebar h5{
+#sidebar h5 {
   text-align: center;
 }
-#sidebar button.add-new-project{
+#sidebar button.add-new-project {
   background-color: var(--grey);
   transition: var(--transition);
 }
 #sidebar button.add-new-project:hover,
-#sidebar button.add-new-project:focus{
+#sidebar button.add-new-project:focus {
   background-color: var(--primary-color);
   transition: var(--transition);
 }
-#sidebar .projects-list{
+#sidebar .projects-list {
   list-style-type: none;
   margin-left: 1rem;
   padding: 0;
 }
-#sidebar .project-item{
+#sidebar .project-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
-#sidebar .project-control button{
-  margin-right: .5rem;
+#sidebar .project-control button {
+  margin-right: 0.5rem;
   border: none;
 }
-#sidebar .project-control button:last-child{
+#sidebar .project-control button:last-child {
   margin-right: 0;
 }
-#sidebar .project-control button.project-control-edit{
+#sidebar .project-control button.project-control-edit {
   background-color: var(--primary-color);
 }
-#sidebar .project-control button.project-control-delete{
+#sidebar .project-control button.project-control-delete {
   background-color: var(--red);
 }
-#sidebar .project-link, #sidebar .project-link:visited{
+#sidebar .project-link,
+#sidebar .project-link:visited {
   color: var(--grey);
   text-decoration: none;
   transition: var(--transition);
 }
-#sidebar .project-link:hover, #sidebar .project-link:focus{
+#sidebar .project-link:hover,
+#sidebar .project-link:focus {
   color: var(--third-color);
   transition: var(--transition);
   padding-left: 1rem;
 }
 
 /* Chat */
-#chat{
+#chat {
   top: 74px;
   width: 100%;
   z-index: 1;
 }
-#chat .offcanvas-title{
+#chat .offcanvas-title {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-@media (min-width: 768px){
-  #sidebar, #chat{width: 400px;}
+@media (min-width: 768px) {
+  #sidebar,
+  #chat {
+    width: 400px;
+  }
 }
 
 /* Board content */
-#board-content{
-  font-size: .875rem;
+#board-content {
+  font-size: 0.875rem;
   padding: calc(74px + 1rem) 1rem 1rem;
   height: 100vh;
   display: flex;
@@ -365,16 +377,16 @@ section{
   overflow: auto;
 }
 /* List */
-.list-container{
+.list-container {
   display: flex;
   flex-direction: column;
 }
-.list{
+.list {
   margin-bottom: 1rem;
   min-width: 100%;
   height: auto;
 }
-button.new-list{
+button.new-list {
   background-color: var(--greylight);
   font-size: 1.5rem;
   color: var(--grey);
@@ -391,19 +403,19 @@ button.new-list{
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
-button.new-list:hover{
+button.new-list:hover {
   background-color: var(--third-color);
   text-decoration: none;
   transition: var(--transition);
 }
-.list-header{
+.list-header {
   background-color: var(--primary-color);
   color: var(--white);
   padding: 1rem;
   position: relative;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
-.list-controls{
+.list-controls {
   position: absolute;
   top: 0;
   right: 1rem;
@@ -411,65 +423,68 @@ button.new-list:hover{
   display: flex;
   align-items: center;
 }
-.list-controls .btn{
+.list-controls .btn {
   color: var(--greylight);
   background: none;
   border: none;
   transition: var(--transition);
 }
-.list-controls .btn > svg{
+.list-controls .btn > svg {
   transition: var(--transition);
 }
-.list-controls .btn.collapsed > svg{
+.list-controls .btn.collapsed > svg {
   transform: rotate(180deg);
   transition: var(--transition);
 }
-.list-controls .btn:hover, .list-controls .btn:focus{
+.list-controls .btn:hover,
+.list-controls .btn:focus {
   color: var(--white);
   background: var(--second-color);
   transition: var(--transition);
 }
-.list-controls a, .card-controls a{
+.list-controls a,
+.card-controls a {
   display: block;
   color: var(--grey);
   text-decoration: none;
   transition: var(--transition);
 }
-.list-controls a:hover, .card-controls a:hover{
+.list-controls a:hover,
+.card-controls a:hover {
   color: var(--white);
   transition: var(--transition);
 }
-.list-body{
+.list-body {
   background-color: var(--greylight);
   padding: 1rem;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
-button.add-card{
+button.add-card {
   background-color: var(--grey);
   border: none;
   transition: var(--transition);
 }
-button.add-card:hover{
+button.add-card:hover {
   background-color: var(--third-color);
   transition: var(--transition);
 }
 
 /* Card */
-.card-container{
+.card-container {
   display: flex;
   flex-direction: column;
 }
-.card{
+.card {
   margin-bottom: 1rem;
 }
-.card-header{
+.card-header {
   position: relative;
 }
-.card-header h5{
-  font-size: .875rem;
+.card-header h5 {
+  font-size: 0.875rem;
   margin-bottom: 0;
 }
-.card-controls{
+.card-controls {
   position: absolute;
   top: 0;
   right: 0;
@@ -477,56 +492,82 @@ button.add-card:hover{
   display: flex;
   align-items: center;
 }
-.card-controls .btn{
+.card-controls .btn {
   color: var(--grey);
   background: none;
   border: none;
   transition: var(--transition);
 }
-.card-controls .btn:hover, .card-controls .btn:focus{
+.card-controls .btn:hover,
+.card-controls .btn:focus {
   color: var(--white);
   background: var(--second-color);
   transition: var(--transition);
 }
-@media (min-width: 576px){
-  #board-content{flex-direction: row;}
-  .list-container{flex-direction: row;}
-  .list{
+@media (min-width: 576px) {
+  #board-content {
+    flex-direction: row;
+  }
+  .list-container {
+    flex-direction: row;
+  }
+  .list {
     min-width: 320px;
     margin-right: 1rem;
   }
+
+  /*tags*/
+}
+.tag-list-color {
+  list-style: none; /* Supprime les puces de la liste */
+  padding: 0; /* Supprime le padding par défaut de la liste */
+  margin: 0; /* Supprime la marge par défaut de la liste */
+}
+
+.tag-list-color li {
+  display: inline-block; /* Affiche les éléments en ligne */
+  width: 35px; /* Largeur de chaque cercle */
+  height: 35px; /* Hauteur de chaque cercle */
+  border-radius: 50%; /* Rend les éléments circulaires */
+  margin-right: 10px; /* Marge à droite de chaque cercle */
+  cursor: pointer; /* Affiche un curseur au survol */
+}
+
+.tag-list-color li.selected {
+  border: 2px solid #333; /* Ajoute une bordure autour de l'élément sélectionné */
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; /* Ajoute une ombre pour mettre en évidence */
 }
 
 /*------------------------------------------------------------------------*/
 /* MODAL
 /*------------------------------------------------------------------------*/
-.modal-footer button{
+.modal-footer button {
   background-color: var(--grey);
   border: none;
   transition: var(--transition);
 }
-.modal-footer button:hover{
+.modal-footer button:hover {
   background-color: var(--second-color);
   transition: var(--transition);
 }
-.modal-footer button:last-child{
+.modal-footer button:last-child {
   background-color: var(--primary-color);
 }
-.modal-footer button:last-child:hover{
+.modal-footer button:last-child:hover {
   background-color: var(--third-color);
 }
 
 /*------------------------------------------------------------------------*/
 /* ACCORDION
 /*------------------------------------------------------------------------*/
-#account .accordion-button{
+#account .accordion-button {
   color: var(--grey);
   background-color: var(--greylight);
 }
-#account .accordion-button:not(.collapsed){
+#account .accordion-button:not(.collapsed) {
   color: var(--greylight);
   background-color: var(--primary-color);
 }
-#account .accordion-button:focus{
+#account .accordion-button:focus {
   box-shadow: none;
 }
