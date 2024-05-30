@@ -2,11 +2,12 @@ import { defineStore } from 'pinia';
 
 const useUserStore = defineStore('user', {
   state: () => ({
-    // Define user object with values set to localStorage values if it exists or else set to an empty object
     user: JSON.parse(localStorage.getItem('user')) || {
       id: null,
-      firstname: '',
-      lastname: '',
+      firstname: null,
+      lastname: null,
+      email: null,
+      code_color: null,
     },
   }),
   actions: {
@@ -14,13 +15,27 @@ const useUserStore = defineStore('user', {
       localStorage.setItem('user', JSON.stringify(this.user));
     },
     setUser(user) {
-      this.user = {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-      };
+      console.log('user : ', user);
+      this.user = { ...this.user, ...user };
       this.persistToLocalStorage();
     },
+    logout() {
+      this.$state.user = {
+        id: null,
+        firstname: null,
+        lastname: null,
+        email: null,
+        code_color: null,
+      };
+      localStorage.removeItem('user');
+    },
+  },
+  getters: {
+    getUser: (state) => state.user,
+    fullname: (state) => `${state.user.firstname} ${state.user.lastname}`,
+    initials: (state) => `${state.user.firstname[0]}${state.user.lastname[0]}`,
+    isLoggedIn: (state) => state.user.id !== null,
+    isAdmin: (state) => state.user.isAdmin === 'true',
   },
 });
 

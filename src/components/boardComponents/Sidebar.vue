@@ -27,11 +27,7 @@
       </b-modal>
     </template>
     <ul class="projects-list">
-      <li
-        v-for="project in boardStore.projects"
-        :key="project.id"
-        class="project-item"
-      >
+      <li v-for="project in projects" :key="project.id" class="project-item">
         <a
           href="#"
           class="project-link"
@@ -70,6 +66,7 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import useBoardStore from '../../store/board.store';
 import useUserStore from '../../store/user.store';
 import { initializeBoardEvents } from '@/sockets/socket.js';
@@ -77,11 +74,20 @@ import { initializeBoardEvents } from '@/sockets/socket.js';
 export default {
   setup() {
     const boardStore = useBoardStore();
+    const userStore = useUserStore();
+    const projects = computed(() => boardStore.allProjects);
+    const user = computed(() => userStore.user);
     const newProject = {
-      owner_id: useUserStore().user.id,
+      owner_id: user.value.id,
     };
-    return { boardStore, newProject };
+    return {
+      boardStore,
+      userStore,
+      projects,
+      newProject,
+    };
   },
+
   name: 'Sidebar',
   created() {
     initializeBoardEvents(this.refreshBoard);
@@ -89,7 +95,7 @@ export default {
   },
   methods: {
     async refreshBoard() {
-      useBoardStore().fetchProjects();
+      this.boardStore.fetchProjects();
     },
     submitNewProject(newProject) {
       this.boardStore.addProject(newProject);
