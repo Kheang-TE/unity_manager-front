@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
-import { getProjects, getProject, createProject } from '@/api/project.js';
+import {
+  getProjects, getProject, createProject, updateProject,
+} from '@/api/project.js';
 
 const useBoardStore = defineStore('board', {
   state: () => ({
@@ -20,6 +22,11 @@ const useBoardStore = defineStore('board', {
     addProject(project) {
       createProject(project).then((result) => {
         this.projects.push(result);
+      });
+    },
+    editProject(project) {
+      updateProject(project).then((result) => {
+        this.selectedProject = result;
       });
     },
   },

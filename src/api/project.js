@@ -35,3 +35,18 @@ export async function createProject(projectData) {
     return null;
   }
 }
+
+export async function updateProject(projectData) {
+  try {
+    const project = await axios.patch(`/projects/${projectData.id}`, {
+      name: projectData.name,
+    });
+    if (project) {
+      emitBoardEdition();
+    }
+    return project.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

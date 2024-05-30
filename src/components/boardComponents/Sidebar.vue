@@ -10,27 +10,26 @@
       </b-button>
       <b-modal id="new-project" title="Create new project" centered @ok="submitNewProject(this.newProject)">
         <template #title>Add new project</template>
-        <b-form @submit.prevent="submitNewProject">
-          <b-form-group label="Project Name">
-            <b-form-input v-model="this.newProject.name"></b-form-input>
-          </b-form-group>
-        </b-form>
+        <b-form-group label="Project Name">
+          <b-form-input v-model="this.newProject.name"></b-form-input>
+        </b-form-group>
       </b-modal>
 
     </template>
     <ul class="projects-list">
-      <li v-for="project in boardStore.projects" :key="project.id" class="project-item">
-        <a href="#" class="project-link" @click.prevent="selectProject(project.id)">{{ project.name }}</a>
+      <li v-for="project in projects" :key="project.id" class="project-item">
+        <a href="#" class="project-link" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
         <div class="project-control">
 
           <!-- Edit the project -->
           <b-button v-b-modal="'edit-project-' + project.id" class="project-control-edit">
             <font-awesome-icon :icon="['far', 'pen-to-square']" />
           </b-button>
-          <b-modal :id="'edit-project-' + project.id" centered>
+          <b-modal :id="'edit-project-' + project.id" centered @ok="updateProject(project)">
             <template #title>
-              Edit the project : {{ project.name }}
+              Edit the project
             </template>
+            <b-form-input v-model="project.name" type="text"></b-form-input>
           </b-modal>
 
           <!-- Delete the project -->
@@ -74,11 +73,6 @@ export default {
   },
 
   name: 'Sidebar',
-  data() {
-    return {
-      isSidebarVisible: false,
-    };
-  },
   created() {
     initializeBoardEvents(this.refreshBoard);
     this.boardStore.fetchProjects();
@@ -93,6 +87,9 @@ export default {
     },
     selectProject(projectId) {
       this.boardStore.setSelectedProject(projectId);
+    },
+    updateProject(editedProject) {
+      this.boardStore.editProject(editedProject);
     },
   },
 };
