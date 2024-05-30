@@ -36,7 +36,6 @@ import BoardHeader from '@/components/BoardHeader.vue';
 import Sidebar from '@/components/boardComponents/Sidebar.vue';
 import { createList, getListByProject, updateList } from '@/api/list.js';
 import { initializeBoardEvents } from '@/sockets/socket';
-import { updateCard } from '@/api/card';
 
 export default {
   setup() {
