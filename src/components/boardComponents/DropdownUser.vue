@@ -55,6 +55,7 @@
 import { computed } from 'vue';
 import useUserStore from '@/store/user.store.js';
 import { updateUser, signOut } from '@/api/user.js';
+import handleTokenExpiry from '@/utils/handleTokenExpiry';
 
 export default {
   setup() {
@@ -98,8 +99,7 @@ export default {
         const response = await signOut();
         console.log('response :', response);
         if (response) {
-          this.userStore.logout();
-          this.$router.push({ name: 'home' });
+          handleTokenExpiry();
         } else {
           console.error('Failed to sign out user');
         }
