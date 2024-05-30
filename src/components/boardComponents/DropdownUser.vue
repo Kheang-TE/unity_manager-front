@@ -17,9 +17,9 @@
           <b-accordion-item title="Profile" visible>
             <label for="email">Email :</label>
             <b-form-input id="email" type="text" v-model="user.email" disabled ></b-form-input>
-            <label for="lastname">Lastname:</label>
             <label for="firstname">Firstname:</label>
             <b-form-input id="firstname" type="text" v-model="user.firstname" ></b-form-input>
+            <label for="lastname">Lastname:</label>
             <b-form-input id="lastname" type="text" v-model="user.lastname"></b-form-input>
           </b-accordion-item>
           <b-accordion-item title="Change password">
@@ -81,6 +81,7 @@ export default {
         };
         console.log('Updating user with data:', userData);
         const response = await updateUser(userData);
+        this.userStore.setUser(userData);
         if (response) {
           console.log('User updated successfully');
         } else {
