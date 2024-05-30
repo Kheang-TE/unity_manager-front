@@ -71,8 +71,8 @@ export default {
       try {
         const userData = {
           id: this.user.id,
-          firstname: this.user.lastname,
-          lastname: this.user.firstname,
+          firstname: this.user.firstname,
+          lastname: this.user.lastname,
           email: this.user.email,
           code_color: this.user.code_color,
           new_password: this.user.new_password,
