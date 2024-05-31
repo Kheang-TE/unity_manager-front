@@ -515,28 +515,9 @@ button.add-card:hover {
     min-width: 320px;
     margin-right: 1rem;
   }
-
-  /*tags*/
-}
-.tag-list-color {
-  list-style: none; /* Supprime les puces de la liste */
-  padding: 0; /* Supprime le padding par défaut de la liste */
-  margin: 0; /* Supprime la marge par défaut de la liste */
 }
 
-.tag-list-color li {
-  display: inline-block; /* Affiche les éléments en ligne */
-  width: 35px; /* Largeur de chaque cercle */
-  height: 35px; /* Hauteur de chaque cercle */
-  border-radius: 50%; /* Rend les éléments circulaires */
-  margin-right: 10px; /* Marge à droite de chaque cercle */
-  cursor: pointer; /* Affiche un curseur au survol */
-}
-
-.tag-list-color li.selected {
-  border: 2px solid #333; /* Ajoute une bordure autour de l'élément sélectionné */
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; /* Ajoute une ombre pour mettre en évidence */
-}
+/*tags*/
 
 /*------------------------------------------------------------------------*/
 /* MODAL

@@ -82,20 +82,28 @@
           <b-form-group label="Card Description">
             <b-form-textarea v-model="newCard.content"></b-form-textarea>
           </b-form-group>
-          <b-form-group label="Select Tag Color">
-            <ul class="tag-list-color">
-              <li
-                :style="{ 'background-color': color.code }"
-                v-for="(color, index) in colors"
-                :key="index"
-                @click="selectColor(color)"
-                :class="{ selected: color === selectedColor }"
-              ></li>
-            </ul>
-          </b-form-group>
-          <b-form-group label="Create a new tag">
-            <font-awesome-icon :icon="['fas', 'pen']" />
-          </b-form-group>
+          <div>
+            <b-form-group label="Select Tag Color">
+              <ul class="tag-list-color">
+                <li
+                  v-for="color in colors"
+                  :key="color.color"
+                  class="tag-list-item"
+                >
+                  <button
+                    type="button"
+                    :style="{ backgroundColor: color.color }"
+                    class="btn tag-color-button"
+                    @click="
+                      selectColor({ name: color.name, color: color.color })
+                    "
+                  >
+                    {{ color.name }}
+                  </button>
+                </li>
+              </ul>
+            </b-form-group>
+          </div>
         </b-form>
       </b-modal>
     </b-collapse>
@@ -111,19 +119,17 @@ import { createCard } from '@/api/card.js';
 export default {
   name: 'List',
   setup() {
-    const newCard = {};
+    const newCard = {
+      code_color: '',
+    };
     const editList = {};
     const colors = [
-      { name: 'Red Orange', code: '#FF5733' },
-      { name: 'Lime Green', code: '#33FF57' },
-      { name: 'Royal Blue', code: '#3357FF' },
-      { name: 'Goldenrod', code: '#F0A202' },
-      { name: 'Turquoise', code: '#03C6C7' },
-      { name: 'Crimson', code: '#C70039' },
-      { name: 'Dark Magenta', code: '#900C3F' },
-      { name: 'Purple', code: '#581845' },
-      { name: 'Sunflower', code: '#FFC300' },
-      { name: 'Light Green', code: '#DAF7A6' },
+      { name: 'URGENT', color: '#AE2E25' },
+      { name: 'OPTIONAL', color: '#7F5F01' },
+      { name: 'IMPORTANT', color: '#A54800' },
+      { name: 'REVIEW', color: '#0055CC' },
+      { name: 'COOL', color: '#216E4E' },
+      { name: 'HOLIDAY', color: '#5E4DB2' },
     ];
     return {
       newCard,
@@ -154,22 +160,24 @@ export default {
     },
   },
   methods: {
-    selectColor(color) {
-      this.selectedColor = color;
-
-      // Ajoutez ici votre logique pour utiliser la couleur sélectionnée
+    async selectColor(color) {
+      this.newCard.code_color = color;
+      console.log(this.newCard.code_color);
     },
+
     async submitAddCard(id) {
       try {
-        const newCard = {
+        const cardData = {
           name: this.newCard.name,
           position: 1,
           content: this.newCard.content,
+          code_color: this.newCard.code_color,
           list_id: id,
         };
-        await createCard(newCard);
+        await createCard(cardData);
+        this.newCard.value = { name: '', content: '', code_color: '' }; // Reset newCard after creation
       } catch (error) {
-        console.error('Error creating the card :', error);
+        console.error('Error creating the card:', error);
       }
     },
 
@@ -199,6 +207,34 @@ export default {
 </script>
 
 <style>
-.color-list {
+.tag-list-color {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+
+.tag-list-item {
+  margin: 0.15rem;
+}
+
+.tag-color-button {
+  font-weight: bold;
+  font-size: 10px;
+  color: white;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s;
+}
+
+.tag-color-button:hover {
+  color: white;
+  cursor: pointer;
+  transform: scale(1.2);
 }
 </style>

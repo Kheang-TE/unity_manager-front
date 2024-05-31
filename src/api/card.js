@@ -8,6 +8,7 @@ export async function createCard(cardData) {
       content: cardData.content,
       position: cardData.position,
       list_id: cardData.list_id,
+      code_color: cardData.code_color,
     });
     if (card) {
       emitBoardEdition();
@@ -39,6 +40,7 @@ export async function updateCard(cardData) {
       position: cardData.position,
       content: cardData.content,
       list_id: cardData.list_id,
+      code_color: cardData.code_color,
     });
 
     if (card) {

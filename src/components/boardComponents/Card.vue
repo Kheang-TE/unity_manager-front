@@ -25,10 +25,35 @@
                     v-model="this.editCard.content"
                   ></b-form-textarea>
                 </b-form-group>
-                <b-form-group label="Select Tag"> </b-form-group>
-
-                <b-form-group label="Create a new tag">
-                  <font-awesome-icon :icon="['fas', 'pen']" />
+                <b-form-group label="Select Tag Color">
+                  <ul class="tag-list-color">
+                    <li
+                      v-for="color in colors"
+                      :key="color.color"
+                      class="tag-list-item"
+                    >
+                      <label
+                        :style="{ backgroundColor: color.color }"
+                        class="btn tag-color-button"
+                      >
+                        <input
+                          type="checkbox"
+                          name="tag"
+                          :value="color.name"
+                          @click="
+                            [
+                              selectColor({
+                                name: color.name,
+                                color: color.color,
+                              }),
+                              selectedTags(),
+                            ]
+                          "
+                        />
+                        {{ color.name }}
+                      </label>
+                    </li>
+                  </ul>
                 </b-form-group>
               </b-form>
             </b-modal>
@@ -59,16 +84,33 @@
 
 <script>
 import { createCard, deleteCard, updateCard } from '@/api/card.js';
+import { createTag } from '@/api/tag.js';
 
 export default {
   name: 'Card',
   setup() {
     const newCard = {};
     const editCard = {};
+    const colors = [
+      { name: 'URGENT', color: '#AE2E25' },
+      { name: 'OPTIONAL', color: '#7F5F01' },
+      { name: 'IMPORTANT', color: '#A54800' },
+      { name: 'REVIEW', color: '#0055CC' },
+      { name: 'COOL', color: '#216E4E' },
+      { name: 'HOLIDAY', color: '#5E4DB2' },
+    ];
+    const tags = [];
+    const selectedTags = () => {
+      const allTags = document.querySelectorAll('input[name="tag"]:checked');
+      console.log(allTags);
+    };
 
     return {
       editCard,
       newCard,
+      colors,
+      tags,
+      selectedTags,
     };
   },
 
@@ -80,6 +122,11 @@ export default {
   },
 
   methods: {
+    async selectColor(color) {
+      this.newCard.code_color = color;
+
+      console.log(this.newCard.code_color);
+    },
     async submitAddCard(listId) {
       try {
         const newCard = {
