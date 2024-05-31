@@ -1,6 +1,6 @@
 <!-- src/components/Sidebar.vue -->
 <template>
-  <b-offcanvas id="sidebar" class="col-sm-12" title="Projects" :backdrop="false" :model-value="true">
+  <b-offcanvas id="sidebar" ref="sidebar" class="col-sm-12" title="Projects" :backdrop="false" :model-value="true">
     <template #title>
       Projects
 
@@ -18,7 +18,8 @@
     </template>
     <ul class="projects-list">
       <li v-for="project in projects" :key="project.id" class="project-item">
-        <a href="#" class="project-link" @click.prevent=selectProject(project.id)>{{ project.name }}</a>
+        <a href="#" class="project-link" @click.prevent="[selectProject(project.id), closeSidebar()]">{{ project.name
+          }}</a>
         <div class="project-control">
 
           <!-- Edit the project -->
@@ -93,6 +94,9 @@ export default {
     },
     removeProject(projectId) {
       this.boardStore.deleteProject(projectId);
+    },
+    closeSidebar() {
+      this.$refs.sidebar.hide();
     },
   },
 };
