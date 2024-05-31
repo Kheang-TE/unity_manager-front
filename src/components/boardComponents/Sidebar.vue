@@ -20,7 +20,7 @@
       <li v-for="project in projects" :key="project.id" class="project-item">
         <a href="#" class="project-link" @click.prevent="[linkActive(), selectProject(project.id), closeSidebar()]">{{
           project.name
-          }}</a>
+        }}</a>
         <div class="project-control">
 
           <!-- Edit the project -->
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import { computed } from 'vue';
 import useBoardStore from '../../store/board.store';
 import useUserStore from '../../store/user.store';

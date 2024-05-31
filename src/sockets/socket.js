@@ -24,6 +24,21 @@ const leaveProjectRoom = (projectId) => {
   socket.emit('leaveProject', projectId);
   console.log(`Left project room: ${projectId}`);
 };
+
+const emitNewCollaborator = () => {
+  try {
+    console.log('Emit new collaborator');
+    socket.emit('newCollaborator');
+  } catch (error) { console.error(error); }
+};
+function initializeCollaboratorReceived(onCollaboratorReceived) {
+  socket.on('refreshCollaborators', () => {
+    console.log('im the websocket emit collaborator');
+    if (onCollaboratorReceived) {
+      onCollaboratorReceived();
+    }
+  });
+}
 // -----------------cards------------------------------
 const emitBoardEdition = () => {
   try {
@@ -67,14 +82,5 @@ function initializeUserState(onUserStateReceived) {
 }
 
 export {
-  emitBoardEdition,
-  emitMessageCreation,
-  initializeBoardEvents,
-  initializeUserState,
-  initializeChatState,
-  initializeMessageReceived,
-  connecting,
-  joinProjectRoom,
-  leaveProjectRoom,
-  socket,
+  emitNewCollaborator, emitBoardEdition, emitMessageCreation, initializeBoardEvents, initializeCollaboratorReceived, initializeUserState, initializeChatState, initializeMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
 };

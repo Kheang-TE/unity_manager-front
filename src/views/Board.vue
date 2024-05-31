@@ -33,7 +33,6 @@ import draggable from 'vuedraggable';
 import List from '@/components/boardComponents/List.vue';
 import useBoardStore from '@/store/board.store';
 import BoardHeader from '@/components/BoardHeader.vue';
-import Sidebar from '@/components/boardComponents/Sidebar.vue';
 import { createList, getListByProject, updateList } from '@/api/list.js';
 import { initializeBoardEvents } from '@/sockets/socket';
 
@@ -53,7 +52,6 @@ export default {
   name: 'Board',
   components: {
     draggable,
-    Sidebar,
     BoardHeader,
     List,
   },

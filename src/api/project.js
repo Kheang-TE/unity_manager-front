@@ -1,4 +1,4 @@
-import { joinProjectRoom, emitBoardEdition } from '@/sockets/socket';
+import { joinProjectRoom, emitBoardEdition, emitNewCollaborator } from '@/sockets/socket';
 import axios from './axios';
 
 export async function getProject(projectId) {
@@ -57,6 +57,30 @@ export async function removeProject(projectId) {
       emitBoardEdition();
     }
     return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getLastCollaborator(projectId) {
+  try {
+    const response = await axios.get(`/projects/${projectId}/collaborators`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function createCollaborator(collaborator) {
+  console.log('from createCollaborator : ', collaborator);
+  try {
+    const response = await axios.post(`/projects/${collaborator.project_id}/collaborators`, collaborator);
+    if (response) {
+      emitNewCollaborator();
+    }
+    return response.data;
   } catch (error) {
     console.error(error);
     return null;
