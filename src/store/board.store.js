@@ -22,6 +22,7 @@ const useBoardStore = defineStore('board', {
     addProject(project) {
       createProject(project).then((result) => {
         this.projects.push(result);
+        this.projects.sort((a, b) => ((a.name > b.name) ? 1 : -1));
       });
     },
     editProject(project) {

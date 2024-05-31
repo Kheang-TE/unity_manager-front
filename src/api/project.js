@@ -26,7 +26,6 @@ export async function getProjects() {
 }
 
 export async function createProject(projectData) {
-  console.log(projectData);
   try {
     const project = await axios.post('/projects', projectData);
     return project.data;

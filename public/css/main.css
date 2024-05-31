@@ -333,7 +333,8 @@ section{
   text-decoration: none;
   transition: var(--transition);
 }
-#sidebar .project-link:hover, #sidebar .project-link:focus{
+#sidebar .project-link:hover, #sidebar .project-link:focus
+#sidebar .project-link:active, #sidebar .project-link.active{
   color: var(--third-color);
   transition: var(--transition);
   padding-left: 1rem;

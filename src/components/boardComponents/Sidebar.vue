@@ -18,7 +18,8 @@
     </template>
     <ul class="projects-list">
       <li v-for="project in projects" :key="project.id" class="project-item">
-        <a href="#" class="project-link" @click.prevent="[selectProject(project.id), closeSidebar()]">{{ project.name
+        <a href="#" class="project-link" @click.prevent="[linkActive(), selectProject(project.id), closeSidebar()]">{{
+          project.name
           }}</a>
         <div class="project-control">
 
@@ -57,6 +58,7 @@ import useUserStore from '../../store/user.store';
 import { initializeBoardEvents } from '@/sockets/socket.js';
 
 export default {
+  name: 'Sidebar',
   setup() {
     const boardStore = useBoardStore();
     const userStore = useUserStore();
@@ -65,6 +67,7 @@ export default {
     const newProject = {
       owner_id: user.value.id,
     };
+
     return {
       boardStore,
       userStore,
@@ -73,7 +76,6 @@ export default {
     };
   },
 
-  name: 'Sidebar',
   created() {
     initializeBoardEvents(this.refreshBoard);
     this.boardStore.fetchProjects();
@@ -88,6 +90,7 @@ export default {
     },
     selectProject(projectId) {
       this.boardStore.setSelectedProject(projectId);
+      this.linkActive();
     },
     updateProject(editedProject) {
       this.boardStore.editProject(editedProject);
@@ -97,6 +100,16 @@ export default {
     },
     closeSidebar() {
       this.$refs.sidebar.hide();
+    },
+    linkActive() {
+      const sidebar = document.getElementById('sidebar');
+      const links = sidebar.querySelectorAll('.project-link');
+      links.forEach((link) => {
+        link.classList.remove('active');
+        link.addEventListener('click', () => {
+          link.classList.add('active');
+        });
+      });
     },
   },
 };
