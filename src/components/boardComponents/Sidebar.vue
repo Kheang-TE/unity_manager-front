@@ -36,7 +36,7 @@
           <b-button v-b-modal="'delete-project-' + project.id" class="project-control-delete">
             <font-awesome-icon :icon="['far', 'trash-can']" />
           </b-button>
-          <b-modal :id="'delete-project-' + project.id" centered>
+          <b-modal :id="'delete-project-' + project.id" centered @ok="removeProject(project.id)">
             <template #title>
               Delete the project : {{ project.name }}
             </template>
@@ -90,6 +90,9 @@ export default {
     },
     updateProject(editedProject) {
       this.boardStore.editProject(editedProject);
+    },
+    removeProject(projectId) {
+      this.boardStore.deleteProject(projectId);
     },
   },
 };

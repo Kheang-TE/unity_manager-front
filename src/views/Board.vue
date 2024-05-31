@@ -7,13 +7,13 @@
         <h1>{{ boardStore.selectedProject?.name }}</h1>
       </header>
       <div id="board-body">
-        <draggable v-if="boardStore.selectedProject" v-model="boardStore.selectedProject.lists" class="list-container"
+        <draggable v-if="boardStore.lists" v-model="boardStore.selectedProject.lists" class="list-container"
           item-key="id" v-bind="dragOptions" @end="updatePositionList">
           <template #item="{ element: list }">
             <List :list="list" :key="list.id" />
           </template>
         </draggable>
-        <b-button v-if="boardStore.selectedProject" class="new-list" v-b-modal.add-new-list>
+        <b-button class="new-list" v-b-modal.add-new-list>
           <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
         </b-button>
         <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
@@ -68,11 +68,12 @@ export default {
       try {
         const list = {
           name: this.newList.name,
-          position: 1,
+          position: (this.boardStore.project.lists.length > 0) ? (this.boardStore.project.lists.length + 1) : 1,
           code_color: '',
-          project_id: useBoardStore().selectedProject.id,
+          project_id: this.boardStore.project.id,
         };
         await createList(list);
+        this.newList.name = '';
       } catch (error) {
         console.error('Error creating the list :', error);
       }

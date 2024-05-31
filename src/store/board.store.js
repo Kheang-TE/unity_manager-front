@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import {
-  getProjects, getProject, createProject, updateProject,
+  getProjects, getProject, createProject, updateProject, removeProject,
 } from '@/api/project.js';
 
 const useBoardStore = defineStore('board', {
@@ -28,6 +28,12 @@ const useBoardStore = defineStore('board', {
       updateProject(project).then((result) => {
         this.selectedProject = result;
       });
+    },
+    async deleteProject(projectId) {
+      if (this.selectedProject.id === projectId) {
+        this.selectedProject = {};
+      }
+      await removeProject(projectId);
     },
   },
   getters: {

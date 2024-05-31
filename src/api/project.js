@@ -50,3 +50,16 @@ export async function updateProject(projectData) {
     return null;
   }
 }
+
+export async function removeProject(projectId) {
+  try {
+    const project = await axios.delete(`/projects/${projectId}`);
+    if (project) {
+      emitBoardEdition();
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
