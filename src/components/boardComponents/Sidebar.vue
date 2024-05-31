@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import { computed } from 'vue';
 import useBoardStore from '../../store/board.store';
 import useUserStore from '../../store/user.store';
