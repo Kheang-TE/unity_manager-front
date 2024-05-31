@@ -21,6 +21,7 @@
             </div>
             <div class="form-body">
               <form @submit.prevent="handleSignin">
+                <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
                 <input type="email"  v-model="email" class="form-control" name="email"  placeholder="Email">
                 <input type="password" v-model="password" class="form-control" name="password" placeholder="Password">
                 <a href="/signup" class="float-start"><i class="fa"><font-awesome-icon :icon="['fas', 'arrow-left']" /></i>Create account</a>
@@ -51,13 +52,15 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import { signin } from '../api/user.js';
 import useUserStore from '@/store/user.store';
 
 export default {
   setup() {
     const store = useUserStore();
-    return { store };
+    const error = ref(null);
+    return { store, error };
   },
   name: 'SignIn',
   data() {
@@ -77,6 +80,8 @@ export default {
       signin(this.email, this.password).then((response) => {
         this.store.setUser(response);
         this.$router.push({ name: 'board' });
+      }).catch((error) => {
+        this.error = error.data.error;
       });
     },
   },
