@@ -13,7 +13,12 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       handleTokenExpiry();
     }
-    return Promise.reject(error); // return the error if it's not an expired token
+    // Use Promise.reject to propagate the error correctly in the promise chain.
+    // This ensures that the error is handled by subsequent `catch` blocks in the chain,
+    // maintaining the expected behavior of promise-based error handling.
+    // If we don't use Promise.reject, the response will not be returned as a promise
+    // and the error will not be handled properly.
+    return Promise.reject(error);
   },
 );
 
