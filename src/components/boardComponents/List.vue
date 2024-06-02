@@ -12,37 +12,24 @@
           </b-dropdown-item>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal
-              :id="'edit-list-' + list.id.toString()"
-              centered
-              @ok="submitUpdateList(list)"
-            >
+            <b-modal :id="'edit-list-' + list.id.toString()" centered @ok="submitUpdateList(list)">
               <template #title> Edit list : {{ list.name }} </template>
               <b-form @submit.prevent="submitUpdateList(list)">
                 <b-form-group label="List Name">
-                  <b-form-input
-                    v-model="this.editList.name"
-                    id="name"
-                  ></b-form-input>
+                  <b-form-input v-model="this.editList.name" id="name"></b-form-input>
                 </b-form-group>
                 <b-form-group label="List Color">
-                  <b-form-input
-                    type="color"
-                    v-model="this.editList.code_color"
-                  ></b-form-input>
+                  <b-form-input type="color" v-model="this.editList.code_color"></b-form-input>
+                </b-form-group>
+                <b-form-group label="List Name">
+                  <b-form-input v-model="this.editList.name"></b-form-input>
                 </b-form-group>
               </b-form>
             </b-modal>
           </b-dropdown-item>
           <b-dropdown-item>
-            <b-link v-b-modal="'delete-list-' + list.id.toString()"
-              >Delete</b-link
-            >
-            <b-modal
-              :id="'delete-list-' + list.id.toString()"
-              centered
-              @ok="deleteListFromDatabase(list.id)"
-            >
+            <b-link v-b-modal="'delete-list-' + list.id.toString()">Delete</b-link>
+            <b-modal :id="'delete-list-' + list.id.toString()" centered @ok="deleteListFromDatabase(list.id)">
               <template #title> Delete list : {{ list.name }} </template>
               <p>Are you sure you want to delete this list ?</p>
             </b-modal>
@@ -55,25 +42,15 @@
     </div>
 
     <b-collapse :id="list.id.toString()" class="list-body" visible>
-      <draggable
-        v-model="list.cards"
-        class="card-container"
-        group="cards"
-        v-bind="dragOptions"
-      >
+      <draggable v-model="list.cards" class="card-container" group="cards" item-key="id" v-bind="dragOptions"
+        @change="updatePositionCard(list.id, $event)">
         <template #item="{ element: card }">
           <Card :card="card" />
         </template>
       </draggable>
 
-      <b-button class="add-card" v-b-modal="'add-card-list-' + list.id"
-        >[+] Add new card</b-button
-      >
-      <b-modal
-        :id="'add-card-list-' + list.id"
-        centered
-        @ok="submitAddCard(list.id)"
-      >
+      <b-button class="add-card" v-b-modal="'add-card-list-' + list.id">[+] Add new card</b-button>
+      <b-modal :id="'add-card-list-' + list.id" centered @ok="submitAddCard(list.id)">
         <template #title> Add Card to List: {{ list.name }} </template>
         <b-form @submit.prevent="submitAddCard(list.id)">
           <b-form-group label="Card Title">
@@ -85,19 +62,10 @@
           <div>
             <b-form-group label="Select Tag Color">
               <ul class="tag-list-color">
-                <li
-                  v-for="color in colors"
-                  :key="color.color"
-                  class="tag-list-item"
-                >
-                  <button
-                    type="button"
-                    :style="{ backgroundColor: color.color }"
-                    class="btn tag-color-button"
-                    @click="
-                      selectColor({ name: color.name, color: color.color })
-                    "
-                  >
+                <li v-for="color in colors" :key="color.color" class="tag-list-item">
+                  <button type="button" :style="{ backgroundColor: color.color }" class="btn tag-color-button" @click="
+                    selectColor({ name: color.name, color: color.color })
+                    ">
                     {{ color.name }}
                   </button>
                 </li>
@@ -114,7 +82,7 @@
 import draggable from 'vuedraggable';
 import Card from '@/components/boardComponents/Card.vue';
 import { deleteList, updateList } from '@/api/list.js';
-import { createCard } from '@/api/card.js';
+import { createCard, updateCard } from '@/api/card.js';
 
 export default {
   name: 'List',
@@ -202,6 +170,49 @@ export default {
         console.error('Error updating the list:', error);
       }
     },
+
+    updatePositionCard(listId, event) {
+      console.log('list id : ', listId);
+      console.log('card : ', event);
+
+      if (Object.hasOwn(event, 'moved')) {
+        const movedCard = this.list.cards[event.moved.newIndex];
+        const beforeMovedCard = this.list.cards[event.moved.newIndex - 1];
+        const afterMovedCard = this.list.cards[event.moved.newIndex + 1];
+        if (!beforeMovedCard) {
+          movedCard.position = afterMovedCard ? afterMovedCard.position / 2 : 1;
+        } else if (!afterMovedCard) {
+          movedCard.position = beforeMovedCard.position + 1;
+        } else {
+          movedCard.position = (beforeMovedCard.position + afterMovedCard.position) / 2;
+        }
+        movedCard.list_id = listId;
+        this.savePositionCard(movedCard);
+      }
+      if (Object.hasOwn(event, 'added')) {
+        const addedCard = this.list.cards[event.added.newIndex];
+        const beforeAddedCard = this.list.cards[event.added.newIndex - 1];
+        const afterAddedCard = this.list.cards[event.added.newIndex + 1];
+        if (!beforeAddedCard) {
+          addedCard.position = afterAddedCard ? afterAddedCard.position / 2 : 1;
+        } else if (!afterAddedCard) {
+          addedCard.position = beforeAddedCard.position + 1;
+        } else {
+          addedCard.position = (beforeAddedCard.position + afterAddedCard.position) / 2;
+        }
+        addedCard.list_id = listId;
+        this.savePositionCard(addedCard);
+      }
+    },
+
+    async savePositionCard(movedCard) {
+      try {
+        await updateCard(movedCard);
+      } catch (error) {
+        console.error('Error updating the card :', error);
+      }
+    },
+
   },
 };
 </script>

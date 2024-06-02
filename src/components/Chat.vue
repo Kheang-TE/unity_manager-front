@@ -5,12 +5,14 @@
       <b-button v-b-modal.new-collaborator>
         <font-awesome-icon :icon="['fas', 'plus']" />
       </b-button>
-      <b-modal id="new-collaborator" centered>
+      <b-modal id="new-collaborator" centered @ok="submitNewCollaborator(this.newCollaborator)">
         <template #title>
           Add new collaborator
         </template>
-        <input type="text" name="" id="">
+            <label for="newCollaboratorEmail">Enter the collaborator email:</label>
+            <b-form-input id="newCollaboratorEmail" type="email" v-model="newCollaborator.email"></b-form-input>
       </b-modal>
+
     </template>
     <div class="userlist">
       <b-dropdown text="Show all users" variant="light" size="sm">
@@ -43,7 +45,12 @@
  * @exports default
  */
 import { computed } from 'vue';
-import { initializeMessageReceived, initializeChatState, initializeUserState } from '@/sockets/socket.js';
+import {
+  initializeMessageReceived,
+  initializeChatState,
+  initializeUserState,
+  initializeCollaboratorReceived,
+} from '@/sockets/socket.js';
 import { createMessage, getMessagesbyProject } from '@/api/message.js';
 import useBoardStore from '../store/board.store';
 import useUserStore from '../store/user.store';
@@ -55,8 +62,9 @@ export default {
     const collaborators = computed(() => boardStore.collaborators);
     const messages = computed(() => boardStore.messages);
     const project = computed(() => boardStore.project);
+    const newCollaborator = {};
     return {
-      boardStore, userStore, collaborators, messages, project,
+      boardStore, userStore, collaborators, messages, project, newCollaborator,
     };
   },
   data() {
@@ -72,6 +80,7 @@ export default {
     };
   },
   created() {
+    initializeCollaboratorReceived(this.handleCollaboratorReceived);
     initializeChatState(this.handleChatStateReceived);
 
     initializeMessageReceived(this.handleMessageReceived);
@@ -92,8 +101,20 @@ export default {
    * @namespace methods
    */
   methods: {
+    submitNewCollaborator() {
+      this.newCollaborator = {
+        email: this.newCollaborator.email,
+        project_id: this.project.id,
+      };
+      this.boardStore.addCollaborator(this.newCollaborator);
+      console.log('newCollaborator:', this.newCollaborator);
+    },
     updateProject(project) {
-      this.store.selectedProject = { ...project };
+      this.boardStore.selectedProject = { ...project };
+    },
+    async handleCollaboratorReceived() {
+      console.log('initializeCollaboratorReceived');
+      this.boardStore.fetchLastCollaborator();
     },
 
     async handleMessageReceived() {

@@ -1,12 +1,6 @@
 <!-- src/components/Sidebar.vue -->
 <template>
-  <b-offcanvas
-    id="sidebar"
-    ref="sidebar"
-    class="col-sm-12"
-    title="Projects"
-    :backdrop="false"
-  >
+  <b-offcanvas id="sidebar" ref="sidebar" class="col-sm-12" title="Projects" :backdrop="false" :model-value="true">
     <template #title>
       Projects
 
@@ -14,12 +8,7 @@
       <b-button v-b-modal.new-project class="add-new-project">
         <font-awesome-icon :icon="['fas', 'plus']" />
       </b-button>
-      <b-modal
-        id="new-project"
-        title="Create new project"
-        centered
-        @ok="submitNewProject(this.newProject)"
-      >
+      <b-modal id="new-project" title="Create new project" centered @ok="submitNewProject(this.newProject)">
         <template #title>Add new project</template>
         <b-form-group label="Project Name">
           <b-form-input v-model="this.newProject.name"></b-form-input>
@@ -28,32 +17,26 @@
     </template>
     <ul class="projects-list">
       <li v-for="project in projects" :key="project.id" class="project-item">
-        <a
-          href="#"
-          class="project-link"
-          @click.prevent="selectProject(project.id)"
-          >{{ project.name }}</a
-        >
+        <a href="#" class="project-link" @click.prevent="[linkActive(), selectProject(project.id), closeSidebar()]">{{
+          project.name
+        }}</a>
         <div class="project-control">
           <!-- Edit the project -->
-          <b-button
-            v-b-modal="'edit-project-' + project.id"
-            class="project-control-edit"
-          >
+          <b-button v-b-modal="'edit-project-' + project.id" class="project-control-edit">
             <font-awesome-icon :icon="['far', 'pen-to-square']" />
           </b-button>
-          <b-modal :id="'edit-project-' + project.id" centered>
-            <template #title> Edit the project : {{ project.name }} </template>
+          <b-modal :id="'edit-project-' + project.id" centered @ok="updateProject(project)">
+            <template #title>
+              Edit the project
+            </template>
+            <b-form-input v-model="project.name" type="text"></b-form-input>
           </b-modal>
 
           <!-- Delete the project -->
-          <b-button
-            v-b-modal="'delete-project-' + project.id"
-            class="project-control-delete"
-          >
+          <b-button v-b-modal="'delete-project-' + project.id" class="project-control-delete">
             <font-awesome-icon :icon="['far', 'trash-can']" />
           </b-button>
-          <b-modal :id="'delete-project-' + project.id" centered>
+          <b-modal :id="'delete-project-' + project.id" centered @ok="removeProject(project.id)">
             <template #title>
               Delete the project : {{ project.name }}
             </template>
@@ -72,6 +55,7 @@ import useUserStore from '../../store/user.store';
 import { initializeBoardEvents } from '@/sockets/socket.js';
 
 export default {
+  name: 'Sidebar',
   setup() {
     const boardStore = useBoardStore();
     const userStore = useUserStore();
@@ -80,6 +64,7 @@ export default {
     const newProject = {
       owner_id: user.value.id,
     };
+
     return {
       boardStore,
       userStore,
@@ -88,7 +73,6 @@ export default {
     };
   },
 
-  name: 'Sidebar',
   created() {
     initializeBoardEvents(this.refreshBoard);
     this.boardStore.fetchProjects();
@@ -99,12 +83,32 @@ export default {
     },
     submitNewProject(newProject) {
       this.boardStore.addProject(newProject);
+      this.newProject.name = '';
     },
     selectProject(projectId) {
       this.boardStore.setSelectedProject(projectId);
+      this.linkActive();
+    },
+    updateProject(editedProject) {
+      this.boardStore.editProject(editedProject);
+    },
+    removeProject(projectId) {
+      this.boardStore.deleteProject(projectId);
+    },
+    closeSidebar() {
       if (this.$refs.sidebar) {
         this.$refs.sidebar.hide();
       }
+    },
+    linkActive() {
+      const sidebar = document.getElementById('sidebar');
+      const links = sidebar.querySelectorAll('.project-link');
+      links.forEach((link) => {
+        link.classList.remove('active');
+        link.addEventListener('click', () => {
+          link.classList.add('active');
+        });
+      });
     },
   },
 };

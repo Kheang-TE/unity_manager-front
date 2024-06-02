@@ -46,6 +46,8 @@ export async function updateCard(cardData) {
     if (card) {
       emitBoardEdition();
     }
+    console.log(card);
+    console.log(card.data);
     return card.data;
   } catch (error) {
     console.error(error);

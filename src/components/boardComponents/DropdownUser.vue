@@ -13,25 +13,30 @@
       </b-link>
       <b-modal id="account" size="xl" title="Account Setting" centered @ok="submitUpdateUser">
         <b-accordion>
-          <b-form-group @submit.prevent="submitUpdateUser" >
-          <b-accordion-item title="Profile" visible>
-            <label for="email">Email :</label>
-            <b-form-input id="email" type="text" v-model="user.email" disabled ></b-form-input>
-            <label for="lastname">Lastname:</label>
-            <label for="firstname">Firstname:</label>
-            <b-form-input id="firstname" type="text" v-model="user.firstname" ></b-form-input>
-            <b-form-input id="lastname" type="text" v-model="user.lastname"></b-form-input>
-          </b-accordion-item>
-          <b-accordion-item title="Change password">
-            <label for="password">Enter new password:</label>
-            <b-form-input id="password" type="password" v-model="user.new_password"></b-form-input>
-            <label for="confirm_password">Confirm new password:</label>
-            <b-form-input id="confirm_password" type="password" v-model="user.confirmation_new_password"></b-form-input>
-            <label for="code_color">Code color:</label>
-            <b-form-input id="code_color" type="color" placeholder="#ff0000" v-model="user.code_color"></b-form-input>
-            <label for="actual_password">Enter your actual password:</label>
-            <b-form-input id="actual_password" type="password" v-model="user.actual_password"></b-form-input>
-          </b-accordion-item>
+          <b-form-group @submit.prevent="submitUpdateUser">
+            <b-accordion-item title="Profile" visible>
+              <label for="email">Email :</label>
+              <b-form-input id="email" type="text" v-model="user.email" disabled></b-form-input>
+              <label for="firstname">Firstname:</label>
+              <b-form-input id="firstname" type="text" v-model="user.firstname"></b-form-input>
+              <label for="lastname">Lastname:</label>
+              <b-form-input id="lastname" type="text" v-model="user.lastname"></b-form-input>
+            </b-accordion-item>
+            <b-accordion-item title="Change password">
+              <label for="password">Enter new password:</label>
+              <b-form-input id="password" type="password" v-model="user.new_password"></b-form-input>
+              <label for="confirm_password">Confirm new password:</label>
+              <b-form-input id="confirm_password" type="password"
+                v-model="user.confirmation_new_password"></b-form-input>
+              <label for="code_color">Code color:</label>
+              <b-form-input id="code_color" type="color" placeholder="#ff0000" v-model="user.code_color"></b-form-input>
+            </b-accordion-item>
+            <b-row class="mt-4">
+              <b-col>
+                <label for="actual_password">Enter your actual password for validate the changes:</label>
+                <b-form-input id="actual_password" type="password" v-model="user.actual_password"></b-form-input>
+              </b-col>
+            </b-row>
           </b-form-group>
         </b-accordion>
       </b-modal>
@@ -55,6 +60,7 @@
 import { computed } from 'vue';
 import useUserStore from '@/store/user.store.js';
 import { updateUser, signOut } from '@/api/user.js';
+import handleTokenExpiry from '@/utils/handleTokenExpiry';
 
 export default {
   setup() {
@@ -71,8 +77,8 @@ export default {
       try {
         const userData = {
           id: this.user.id,
-          firstname: this.user.lastname,
-          lastname: this.user.firstname,
+          firstname: this.user.firstname,
+          lastname: this.user.lastname,
           email: this.user.email,
           code_color: this.user.code_color,
           new_password: this.user.new_password,
@@ -83,6 +89,7 @@ export default {
         const response = await updateUser(userData);
         if (response) {
           console.log('User updated successfully');
+          this.userStore.setUser(userData);
         } else {
           console.error('Failed to update user');
         }
@@ -97,8 +104,7 @@ export default {
         const response = await signOut();
         console.log('response :', response);
         if (response) {
-          this.userStore.logout();
-          this.$router.push({ name: 'home' });
+          handleTokenExpiry();
         } else {
           console.error('Failed to sign out user');
         }
