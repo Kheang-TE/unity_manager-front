@@ -18,6 +18,7 @@ const useTagStore = defineStore('tag', {
       code_color: '',
       project_id: '',
     },
+    selectedTags: [],
   }),
   actions: {
     setTagName(name) {
@@ -28,6 +29,10 @@ const useTagStore = defineStore('tag', {
     },
     setProjectId(projectId) {
       this.tag.project_id = projectId;
+    },
+
+    setSelectedTags(tags) {
+      this.selectedTags = tags;
     },
 
     addTag(newTag) {
@@ -46,6 +51,7 @@ const useTagStore = defineStore('tag', {
   getters: {
     getColors: (state) => state.colors,
     getTag: (state) => state.tag,
+    getSelectedTags: (state) => state.selectedTags,
   },
 });
 

@@ -216,36 +216,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.tag-list-color {
-  display: flex;
-  flex-wrap: wrap;
-  list-style-type: none;
-  padding: 0;
-}
-
-.tag-list-item {
-  margin: 0.15rem;
-}
-
-.tag-color-button {
-  font-weight: bold;
-  font-size: 10px;
-  color: white;
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s;
-}
-
-.tag-color-button:hover {
-  color: white;
-  cursor: pointer;
-  transform: scale(1.2);
-}
-</style>

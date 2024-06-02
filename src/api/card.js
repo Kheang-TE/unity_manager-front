@@ -54,3 +54,16 @@ export async function updateCard(cardData) {
     return null;
   }
 }
+
+export async function updateCardTags(cardData, tags) {
+  try {
+    const card = await axios.patch(`/cards/${cardData.id}/tags`, {
+      tags,
+    });
+    console.log(card.data);
+    return card.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
