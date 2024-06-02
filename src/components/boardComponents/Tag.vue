@@ -1,5 +1,5 @@
 <template>
-  <b-button v-b-modal.container-tags>
+  <b-button v-b-modal.container-tags v-if="boardStore.project.tags">
     <font-awesome-icon :icon="['fas', 'tag']" />
   </b-button>
   <b-modal id="container-tags" title="Tags" size="lg" centered hide-footer="true">
@@ -41,9 +41,45 @@
         <b-container>
           <b-row>
             <b-col>
-              <ul>
-                <li v-for="tag in tagList" :key="tag.id"></li>
-              </ul>
+              <!-- <ul class="tag-list">
+                <li v-for="tag in tagList" :key="tag.id">
+                  <div class="tag-item">
+                    <span class="tag-color" :style="{ backgroundColor: tag.code_color }"></span>
+                    {{ tag.name }}
+                  </div>
+                </li>
+              </ul> -->
+              <b-table striped hover :items="tagList" :fields="fieldsTag" id="tag-table">
+                <!-- Tag color -->
+                <template #cell(color)="data">
+                  <span class="tag-color" :style="{ backgroundColor: data.item.code_color }"></span>
+                </template>
+                <!-- Tag color - End -->
+
+                <!-- Action -->
+                <template #cell(action)="data">
+                  <!-- Edit the tag -->
+                  <b-button v-b-modal="'edit-tag-' + data.item.id" class="project-control-edit">
+                    <font-awesome-icon :icon="['far', 'pen-to-square']" />
+                  </b-button>
+                  <b-modal :id="'edit-tag-' + data.item.id" title="Edit the tag" centered>
+                    <b-form-input v-model="data.item.name"></b-form-input>
+                  </b-modal>
+
+                  <!-- Delete the tag -->
+                  <b-button v-b-modal="'delete-tag-' + data.item.id">
+                    <font-awesome-icon :icon="['far', 'trash-can']" />
+                  </b-button>
+                  <b-modal :id="'delete-tag-' + data.item.id" centered>
+                    <template #title>
+                      Delete the project : {{ data.item.name }}
+                    </template>
+                    <p>Are you sure you want to delete this project ?</p>
+                  </b-modal>
+                </template>
+                <!-- Action - End -->
+
+              </b-table>
             </b-col>
           </b-row>
         </b-container>
@@ -79,6 +115,16 @@ export default {
     };
   },
 
+  data() {
+    return {
+      fieldsTag: [
+        { key: 'color', label: 'Color', class: 'cell-color' },
+        'name',
+        { key: 'action', label: 'Action', class: 'cell-action' },
+      ],
+    };
+  },
+
   methods: {
     createTag() {
       this.tagStore.setProjectId(this.boardStore.project.id);
@@ -99,12 +145,26 @@ export default {
 };
 </script>
 
-<style scoped>
-.sample {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 5px;
+<style>
+.cell-color {
+  width: 20%;
+}
+
+.cell-action {
+  width: 20%;
+}
+
+#tag-table button {
+  margin-right: .5rem;
+}
+
+#tag-table button:last-child {
+  margin-right: 0;
+}
+
+.tag-color {
+  display: block;
+  width: 100%;
+  height: 38px;
 }
 </style>
