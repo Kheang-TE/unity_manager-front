@@ -23,8 +23,10 @@
             <div class="form-body">
               <form @submit.prevent="handleSignin">
                 <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
-                <input type="email"  v-model="email" class="form-control" name="email"  placeholder="Email">
-                <input type="password" v-model="password" class="form-control" name="password" placeholder="Password">
+                <label for="email">Email :</label>
+                <input type="email"  v-model="email" class="form-control" name="email"  placeholder="JohnDoe@domain.com" aria-required="true" required>
+                <label for="password">Password :</label>
+                <input type="password" v-model="password" class="form-control" name="password" aria-required="true" required>
                 <a href="/signup" class="float-start"><i class="fa"><font-awesome-icon
                       :icon="['fas', 'arrow-left']" /></i>Create account</a>
                 <button type="submit" class="btn float-end">Connect</button>
