@@ -12,14 +12,14 @@
             <b-row>
               <b-col>
                 <b-form-group label="Tag Name">
-                  <b-form-input v-model="tagName"></b-form-input>
+                  <b-form-input v-model="tagName" @change="updateTagName"></b-form-input>
                 </b-form-group>
               </b-col>
             </b-row>
             <b-row>
               <b-col cols="9">
                 <b-form-group label="Tag Color">
-                  <b-form-select v-model="tagColor">
+                  <b-form-select v-model="tagColor" @change="updateSelectColor">
                     <b-form-select-option :value="null">-- Select a color --</b-form-select-option>
                     <b-form-select-option v-for="color in tagStore.getColors" :key="color.name" :value="color.code">
                       {{ color.name }}
@@ -87,13 +87,13 @@ export default {
       document.querySelector('#container-tags form').reset();
     },
 
-    // updateTagName() {
-    //   this.tagStore.setTagName(this.tagName);
-    // },
+    updateTagName() {
+      this.tagStore.setTagName(this.tagName);
+    },
 
-    // updateSelectColor() {
-    //   this.tagStore.setTagColor(this.tagColor);
-    // },
+    updateSelectColor() {
+      this.tagStore.setTagColor(this.tagColor);
+    },
 
   },
 };
