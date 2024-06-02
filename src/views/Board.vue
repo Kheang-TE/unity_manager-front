@@ -37,6 +37,7 @@ import List from '@/components/boardComponents/List.vue';
 import useBoardStore from '@/store/board.store';
 import BoardHeader from '@/components/BoardHeader.vue';
 import { createList, getListByProject, updateList } from '@/api/list.js';
+import { getTagsByProject } from '@/api/tag.js';
 import { initializeBoardEvents } from '@/sockets/socket';
 
 export default {
@@ -64,6 +65,7 @@ export default {
   methods: {
     async refreshBoard() {
       this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
+      this.boardStore.selectedProject.tags = await getTagsByProject(this.boardStore.selectedProject.id);
     },
     async addList() {
       try {

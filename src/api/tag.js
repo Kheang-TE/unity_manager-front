@@ -25,7 +25,7 @@ export async function deleteTag(tagId) {
     if (deletedTag) {
       emitBoardEdition();
     }
-    return deletedTag.data;
+    return true;
   } catch (error) {
     console.error(error);
     return null;
@@ -36,13 +36,25 @@ export async function updateTag(tagData) {
   try {
     const tag = await axios.patch(`/tags/${tagData.id}`, {
       name: tagData.name,
-      code_color: tagData.content,
+      code_color: tagData.code_color,
+      project_id: tagData.project_id,
     });
 
     if (tag) {
       emitBoardEdition();
     }
     return tag.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getTagsByProject(projectId) {
+  try {
+    const tags = await axios.get(`/tags/projects/${projectId}`);
+    console.log(tags.data);
+    return tags.data;
   } catch (error) {
     console.error(error);
     return null;

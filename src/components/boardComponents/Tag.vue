@@ -41,14 +41,6 @@
         <b-container>
           <b-row>
             <b-col>
-              <!-- <ul class="tag-list">
-                <li v-for="tag in tagList" :key="tag.id">
-                  <div class="tag-item">
-                    <span class="tag-color" :style="{ backgroundColor: tag.code_color }"></span>
-                    {{ tag.name }}
-                  </div>
-                </li>
-              </ul> -->
               <b-table striped hover :items="tagList" :fields="fieldsTag" id="tag-table">
                 <!-- Tag color -->
                 <template #cell(color)="data">
@@ -62,17 +54,37 @@
                   <b-button v-b-modal="'edit-tag-' + data.item.id" class="project-control-edit">
                     <font-awesome-icon :icon="['far', 'pen-to-square']" />
                   </b-button>
-                  <b-modal :id="'edit-tag-' + data.item.id" title="Edit the tag" centered>
-                    <b-form-input v-model="data.item.name"></b-form-input>
+                  <b-modal :id="'edit-tag-' + data.item.id" title="Edit the tag" centered @ok="updateTag(data.item)">
+                    <b-container>
+                      <b-row>
+                        <b-col>
+                          <b-form-group label="Tag Name">
+                            <b-form-input v-model="data.item.name"></b-form-input>
+                          </b-form-group>
+                        </b-col>
+                      </b-row>
+                      <b-row>
+                        <b-col cols="9">
+                          <b-form-group label="Tag Color">
+                            <b-form-select v-model="data.item.code_color">
+                              <b-form-select-option v-for="color in tagStore.getColors" :key="color.name"
+                                :value="color.code">
+                                {{ color.name }}
+                              </b-form-select-option>
+                            </b-form-select>
+                          </b-form-group>
+                        </b-col>
+                      </b-row>
+                    </b-container>
                   </b-modal>
 
                   <!-- Delete the tag -->
                   <b-button v-b-modal="'delete-tag-' + data.item.id">
                     <font-awesome-icon :icon="['far', 'trash-can']" />
                   </b-button>
-                  <b-modal :id="'delete-tag-' + data.item.id" centered>
+                  <b-modal :id="'delete-tag-' + data.item.id" centered @ok="deleteTag(data.item.id)">
                     <template #title>
-                      Delete the project : {{ data.item.name }}
+                      Delete the tag : {{ data.item.name }}
                     </template>
                     <p>Are you sure you want to delete this project ?</p>
                   </b-modal>
@@ -93,7 +105,6 @@
 import { ref, computed } from 'vue';
 import useBoardStore from '@/store/board.store';
 import useTagStore from '@/store/tag.store.js';
-import { createTag } from '@/api/tag.js';
 
 export default {
   name: 'Tag',
@@ -129,7 +140,7 @@ export default {
     createTag() {
       this.tagStore.setProjectId(this.boardStore.project.id);
       const newTag = this.tagStore.getTag;
-      createTag(newTag);
+      this.tagStore.addTag(newTag);
       document.querySelector('#container-tags form').reset();
     },
 
@@ -139,6 +150,14 @@ export default {
 
     updateSelectColor() {
       this.tagStore.setTagColor(this.tagColor);
+    },
+
+    updateTag(editedTag) {
+      this.tagStore.editTag(editedTag);
+    },
+
+    deleteTag(tagId) {
+      this.tagStore.removeTag(tagId);
     },
 
   },

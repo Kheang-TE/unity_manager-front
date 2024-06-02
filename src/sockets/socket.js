@@ -39,7 +39,7 @@ function initializeCollaboratorReceived(onCollaboratorReceived) {
     }
   });
 }
-// -----------------cards------------------------------
+// --------------------board-------------------------
 const emitBoardEdition = () => {
   try {
     socket.emit('boardEvent');
@@ -82,5 +82,16 @@ function initializeUserState(onUserStateReceived) {
 }
 
 export {
-  emitNewCollaborator, emitBoardEdition, emitMessageCreation, initializeBoardEvents, initializeCollaboratorReceived, initializeUserState, initializeChatState, initializeMessageReceived, connecting, joinProjectRoom, leaveProjectRoom, socket,
+  emitNewCollaborator,
+  emitBoardEdition,
+  emitMessageCreation,
+  initializeBoardEvents,
+  initializeCollaboratorReceived,
+  initializeUserState,
+  initializeChatState,
+  initializeMessageReceived,
+  connecting,
+  joinProjectRoom,
+  leaveProjectRoom,
+  socket,
 };

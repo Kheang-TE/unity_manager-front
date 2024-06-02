@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { createTag, updateTag, deleteTag } from '@/api/tag.js';
 
 const useTagStore = defineStore('tag', {
   state: () => ({
@@ -28,6 +29,19 @@ const useTagStore = defineStore('tag', {
     setProjectId(projectId) {
       this.tag.project_id = projectId;
     },
+
+    addTag(newTag) {
+      createTag(newTag);
+    },
+
+    editTag(editedTag) {
+      updateTag(editedTag);
+    },
+
+    removeTag(tagId) {
+      deleteTag(tagId);
+    },
+
   },
   getters: {
     getColors: (state) => state.colors,
