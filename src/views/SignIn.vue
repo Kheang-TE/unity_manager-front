@@ -5,7 +5,8 @@
       <div class="row">
         <div class="col">
           <div class="logo-container">
-            <a href="/" rel="home"><img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo"></a>
+            <a href="/" rel="home"><img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager"
+                class="logo"></a>
           </div>
           <h1>Connect</h1>
         </div>
@@ -24,7 +25,8 @@
                 <div v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
                 <input type="email"  v-model="email" class="form-control" name="email"  placeholder="Email">
                 <input type="password" v-model="password" class="form-control" name="password" placeholder="Password">
-                <a href="/signup" class="float-start"><i class="fa"><font-awesome-icon :icon="['fas', 'arrow-left']" /></i>Create account</a>
+                <a href="/signup" class="float-start"><i class="fa"><font-awesome-icon
+                      :icon="['fas', 'arrow-left']" /></i>Create account</a>
                 <button type="submit" class="btn float-end">Connect</button>
               </form>
             </div>

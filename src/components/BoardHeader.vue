@@ -1,8 +1,10 @@
 <template>
 
-   <b-navbar fixed="top">
+  <b-navbar fixed="top">
     <b-navbar-brand>
-      <b-button v-b-toggle.sidebar><font-awesome-icon :icon="['fas', 'bars']" /></b-button>
+      <b-button v-b-toggle.sidebar>
+        <font-awesome-icon :icon="['fas', 'bars']" />
+      </b-button>
       <img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo">
     </b-navbar-brand>
     <b-navbar-nav class="ml-auto">

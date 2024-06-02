@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia';
 import {
-  getProjects, getProject, createProject, createCollaborator, getLastCollaborator,
+  getProjects,
+  getProject,
+  createProject,
+  updateProject,
+  removeProject,
+  createCollaborator,
+  getLastCollaborator,
 } from '@/api/project.js';
 
 const useBoardStore = defineStore('board', {
@@ -22,7 +28,19 @@ const useBoardStore = defineStore('board', {
     addProject(project) {
       createProject(project).then((result) => {
         this.projects.push(result);
+        this.projects.sort((a, b) => ((a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1));
       });
+    },
+    editProject(project) {
+      updateProject(project).then((result) => {
+        this.selectedProject = result;
+      });
+    },
+    async deleteProject(projectId) {
+      if (this.selectedProject.id === projectId) {
+        this.selectedProject = {};
+      }
+      await removeProject(projectId);
     },
     async addCollaborator(collaborator) { // Ajout d'un collaborateur au projet selectionné
       await createCollaborator(collaborator);

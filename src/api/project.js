@@ -1,4 +1,4 @@
-import { joinProjectRoom, emitNewCollaborator } from '@/sockets/socket';
+import { joinProjectRoom, emitBoardEdition, emitNewCollaborator } from '@/sockets/socket';
 import axios from './axios';
 
 export async function getProject(projectId) {
@@ -24,23 +24,51 @@ export async function getProjects() {
     return null;
   }
 }
-export async function getLastCollaborator(projectId) {
+
+export async function createProject(projectData) {
   try {
-    const response = await axios.get(`/projects/${projectId}/collaborators`);
-    return response.data;
+    const project = await axios.post('/projects', projectData);
+    return project.data;
+  } catch (error) {
+    console.error(error.response.data);
+    return null;
+  }
+}
+
+export async function updateProject(projectData) {
+  try {
+    const project = await axios.patch(`/projects/${projectData.id}`, {
+      name: projectData.name,
+    });
+    if (project) {
+      emitBoardEdition();
+    }
+    return project.data;
   } catch (error) {
     console.error(error);
     return null;
   }
 }
 
-export async function createProject(projectData) {
-  console.log(projectData);
+export async function removeProject(projectId) {
   try {
-    const project = await axios.post('/projects', projectData);
-    return project.data;
+    const project = await axios.delete(`/projects/${projectId}`);
+    if (project) {
+      emitBoardEdition();
+    }
+    return true;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getLastCollaborator(projectId) {
+  try {
+    const response = await axios.get(`/projects/${projectId}/collaborators`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
