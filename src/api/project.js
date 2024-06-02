@@ -8,6 +8,7 @@ export async function getProject(projectId) {
     if (project) {
       joinProjectRoom(projectInfo);
     }
+    console.log(project.data);
     return project.data;
   } catch (error) {
     console.error(error);

@@ -43,6 +43,9 @@ const useBoardStore = defineStore('board', {
     // Getter pour sélectionner les cartes d'un projet seletionné
     cards: (state) => state.selectedProject.cards || [],
 
+    // Getter pour sélectionner les tags d'un projet seletionné
+    tags: (state) => state.selectedProject.tags || [],
+
     // Getter pour séléctionner les collaborateurs d'un projet seletionné
     collaborators: (state) => state.selectedProject.collaborators || [],
   },
