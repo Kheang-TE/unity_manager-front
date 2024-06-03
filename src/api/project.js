@@ -1,4 +1,4 @@
-import { joinProjectRoom, emitBoardEdition, emitNewCollaborator } from '@/sockets/socket';
+import { joinProjectRoom, emitNewCollaborator } from '@/sockets/socket';
 import axios from './axios';
 
 export async function getProject(projectId) {
@@ -31,7 +31,7 @@ export async function createProject(projectData) {
     const project = await axios.post('/projects', projectData);
     return project.data;
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error);
     return null;
   }
 }
@@ -41,9 +41,6 @@ export async function updateProject(projectData) {
     const project = await axios.patch(`/projects/${projectData.id}`, {
       name: projectData.name,
     });
-    if (project) {
-      emitBoardEdition();
-    }
     return project.data;
   } catch (error) {
     console.error(error);
@@ -53,10 +50,7 @@ export async function updateProject(projectData) {
 
 export async function removeProject(projectId) {
   try {
-    const project = await axios.delete(`/projects/${projectId}`);
-    if (project) {
-      emitBoardEdition();
-    }
+    await axios.delete(`/projects/${projectId}`);
     return true;
   } catch (error) {
     console.error(error);
@@ -75,7 +69,6 @@ export async function getLastCollaborator(projectId) {
 }
 
 export async function createCollaborator(collaborator) {
-  console.log('from createCollaborator : ', collaborator);
   try {
     const response = await axios.post(`/projects/${collaborator.project_id}/collaborators`, collaborator);
     if (response) {

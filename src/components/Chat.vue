@@ -1,5 +1,5 @@
 <template>
-  <b-offcanvas v-if="project.id" id="chat" placement="end" :backdrop="false">
+  <b-offcanvas v-if="project.id" @shown="scrollToBottom" id="chat" placement="end" :backdrop="false">
     <template #title>
       Collaborators
       <b-button v-b-modal.new-collaborator>
@@ -31,10 +31,10 @@
           <span class="text">{{ message.content }}</span>
         </div>
       </div>
-      <div class="chat-input">
-        <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage()" />
-        <button @click="sendMessage()" class="btn btn-secondary">Send</button>
-      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Your message" v-model="message" @keyup.enter="sendMessage()" />
+      <button @click="sendMessage()" class="btn btn-secondary">Send</button>
     </div>
   </b-offcanvas>
 </template>
@@ -47,8 +47,6 @@
 import { computed } from 'vue';
 import {
   initializeMessageReceived,
-  initializeChatState,
-  initializeUserState,
   initializeCollaboratorReceived,
 } from '@/sockets/socket.js';
 import { createMessage, getMessagesbyProject } from '@/api/message.js';
@@ -81,11 +79,7 @@ export default {
   },
   created() {
     initializeCollaboratorReceived(this.handleCollaboratorReceived);
-    initializeChatState(this.handleChatStateReceived);
-
     initializeMessageReceived(this.handleMessageReceived);
-
-    initializeUserState(this.handleUserStateReceived);
   },
 
   /**
@@ -107,13 +101,11 @@ export default {
         project_id: this.project.id,
       };
       this.boardStore.addCollaborator(this.newCollaborator);
-      console.log('newCollaborator:', this.newCollaborator);
     },
     updateProject(project) {
       this.boardStore.selectedProject = { ...project };
     },
     async handleCollaboratorReceived() {
-      console.log('initializeCollaboratorReceived');
       this.boardStore.fetchLastCollaborator();
     },
 
@@ -131,12 +123,6 @@ export default {
       this.currentUser = userFromServer;
     },
 
-    /**
-     * Sends a message to the server after removing leading and trailing whitespace.
-     *
-     * @return {Promise<void>} A promise that resolves when the message is successfully sent,
-     *                         and rejects with an error if there was an issue sending the message.
-     */
     async sendMessage() {
       const trimmedMessage = this.message.trim();
 
@@ -154,52 +140,6 @@ export default {
         });
     },
 
-    /**
-     * Resets the messages array.
-     */
-    // resetMessages() {
-    //   this.messages = [];
-    // },
-    // /**
-    //  * Toggles the visibility of the chat window.
-    //  * Updates the button class accordingly.
-    //  */
-    // toggleChat() {
-    //   this.showChat = !this.showChat;
-    //   if (this.showChat) {
-    //     this.chatButtonClass = 'btn btn-close';
-    //   }
-    // },
-
-    /**
-     * Sends a message through the socket connection.
-    //  */
-    // sendMessage() {
-    //   if (this.message.trim() === '') return;
-
-    //   this.socket.emit('sendMessage', this.message);
-    //   this.message = '';
-    //   this.scrollToBottom();
-    // },
-
-    /**
-     * Selects a user for a private chat.
-     * @param {string} userId - The ID of the user to select.
-     */
-    // selectUser(userId) { // revoir cette fonction !!!!!!!!!
-    //   this.selectedUser = userId;
-    //   const existingChat = this.activeChat && this.activeChat.user.id === userId;
-    //   if (!existingChat) {
-    //     this.activeChat = {
-    //       user: this.users.find((user) => user.id === userId),
-    //       messages: [],
-    //     };
-    //   }
-    // },
-
-    /**
-     * Scrolls the chat window to the bottom.
-     */
     scrollToBottom() {
       this.$nextTick(() => {
         const { chatMessages } = this.$refs;
@@ -208,20 +148,11 @@ export default {
         }
       });
     },
-    /**
-    * Shows the modal dialog.
-    // */
+
     showModal() {
       $('#confirmModal').modal('show');
     },
 
-    /**
-     * Clears the messages array and hides the modal dialog.
-     */
-    // clearMessages() {
-    //   this.resetMessages();
-    //   $('#confirmModal').modal('hide');
-    // },
   },
 };
 
@@ -232,18 +163,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.chat-container {
-  position: fixed;
-  overflow-y: auto;
-  right: 0;
-  bottom: 0;
-  width: 40vh;
-  height: 90vh;
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-     display: flex;
-     flex-direction: column;
-   }
 
    .header {
      padding: 10px;
@@ -271,9 +190,9 @@ export default {
   }
 
   .text {
-    display: flex;
-    flex-direction: column;
     padding-top: 0.5rem;
+    overflow-wrap: break-word;
+    max-width: 100%;
   }
 
    .text-style {
@@ -281,6 +200,7 @@ export default {
      flex-direction: column;
      align-items: flex-start;
      margin-bottom: 10px;
+     max-width: 100%;
    }
 
    .user-info {
@@ -294,8 +214,9 @@ export default {
    }
 
    .chat-messages {
-    height: 50%;
-     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
      flex: 1;
    }
 
@@ -303,9 +224,9 @@ export default {
      display: flex;
      padding: 10px;
      margin: 5px 0;
+     max-width: 100%;
      border-radius: 5px;
      background-color: #f1f1f1;
-     word-wrap: break-word;
    }
 
    .my-message {

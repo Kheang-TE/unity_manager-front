@@ -23,18 +23,31 @@
               Please fill in all fields to register
             </div>
             <div class="form-body">
-              <b-form @submit.prevent="handleSignup">
-                <input type="text" class="form-control" v-model="lastname" placeholder="Lastname" required>
-                <input type="text" class="form-control" v-model="firstname" placeholder="Firstname" required>
-                <input type="email" class="form-control" v-model="email" placeholder="Email" required>
-                <input type="password" class="form-control" v-model="password" placeholder="Password" required>
-                <input type="password" class="form-control" v-model="confirm_password" placeholder="Confirm password"
+              <form @submit.prevent="handleSignup">
+                <div v-if="error"  class="alert alert-danger" role="alert">{{ error }}</div>
+
+                <label for="firstname">Firstname :</label>
+                <input id="firstname" type="text" class="form-control" v-model="newUser.firstname" placeholder="John" required>
+
+                <label for="lastname">Lastname :</label>
+                <input id="lastname" type="text" class="form-control" v-model="newUser.lastname" placeholder="Doe" required>
+
+                <label for="email">Email :</label>
+                <input id="email" type="email" class="form-control" v-model="newUser.email" placeholder="JohnDoe@domain.com" required>
+
+                <label for="password">Password :</label>
+                <input id="password" type="password" class="form-control" v-model="newUser.password"  required>
+
+                <label for="confirm_password">Confirmation password :</label>
+                <input  id="confirm_password" type="password" class="form-control" v-model="newUser.confirmation_password"
                   required>
+
                 <a href="/signin" class="float-start">
                   <i class="fa"><font-awesome-icon :icon="['fas', 'arrow-left']" /></i>Sign in
                 </a>
                 <b-button type="submit" class="btn float-end">Create account</b-button>
-              </b-form>
+              </form>
+
             </div>
           </div>
         </div>
@@ -68,62 +81,56 @@ import { signup } from '@/api/user.js';
 export default {
   name: 'SignUp',
   setup() {
-    const lastname = ref('');
-    const firstname = ref('');
-    const email = ref('');
-    const password = ref('');
-    const confirm_password = ref('');
-
-    const validateEmail = (mail) => {
-      const regexEmail = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
-      return regexEmail.test(mail);
+    const error = ref(null);
+    const newUser = {
+      lastname: '',
+      firstname: '',
+      email: '',
+      password: '',
+      confirmation_password: '',
     };
-
-    const validatePwd = (pwd) => {
-      const regexPwd = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      return regexPwd.test(pwd);
-    };
-
-    const handleSignup = async () => {
-      if (!lastname.value || !firstname.value || !email.value || !password.value || !confirm_password.value) {
-        console.log('Veuillez remplir tous les champs.');
-        return;
-      }
-
-      if (!validateEmail(email.value)) {
-        console.log('Veuillez saisir une adresse email valide.');
-        return;
-      }
-
-      if (!validatePwd(password.value)) {
-        console.log('Veuillez saisir un mot de passe d\'une longueur minimale de 8 caractères dont une majuscule, un chiffre et un caractère spécial.');
-        return;
-      }
-
-      if (password.value !== confirm_password.value) {
-        console.log('Veuillez saisir des mots de passe identique.');
-        return;
-      }
-
-      const newUser = {
-        lastname: lastname.value,
-        firstname: firstname.value,
-        email: email.value,
-        password: password.value,
-        confirmation: confirm_password.value,
-      };
-
-      await signup(newUser);
-    };
-
     return {
-      lastname,
-      firstname,
-      email,
-      password,
-      confirm_password,
-      handleSignup,
+      error,
+      newUser,
     };
   },
+  methods: {
+    validateEmail(mail) {
+      const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return regexEmail.test(mail);
+    },
+
+    validatePwd(pwd) {
+      const regexPwd = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return regexPwd.test(pwd);
+    },
+
+    async handleSignup() {
+      try {
+        if (!this.newUser.firstname || !this.newUser.lastname || !this.newUser.email || !this.newUser.password || !this.newUser.confirmation_password) {
+          throw new Error('All fields are required.');
+        }
+
+        if (!this.validateEmail(this.newUser.email)) {
+          throw new Error('The email address is not valid.');
+        }
+
+        if (!this.validatePwd(this.newUser.password)) {
+          throw new Error('The password must contain at least 8 characters, including a number, a special character and an uppercase letter.');
+        }
+
+        if (this.newUser.password !== this.newUser.confirmation_password) {
+          throw new Error('The password should match the confirmation password.');
+        }
+
+        await signup(this.newUser);
+        this.$router.push({ name: 'sign in' });
+      } catch (error) {
+        error.data && error.data.status === 409 ? this.error = 'An error occurred. Please check your information and try again.'
+          : this.error = error;
+      }
+    },
+  },
+
 };
 </script>

@@ -59,7 +59,7 @@ import {
   createCard,
   deleteCard,
   updateCard,
-  updateCardTags,
+  // updateCardTags,
 } from '@/api/card.js';
 
 export default {
@@ -110,12 +110,8 @@ export default {
     },
 
     async updateCard(card) {
-      // const tags = this.tagStore.selectedTags;
-      // console.log('tags : ', tags);
       try {
         const { selectTags } = this.editedCard;
-        console.log('this is the motherfucking selected tags bitch:', selectTags);
-
         const editCard = {
           id: card.id,
           name: this.editedCard.name,
@@ -125,7 +121,6 @@ export default {
           tags: selectTags,
         };
 
-        // await updateCardTags(editCard, tags);
         await updateCard(editCard);
       } catch (error) {
         console.error('Error updating the card:', error);

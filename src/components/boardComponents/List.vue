@@ -12,17 +12,13 @@
           </b-dropdown-item>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-' + list.id.toString()" centered @ok="submitUpdateList(list)">
-              <template #title> Edit list : {{ list.name }} </template>
+            <b-modal :id="'edit-list-' + list.id.toString()" title="Edit list" centered @ok="submitUpdateList(list)">
               <b-form @submit.prevent="submitUpdateList(list)">
                 <b-form-group label="List Name">
                   <b-form-input v-model="this.editList.name" id="name"></b-form-input>
                 </b-form-group>
                 <b-form-group label="List Color">
                   <b-form-input type="color" v-model="this.editList.code_color"></b-form-input>
-                </b-form-group>
-                <b-form-group label="List Name">
-                  <b-form-input v-model="this.editList.name"></b-form-input>
                 </b-form-group>
               </b-form>
             </b-modal>
@@ -202,7 +198,16 @@ export default {
 
     async savePositionCard(movedCard) {
       try {
-        await updateCard(movedCard);
+        const tags = movedCard.tags.map((tag) => tag.id);
+        const card = {
+          id: movedCard.id,
+          name: movedCard.name,
+          position: movedCard.position,
+          content: movedCard.content,
+          list_id: movedCard.list_id,
+          tags,
+        };
+        await updateCard(card);
       } catch (error) {
         console.error('Error updating the card :', error);
       }

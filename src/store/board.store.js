@@ -9,8 +9,6 @@ import {
   getLastCollaborator,
 } from '@/api/project.js';
 
-import { getCardById } from '@/api/card';
-
 const useBoardStore = defineStore('board', {
   state: () => ({
     selectedProject: {},
@@ -29,6 +27,12 @@ const useBoardStore = defineStore('board', {
     },
     addProject(project) {
       createProject(project).then((result) => {
+        if (!this.projects) {
+          this.projects = [];
+        }
+        if (!this.projects) {
+          this.projects = [];
+        }
         this.projects.push(result);
         this.projects.sort((a, b) => ((a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1));
       });
@@ -39,17 +43,23 @@ const useBoardStore = defineStore('board', {
       });
     },
     async deleteProject(projectId) {
+      this.projects = this.projects.filter(
+        (project) => project.id !== projectId,
+      );
       if (this.selectedProject.id === projectId) {
         this.selectedProject = {};
       }
+      this.projects = this.projects.filter(
+        (project) => project.id !== projectId,
+      );
       await removeProject(projectId);
     },
+
     async addCollaborator(collaborator) { // Ajout d'un collaborateur au projet selectionné
       await createCollaborator(collaborator);
     },
     fetchLastCollaborator() {
       getLastCollaborator(this.selectedProject.id).then((collaborator) => {
-        console.log('im the board store', collaborator);
         this.selectedProject.collaborators.push(collaborator);
       });
     },
