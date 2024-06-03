@@ -3,45 +3,34 @@ import { connecting } from '@/sockets/socket';
 import useUserStore from '@/store/user.store.js';
 
 export const signup = async (user) => {
-  try {
-    const response = await axios.post('/users', {
-      lastname: user.lastname,
-      firstname: user.firstname,
-      email: user.email,
-      password: user.password,
-      confirmation: user.confirmation,
-      code_color: '#267699',
-    });
-    console.log('new user : ', response.data);
-  } catch (error) {
-    console.error(error);
-  }
+  await axios.post('/users', {
+    lastname: user.lastname,
+    firstname: user.firstname,
+    email: user.email,
+    password: user.password,
+    confirmation_password: user.confirmation_password,
+    code_color: '#267699',
+  });
 };
 
 export const signin = async (email, password) => {
-  try {
-    const response = await axios.post('users/signin', { email, password });
-    const userData = {
-      id: response.data.id,
-      firstname: response.data.firstname,
-      lastname: response.data.lastname,
-      email: response.data.email,
-      code_color: response.data.code_color,
-    };
-    console.log('User data:', userData);
-    const userStore = useUserStore();
-    userStore.setUser(userData);
-    connecting(userStore.user);
-    return userData;
-  } catch (error) {
-    console.error('Sign in failed:', error);
-    throw error;
-  }
+  const response = await axios.post('users/signin', { email, password });
+  const userData = {
+    id: response.data.id,
+    firstname: response.data.firstname,
+
+    lastname: response.data.lastname,
+    email: response.data.email,
+    code_color: response.data.code_color,
+  };
+  const userStore = useUserStore();
+  userStore.setUser(userData);
+  connecting(userStore.user);
+  return userData;
 };
 
 export const updateUser = async (userData) => {
   try {
-    console.log('userData : ', userData);
     const response = await axios.patch(`/users/${userData.id}`, {
       firstname: userData.firstname,
       lastname: userData.lastname,
