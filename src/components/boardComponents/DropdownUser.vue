@@ -21,20 +21,20 @@
               <b-form-input id="firstname" type="text" v-model="user.firstname"></b-form-input>
               <label for="lastname">Lastname:</label>
               <b-form-input id="lastname" type="text" v-model="user.lastname"></b-form-input>
+              <label for="code_color">Color:</label>
+              <b-form-input class="form-control" id="code_color" type="color" placeholder="#ff0000" v-model="user.code_color"></b-form-input>
             </b-accordion-item>
             <b-accordion-item title="Change password">
               <label for="password">Enter new password:</label>
-              <b-form-input id="password" type="password" v-model="user.new_password"></b-form-input>
+              <b-form-input id="password" type="password" v-model="editUser.new_password"></b-form-input>
               <label for="confirm_password">Confirm new password:</label>
               <b-form-input id="confirm_password" type="password"
-                v-model="user.confirmation_new_password"></b-form-input>
-              <label for="code_color">Code color:</label>
-              <b-form-input id="code_color" type="color" placeholder="#ff0000" v-model="user.code_color"></b-form-input>
+                v-model="editUser.confirmation_new_password"></b-form-input>
             </b-accordion-item>
             <b-row class="mt-4">
               <b-col>
                 <label for="actual_password">Enter your actual password for validate the changes:</label>
-                <b-form-input id="actual_password" type="password" v-model="user.actual_password"></b-form-input>
+                <b-form-input id="actual_password" type="password" v-model="editUser.actual_password"></b-form-input>
               </b-col>
             </b-row>
           </b-form-group>
@@ -83,15 +83,19 @@ export default {
           lastname: this.user.lastname,
           email: this.user.email,
           code_color: this.user.code_color,
-          new_password: this.user.new_password,
-          confirmation_new_password: this.user.confirmation_new_password,
-          actual_password: this.user.actual_password,
+          new_password: this.editUser.new_password,
+          confirmation_new_password: this.editUser.confirmation_new_password,
+          actual_password: this.editUser.actual_password,
         };
-        console.log('Updating user with data:', userData);
         const response = await updateUser(userData);
         if (response) {
-          console.log('User updated successfully');
-          this.userStore.setUser(userData);
+          this.userStore.setUser({
+            id: userData.id,
+            firstname: userData.firstname,
+            lastname: userData.lastname,
+            email: userData.email,
+            code_color: userData.code_color,
+          });
           this.boardStore.refreshMessageColor();
         } else {
           console.error('Failed to update user');
