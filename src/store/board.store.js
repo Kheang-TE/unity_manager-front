@@ -30,6 +30,9 @@ const useBoardStore = defineStore('board', {
         if (!this.projects) {
           this.projects = [];
         }
+        if (!this.projects) {
+          this.projects = [];
+        }
         this.projects.push(result);
         this.projects.sort((a, b) => ((a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1));
       });
@@ -40,6 +43,9 @@ const useBoardStore = defineStore('board', {
       });
     },
     async deleteProject(projectId) {
+      this.projects = this.projects.filter(
+        (project) => project.id !== projectId,
+      );
       if (this.selectedProject.id === projectId) {
         this.selectedProject = {};
       }
@@ -77,6 +83,9 @@ const useBoardStore = defineStore('board', {
 
     // Getter pour sélectionner les cartes d'un projet seletionné
     cards: (state) => state.selectedProject.cards || [],
+
+    // Getter pour sélectionner les tags d'un projet seletionné
+    tags: (state) => state.selectedProject.tags || [],
 
     // Getter pour séléctionner les collaborateurs d'un projet seletionné
     collaborators: (state) => state.selectedProject.collaborators || [],

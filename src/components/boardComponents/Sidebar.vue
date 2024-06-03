@@ -14,7 +14,6 @@
           <b-form-input v-model="this.newProject.name"></b-form-input>
         </b-form-group>
       </b-modal>
-
     </template>
     <ul class="projects-list">
       <li v-for="project in projects" :key="project.id" class="project-item">
@@ -22,7 +21,6 @@
           project.name
         }}</a>
         <div class="project-control">
-
           <!-- Edit the project -->
           <b-button v-b-modal="'edit-project-' + project.id" class="project-control-edit">
             <font-awesome-icon :icon="['far', 'pen-to-square']" />
@@ -44,7 +42,6 @@
             </template>
             <p>Are you sure you want to delete this project ?</p>
           </b-modal>
-
         </div>
       </li>
     </ul>
@@ -99,7 +96,9 @@ export default {
       this.boardStore.deleteProject(projectId);
     },
     closeSidebar() {
-      this.$refs.sidebar.hide();
+      if (this.$refs.sidebar) {
+        this.$refs.sidebar.hide();
+      }
     },
     linkActive() {
       const sidebar = document.getElementById('sidebar');

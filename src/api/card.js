@@ -4,10 +4,11 @@ import { emitBoardEdition } from '@/sockets/socket.js';
 export async function createCard(cardData) {
   try {
     const card = await axios.post('/cards', {
-      name: cardData.name,
-      content: cardData.content,
+      ame: cardData.name,
       position: cardData.position,
+      content: cardData.content,
       list_id: cardData.list_id,
+      tags: cardData.tags,
     });
     if (card) {
       emitBoardEdition();
@@ -39,6 +40,7 @@ export async function updateCard(cardData) {
       position: cardData.position,
       content: cardData.content,
       list_id: cardData.list_id,
+      tags: cardData.tags,
     });
 
     if (card) {
@@ -52,3 +54,26 @@ export async function updateCard(cardData) {
     return null;
   }
 }
+
+// export async function updateCardTags(cardData, tags) {
+//   try {
+//     const card = await axios.patch(`/cards/${cardData.id}/tags`, {
+//       tags,
+//     });
+//     console.log(card.data);
+//     return card.data;
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// }
+
+// export async function getCardById(cardId) {
+//   try {
+//     const card = await axios.get(`/cards/${cardId}`);
+//     return card.data;
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// }

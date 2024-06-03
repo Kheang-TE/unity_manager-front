@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="list-header">
+    <div class="list-header" :style="{ 'background-color': list.code_color }">
       <h2>{{ list.name }}</h2>
       <div class="list-controls">
         <b-dropdown no-caret>
@@ -12,14 +12,13 @@
           </b-dropdown-item>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-' + list.id.toString()" centered @ok="submitUpdateList(list)">
-              <template #title> Edit list : {{ list.name }} </template>
+            <b-modal :id="'edit-list-' + list.id.toString()" title="Edit list" centered @ok="submitUpdateList(list)">
               <b-form @submit.prevent="submitUpdateList(list)">
+                <b-form-group label="List Name">
+                  <b-form-input v-model="this.editList.name" id="name"></b-form-input>
+                </b-form-group>
                 <b-form-group label="List Color">
                   <b-form-input type="color" v-model="this.editList.code_color"></b-form-input>
-                </b-form-group>
-                <b-form-group label="List Name">
-                  <b-form-input v-model="this.editList.name"></b-form-input>
                 </b-form-group>
               </b-form>
             </b-modal>
@@ -42,7 +41,7 @@
       <draggable v-model="list.cards" class="card-container" group="cards" item-key="id" v-bind="dragOptions"
         @change="updatePositionCard(list.id, $event)">
         <template #item="{ element: card }">
-          <Card :card="card" />
+          <Card :card="card" :list_id="list.id" />
         </template>
       </draggable>
 
@@ -51,11 +50,23 @@
         <template #title> Add Card to List: {{ list.name }} </template>
         <b-form @submit.prevent="submitAddCard(list.id)">
           <b-form-group label="Card Title">
-            <b-form-input v-model="this.newCard.name"></b-form-input>
+            <b-form-input v-model="newCard.name"></b-form-input>
           </b-form-group>
           <b-form-group label="Card Description">
-            <b-form-textarea v-model="this.newCard.content"></b-form-textarea>
+            <b-form-textarea v-model="newCard.content"></b-form-textarea>
           </b-form-group>
+          <div>
+            <b-form-group label="Select Tag">
+              <ul class="tag-list">
+                <li v-for="tag in boardStore.tags" :key="tag.id" class="tag-item">
+                  <label :style="{ backgroundColor: tag.code_color }" class="btn tag-item-button">
+                    <input type="checkbox" name="tag" :value="tag" @click="selectedTag(list.id)" />
+                    {{ tag.name }}
+                  </label>
+                </li>
+              </ul>
+            </b-form-group>
+          </div>
         </b-form>
       </b-modal>
     </b-collapse>
@@ -64,6 +75,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import useBoardStore from '@/store/board.store';
 import Card from '@/components/boardComponents/Card.vue';
 import { deleteList, updateList } from '@/api/list.js';
 import { createCard, updateCard } from '@/api/card.js';
@@ -71,9 +83,14 @@ import { createCard, updateCard } from '@/api/card.js';
 export default {
   name: 'List',
   setup() {
-    const newCard = {};
+    const boardStore = useBoardStore();
+    const newCard = {
+      code_color: '',
+      selectedTags: [],
+    };
     const editList = {};
     return {
+      boardStore,
       newCard,
       editList,
     };
@@ -101,17 +118,25 @@ export default {
     },
   },
   methods: {
+    async selectColor(color) {
+      this.newCard.code_color = color;
+      console.log(this.newCard.code_color);
+    },
+
     async submitAddCard(id) {
       try {
-        const newCard = {
+        const cardData = {
           name: this.newCard.name,
-          position: 1,
+          position: this.list.cards.length + 1,
           content: this.newCard.content,
+          code_color: this.newCard.code_color,
           list_id: id,
+          tags: this.newCard.selectTags,
         };
-        await createCard(newCard);
+        await createCard(cardData);
+        this.newCard.value = { name: '', content: '', code_color: '' }; // Reset newCard after creation
       } catch (error) {
-        console.error('Error creating the card :', error);
+        console.error('Error creating the card:', error);
       }
     },
 
@@ -173,10 +198,27 @@ export default {
 
     async savePositionCard(movedCard) {
       try {
-        await updateCard(movedCard);
+        const tags = movedCard.tags.map((tag) => tag.id);
+        const card = {
+          id: movedCard.id,
+          name: movedCard.name,
+          position: movedCard.position,
+          content: movedCard.content,
+          list_id: movedCard.list_id,
+          tags,
+        };
+        await updateCard(card);
       } catch (error) {
         console.error('Error updating the card :', error);
       }
+    },
+
+    selectedTag(listId) {
+      const modal = document.getElementById(`add-card-list-${listId}`);
+      this.newCard.selectTags = [];
+      modal.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+        this.newCard.selectTags.push(checkbox._value.id);
+      });
     },
 
   },

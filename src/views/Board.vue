@@ -21,6 +21,9 @@
             <b-form-group label="List Name">
               <b-form-input v-model="this.newList.name"></b-form-input>
             </b-form-group>
+            <b-form-group label="List Color">
+              <b-form-input type="color" v-model="this.newList.code_color"></b-form-input>
+            </b-form-group>
           </b-form>
         </b-modal>
       </div>
@@ -34,6 +37,7 @@ import List from '@/components/boardComponents/List.vue';
 import useBoardStore from '@/store/board.store';
 import BoardHeader from '@/components/BoardHeader.vue';
 import { createList, getListByProject, updateList } from '@/api/list.js';
+import { getTagsByProject } from '@/api/tag.js';
 import { initializeBoardEvents } from '@/sockets/socket';
 
 export default {
@@ -61,15 +65,17 @@ export default {
   methods: {
     async refreshBoard() {
       this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
+      this.boardStore.selectedProject.tags = await getTagsByProject(this.boardStore.selectedProject.id);
     },
     async addList() {
       try {
         const list = {
           name: this.newList.name,
           position: (this.boardStore.project.lists.length > 0) ? (this.boardStore.project.lists.length + 1) : 1,
-          code_color: '',
+          code_color: this.newList.code_color,
           project_id: this.boardStore.project.id,
         };
+        console.log(list);
         await createList(list);
         this.newList.name = '';
       } catch (error) {
