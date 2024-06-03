@@ -14,12 +14,12 @@
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
             <b-modal :id="'edit-list-' + list.id.toString()" title="Edit list" centered @ok="submitUpdateList(list)">
               <b-form @submit.prevent="submitUpdateList(list)">
-                <b-form-group label="List Name">
-                  <b-form-input v-model="this.editList.name" id="name"></b-form-input>
-                </b-form-group>
-                <b-form-group label="List Color">
-                  <b-form-input type="color" v-model="this.editList.code_color"></b-form-input>
-                </b-form-group>
+                <label> List Name:
+                  <input class="form-control" type="text" v-model="this.editList.name" required />
+                </label>
+                <label> List Color:
+                  <input class="form-control" type="color" v-model="this.editList.code_color" />
+                </label>
               </b-form>
             </b-modal>
           </b-dropdown-item>
@@ -49,12 +49,12 @@
       <b-modal :id="'add-card-list-' + list.id" centered @ok="submitAddCard(list.id)">
         <template #title> Add Card to List: {{ list.name }} </template>
         <b-form @submit.prevent="submitAddCard(list.id)">
-          <b-form-group label="Card Title">
-            <b-form-input v-model="newCard.name"></b-form-input>
-          </b-form-group>
-          <b-form-group label="Card Description">
-            <b-form-textarea v-model="newCard.content"></b-form-textarea>
-          </b-form-group>
+          <label>Card Title
+            <input class="form-control" v-model="newCard.name" />
+          </label>
+          <label>Card Description
+            <textarea class="form-control" v-model="newCard.content"></textarea>
+          </label>
           <div>
             <b-form-group label="Select Tag">
               <ul class="tag-list">
@@ -134,7 +134,9 @@ export default {
           tags: this.newCard.selectTags,
         };
         await createCard(cardData);
-        this.newCard.value = { name: '', content: '', code_color: '' }; // Reset newCard after creation
+        this.newCard.name = '';
+        this.newCard.content = '';
+        this.newCard.code_color = '';
       } catch (error) {
         console.error('Error creating the card:', error);
       }

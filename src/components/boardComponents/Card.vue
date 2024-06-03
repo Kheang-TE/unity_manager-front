@@ -9,16 +9,16 @@
           </template>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-card-' + card.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-card-' + card.id.toString()" centered @show="setEditCard()" @ok="updateCard(card)">
+            <b-modal :id="'edit-card-' + card.id.toString()" title="Edit Card" centered @show="setEditCard()"
+              @ok="updateCard(card)">
               <!-- Edit the card -->
-              <template #title> Edit card</template>
               <b-form @submit.prevent="updateCard(card)">
-                <b-form-group label="Card Title">
-                  <b-form-input v-model="editedCard.name"></b-form-input>
-                </b-form-group>
-                <b-form-group label="Card Description">
-                  <b-form-textarea v-model="editedCard.content"></b-form-textarea>
-                </b-form-group>
+                <label>Card Title
+                  <input type="text" class="form-control" v-model="editedCard.name" required />
+                </label>
+                <label>Description
+                  <textarea class="form-control" v-model="editedCard.content" required></textarea>
+                </label>
                 <b-form-group label="Select Tag">
                   <ul class="tag-list">
                     <li v-for="tag in boardStore.tags" :key="tag.id" class="tag-item">
