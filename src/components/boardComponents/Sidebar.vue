@@ -1,5 +1,8 @@
 <!-- src/components/Sidebar.vue -->
 <template>
+  <b-button v-b-toggle.sidebar>
+    <font-awesome-icon :icon="['fas', 'bars']" />
+  </b-button>
   <b-offcanvas id="sidebar" ref="sidebar" class="col-sm-12" title="Projects" :backdrop="false" :model-value="true">
     <template #title>
       Projects
@@ -19,7 +22,7 @@
       <li v-for="project in projects" :key="project.id" class="project-item">
         <a href="#" class="project-link" @click.prevent="[linkActive(), selectProject(project.id), closeSidebar()]">{{
           project.name
-        }}</a>
+          }}</a>
         <div class="project-control">
           <!-- Edit the project -->
           <b-button v-b-modal="'edit-project-' + project.id" class="project-control-edit">

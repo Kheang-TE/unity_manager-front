@@ -2,19 +2,15 @@
 
   <b-navbar fixed="top">
     <b-navbar-brand>
-      <b-button v-b-toggle.sidebar>
-        <font-awesome-icon :icon="['fas', 'bars']" />
-      </b-button>
+      <Sidebar />
       <img src="/img/unity_manager_logo.webp" alt="Unity Manager" title="Unity Manager" class="logo">
     </b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <Tag />
       <DropdownUser />
-      <b-button v-b-toggle.chat><font-awesome-icon :icon="['fas', 'comments']" /></b-button>
+      <Chat />
     </b-navbar-nav>
   </b-navbar>
-  <Sidebar />
-  <Chat />
 
 </template>
 

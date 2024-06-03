@@ -18,12 +18,12 @@
         </b-button>
         <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
           <b-form @submit.prevent="addList">
-            <b-form-group label="List Name">
-              <b-form-input v-model="this.newList.name"></b-form-input>
-            </b-form-group>
-            <b-form-group label="List Color">
-              <b-form-input type="color" v-model="this.newList.code_color"></b-form-input>
-            </b-form-group>
+            <label>List Name
+              <input type="text" class="form-control" v-model="newList.name" required />
+            </label>
+            <label>List Color
+              <input type="color" class="form-control" v-model="newList.code_color" />
+            </label>
           </b-form>
         </b-modal>
       </div>
