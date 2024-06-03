@@ -9,6 +9,8 @@ import {
   getLastCollaborator,
 } from '@/api/project.js';
 
+import { getCardById } from '@/api/card';
+
 const useBoardStore = defineStore('board', {
   state: () => ({
     selectedProject: {},

@@ -45,7 +45,7 @@
       <draggable v-model="list.cards" class="card-container" group="cards" item-key="id" v-bind="dragOptions"
         @change="updatePositionCard(list.id, $event)">
         <template #item="{ element: card }">
-          <Card :card="card" />
+          <Card :card="card" :list_id="list.id" />
         </template>
       </draggable>
 
@@ -60,14 +60,13 @@
             <b-form-textarea v-model="newCard.content"></b-form-textarea>
           </b-form-group>
           <div>
-            <b-form-group label="Select Tag Color">
-              <ul class="tag-list-color">
-                <li v-for="color in colors" :key="color.color" class="tag-list-item">
-                  <button type="button" :style="{ backgroundColor: color.color }" class="btn tag-color-button" @click="
-                    selectColor({ name: color.name, color: color.color })
-                    ">
-                    {{ color.name }}
-                  </button>
+            <b-form-group label="Select Tag">
+              <ul class="tag-list">
+                <li v-for="tag in boardStore.tags" :key="tag.id" class="tag-item">
+                  <label :style="{ backgroundColor: tag.code_color }" class="btn tag-item-button">
+                    <input type="checkbox" name="tag" :value="tag" @click="selectedTag(list.id)" />
+                    {{ tag.name }}
+                  </label>
                 </li>
               </ul>
             </b-form-group>
@@ -80,6 +79,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import useBoardStore from '@/store/board.store';
 import Card from '@/components/boardComponents/Card.vue';
 import { deleteList, updateList } from '@/api/list.js';
 import { createCard, updateCard } from '@/api/card.js';
@@ -87,22 +87,16 @@ import { createCard, updateCard } from '@/api/card.js';
 export default {
   name: 'List',
   setup() {
+    const boardStore = useBoardStore();
     const newCard = {
       code_color: '',
+      selectedTags: [],
     };
     const editList = {};
-    const colors = [
-      { name: 'URGENT', color: '#AE2E25' },
-      { name: 'OPTIONAL', color: '#7F5F01' },
-      { name: 'IMPORTANT', color: '#A54800' },
-      { name: 'REVIEW', color: '#0055CC' },
-      { name: 'COOL', color: '#216E4E' },
-      { name: 'HOLIDAY', color: '#5E4DB2' },
-    ];
     return {
+      boardStore,
       newCard,
       editList,
-      colors,
     };
   },
   props: {
@@ -137,10 +131,11 @@ export default {
       try {
         const cardData = {
           name: this.newCard.name,
-          position: 1,
+          position: this.list.cards.length + 1,
           content: this.newCard.content,
           code_color: this.newCard.code_color,
           list_id: id,
+          tags: this.newCard.selectTags,
         };
         await createCard(cardData);
         this.newCard.value = { name: '', content: '', code_color: '' }; // Reset newCard after creation
@@ -211,6 +206,14 @@ export default {
       } catch (error) {
         console.error('Error updating the card :', error);
       }
+    },
+
+    selectedTag(listId) {
+      const modal = document.getElementById(`add-card-list-${listId}`);
+      this.newCard.selectTags = [];
+      modal.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+        this.newCard.selectTags.push(checkbox._value.id);
+      });
     },
 
   },

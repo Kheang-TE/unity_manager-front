@@ -53,7 +53,6 @@ export async function updateTag(tagData) {
 export async function getTagsByProject(projectId) {
   try {
     const tags = await axios.get(`/tags/projects/${projectId}`);
-    console.log(tags.data);
     return tags.data;
   } catch (error) {
     console.error(error);

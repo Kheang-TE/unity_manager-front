@@ -9,21 +9,21 @@
           </template>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-card-' + card.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-card-' + card.id.toString()" centered @ok="updateCard(card)">
+            <b-modal :id="'edit-card-' + card.id.toString()" centered @show="setEditCard()" @ok="updateCard(card)">
               <!-- Edit the card -->
               <template #title> Edit card</template>
               <b-form @submit.prevent="updateCard(card)">
                 <b-form-group label="Card Title">
-                  <b-form-input v-model="card.name"></b-form-input>
+                  <b-form-input v-model="editedCard.name"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Card Description">
-                  <b-form-textarea v-model="card.content"></b-form-textarea>
+                  <b-form-textarea v-model="editedCard.content"></b-form-textarea>
                 </b-form-group>
                 <b-form-group label="Select Tag">
                   <ul class="tag-list">
                     <li v-for="tag in boardStore.tags" :key="tag.id" class="tag-item">
                       <label :style="{ backgroundColor: tag.code_color }" class="btn tag-item-button">
-                        <input type="checkbox" name="tag" v-model="card.tags" :value="tag" @click="selectedTags" />
+                        <input type="checkbox" v-model="editedCard.tags" :value="tag" @click="selectedTag(card.id)" />
                         {{ tag.name }}
                       </label>
                     </li>
@@ -47,7 +47,6 @@
     <div class="tagscard">
       <span v-for="tag in card.tags" class="tagscard-item" :style="'background-color:' + tag.code_color">{{ tag.name
         }}</span>
-      <!-- <span class="tag-name">Urgent</span> -->
     </div>
   </b-card>
 </template>
@@ -55,8 +54,6 @@
 <script>
 import useBoardStore from '@/store/board.store';
 import useTagStore from '@/store/tag.store.js';
-// import { getListByProject } from '@/api/list.js';
-// import { getTagsByProject } from '@/api/tag.js';
 
 import {
   createCard,
@@ -71,17 +68,27 @@ export default {
     const boardStore = useBoardStore();
     const tagStore = useTagStore();
     const newCard = {};
+    const editedCard = {
+      tags: [],
+      name: '',
+      content: '',
+    };
 
     return {
       boardStore,
       tagStore,
       newCard,
+      editedCard,
     };
   },
 
   props: {
     card: {
       type: Object,
+      default: null,
+    },
+    list_id: {
+      type: Number,
       default: null,
     },
   },
@@ -103,18 +110,22 @@ export default {
     },
 
     async updateCard(card) {
-      console.log('card', card);
-      const tags = this.tagStore.selectedTags;
-      console.log('tags : ', tags);
+      // const tags = this.tagStore.selectedTags;
+      // console.log('tags : ', tags);
       try {
+        const { selectTags } = this.editedCard;
+        console.log('this is the motherfucking selected tags bitch:', selectTags);
+
         const editCard = {
           id: card.id,
-          name: card.name,
+          name: this.editedCard.name,
           position: card.position,
-          content: card.content,
+          content: this.editedCard.content,
           list_id: card.list_id,
+          tags: selectTags,
         };
-        await updateCardTags(editCard, tags);
+
+        // await updateCardTags(editCard, tags);
         await updateCard(editCard);
       } catch (error) {
         console.error('Error updating the card:', error);
@@ -130,56 +141,24 @@ export default {
       }
     },
 
-    selectedTags() {
-      const allTags = document.querySelectorAll('input[name="tag"]:checked');
-      this.tagStore.setSelectedTags(allTags);
-      console.log(this.tagStore.selectedTags);
+    setEditCard() {
+      this.editedCard.name = this.card.name;
+      this.editedCard.content = this.card.content;
+      this.editedCard.tags = this.card.tags;
     },
 
-    // async refreshBoard() {
-    //   this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
-    //   this.boardStore.selectedProject.tags = await getTagsByProject(this.boardStore.selectedProject.id);
-    // },
+    selectedTag(cardId) {
+      const modal = document.getElementById(`edit-card-${cardId}`);
+      this.editedCard.selectTags = [];
+      modal.querySelectorAll('input[type="checkbox"]:checked').forEach((checkbox) => {
+        this.editedCard.selectTags.push(checkbox._value.id);
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.tag-list {
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.tag-item {
-  margin: 0.25rem;
-}
-
-.tag-item input[type="checkbox"] {
-  margin-right: 0.25rem;
-}
-
-.tag-item-button {
-  font-weight: bold;
-  font-size: 10px;
-  color: white;
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s;
-}
-
-.tag-item-button:hover {
-  color: white;
-  cursor: pointer;
-  transform: scale(1.2);
-}
-
 .tagscard {
   display: flex;
   justify-content: center;

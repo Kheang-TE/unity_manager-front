@@ -8,7 +8,7 @@ export async function createCard(cardData) {
       content: cardData.content,
       position: cardData.position,
       list_id: cardData.list_id,
-      code_color: cardData.code_color,
+      tags: cardData.tags,
     });
     if (card) {
       emitBoardEdition();
@@ -41,6 +41,7 @@ export async function updateCard(cardData) {
       content: cardData.content,
       list_id: cardData.list_id,
       code_color: cardData.code_color,
+      tags: cardData.tags,
     });
 
     if (card) {
@@ -61,6 +62,16 @@ export async function updateCardTags(cardData, tags) {
       tags,
     });
     console.log(card.data);
+    return card.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getCardById(cardId) {
+  try {
+    const card = await axios.get(`/cards/${cardId}`);
     return card.data;
   } catch (error) {
     console.error(error);
