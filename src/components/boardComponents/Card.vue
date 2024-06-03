@@ -44,7 +44,9 @@
       </div>
     </div>
     <p>{{ card.content }}</p>
-    <div class="tag">
+    <div class="tagscard">
+      <span v-for="tag in card.tags" class="tagscard-item" :style="'background-color:' + tag.code_color">{{ tag.name
+        }}</span>
       <!-- <span class="tag-name">Urgent</span> -->
     </div>
   </b-card>
@@ -53,8 +55,8 @@
 <script>
 import useBoardStore from '@/store/board.store';
 import useTagStore from '@/store/tag.store.js';
-import { getListByProject } from '@/api/list.js';
-import { getTagsByProject } from '@/api/tag.js';
+// import { getListByProject } from '@/api/list.js';
+// import { getTagsByProject } from '@/api/tag.js';
 
 import {
   createCard,
@@ -112,8 +114,8 @@ export default {
           content: card.content,
           list_id: card.list_id,
         };
-        await updateCard(editCard);
         await updateCardTags(editCard, tags);
+        await updateCard(editCard);
       } catch (error) {
         console.error('Error updating the card:', error);
       }
@@ -134,10 +136,10 @@ export default {
       console.log(this.tagStore.selectedTags);
     },
 
-    async refreshBoard() {
-      this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
-      this.boardStore.selectedProject.tags = await getTagsByProject(this.boardStore.selectedProject.id);
-    },
+    // async refreshBoard() {
+    //   this.boardStore.selectedProject.lists = await getListByProject(this.boardStore.selectedProject.id);
+    //   this.boardStore.selectedProject.tags = await getTagsByProject(this.boardStore.selectedProject.id);
+    // },
   },
 };
 </script>
@@ -178,21 +180,21 @@ export default {
   transform: scale(1.2);
 }
 
-.tag {
+.tagscard {
   display: flex;
   justify-content: center;
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: #ff000d;
-  /* Change this to the desired color */
   color: white;
   border-radius: 5px;
 }
 
-.tag-name {
+.tagscard-item {
   font-size: 11px;
   font-weight: bold;
+  border-radius: .25rem;
+  padding: 0.25rem 0.5rem;
   margin: 0.25rem 0.25rem;
 }
 
