@@ -28,9 +28,8 @@
     <div class="chat-messages" ref="chatMessages">
       <div class="message" v-for="message in messages" :key="message._id">
         <div class="text-style">
-          <span class="username" :class="{ 'me-username': message.user_id }">
-            <i class="bi bi-person-circle"></i> {{ message.user ? message.user.firstname + ' ' + message.user.lastname :
-              'Unknown user' }}
+          <span class="username" :style="{ backgroundColor: message.user.color }" :class="{ 'me-username': message.user_id  }">
+            <i class="bi bi-person-circle"></i> {{ message.user ? message.user.firstname + ' ' + message.user.lastname : 'Unknown user' }}
           </span>
           <span class="text">{{ message.content }}</span>
         </div>
@@ -187,11 +186,18 @@ export default {
   font-size: 0.8rem;
 }
 
+<<<<<<< Updated upstream
 .me-username {
   background-color: #267699;
   padding: 2px 5px;
   border-radius: 3px;
 }
+=======
+  .me-username {
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+>>>>>>> Stashed changes
 
 .text {
   padding-top: 0.5rem;
