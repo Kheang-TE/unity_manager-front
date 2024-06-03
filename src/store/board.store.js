@@ -8,6 +8,7 @@ import {
   createCollaborator,
   getLastCollaborator,
 } from '@/api/project.js';
+import useUserStore from '@/store/user.store';
 
 const useBoardStore = defineStore('board', {
   state: () => ({
@@ -55,12 +56,19 @@ const useBoardStore = defineStore('board', {
       await removeProject(projectId);
     },
 
-    async addCollaborator(collaborator) { // Ajout d'un collaborateur au projet selectionné
+    async addCollaborator(collaborator) { // Add collaborator to the project
       await createCollaborator(collaborator);
     },
     fetchLastCollaborator() {
       getLastCollaborator(this.selectedProject.id).then((collaborator) => {
         this.selectedProject.collaborators.push(collaborator);
+      });
+    },
+    refreshMessageColor() {
+      this.selectedProject.messages.forEach((message) => {
+        if (message.user_id === useUserStore().user.id) {
+          message.user.color = useUserStore().user.code_color;
+        }
       });
     },
   },

@@ -59,17 +59,19 @@
 <script>
 import { computed } from 'vue';
 import useUserStore from '@/store/user.store.js';
+import useBoardStore from '@/store/board.store.js';
 import { updateUser, signOut } from '@/api/user.js';
 import handleTokenExpiry from '@/utils/handleTokenExpiry';
 
 export default {
   setup() {
+    const boardStore = useBoardStore();
     const userStore = useUserStore();
     const user = computed(() => userStore.getUser);
     const fullname = computed(() => userStore.fullname);
     const editUser = {};
     return {
-      userStore, user, fullname, editUser,
+      userStore, user, fullname, editUser, boardStore,
     };
   },
   methods: {
@@ -90,6 +92,7 @@ export default {
         if (response) {
           console.log('User updated successfully');
           this.userStore.setUser(userData);
+          this.boardStore.refreshMessageColor();
         } else {
           console.error('Failed to update user');
         }
