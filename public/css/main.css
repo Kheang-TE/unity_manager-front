@@ -20,7 +20,7 @@ i.fa{
   margin-right: 0.5rem;
 }
 .background-wall{
-  background: url('../img/background-wall.jpg') no-repeat center center;
+  background: url('../img/background-wall.webp') no-repeat center center;
   background-size: cover;
   opacity: 0.5;
   position: fixed;

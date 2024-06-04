@@ -186,18 +186,10 @@ export default {
   font-size: 0.8rem;
 }
 
-<<<<<<< Updated upstream
 .me-username {
-  background-color: #267699;
   padding: 2px 5px;
   border-radius: 3px;
 }
-=======
-  .me-username {
-    padding: 2px 5px;
-    border-radius: 3px;
-  }
->>>>>>> Stashed changes
 
 .text {
   padding-top: 0.5rem;
