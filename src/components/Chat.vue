@@ -28,7 +28,7 @@
     <div class="chat-messages" ref="chatMessages">
       <div class="message" v-for="message in messages" :key="message._id">
         <div class="text-style">
-          <span class="username" :style="{ backgroundColor: message.user.color }" :class="{ 'me-username': message.user_id  }">
+          <span class="username" :style="{ backgroundColor: message.user?.color || '#a6a6a6' }" :class="{ 'me-username': message.user_id  }">
             <i class="bi bi-person-circle"></i> {{ message.user ? message.user.firstname + ' ' + message.user.lastname : 'Unknown user' }}
           </span>
           <span class="text">{{ message.content }}</span>
