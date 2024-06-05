@@ -2,7 +2,6 @@ import axios from './axios';
 import { emitBoardEdition } from '@/sockets/socket.js';
 
 export async function createTag(tagData) {
-  console.log(tagData);
   try {
     const tag = await axios.post('/tags', {
       name: tagData.name,

@@ -40,7 +40,7 @@ const useBoardStore = defineStore('board', {
     },
     editProject(project) {
       updateProject(project).then((result) => {
-        this.selectedProject = result;
+        this.selectedProject = { ...this.selectedProject, ...result };
       });
     },
     async deleteProject(projectId) {

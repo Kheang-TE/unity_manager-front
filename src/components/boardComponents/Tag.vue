@@ -2,7 +2,7 @@
   <b-button v-b-modal.container-tags v-if="boardStore.project.tags">
     <font-awesome-icon :icon="['fas', 'tag']" />
   </b-button>
-  <b-modal id="container-tags" title="Tags" size="lg" centered hide-footer="true">
+  <b-modal id="container-tags" title="Tags" size="lg" centered hide-footer>
     <b-accordion>
 
       <!-- Create a new tag -->

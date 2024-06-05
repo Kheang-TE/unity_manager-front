@@ -67,12 +67,14 @@ export default {
     const newProject = {
       owner_id: user.value.id,
     };
+    const editProject = {};
 
     return {
       boardStore,
       userStore,
       projects,
       newProject,
+      editProject,
     };
   },
 
