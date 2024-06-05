@@ -25,7 +25,7 @@
       <div class="container">
         <div class="row introduce-content">
           <div class="col-12 col-sm-6 order-sm-last introduce-img">
-          [image de l'application Unity Manager]
+          <img src="/img/unity_manager_introduce.webp" alt="A group of people joining their hands illustrating a spirit of collaboration.">
         </div>
           <div class="col-12 col-sm-6 introduce-text">
           <p>
