@@ -8,7 +8,7 @@ const useTagStore = defineStore('tag', {
       { name: 'yellow', code: '#FFAC26' },
       { name: 'orange', code: '#FF8000' },
       { name: 'blue', code: '#247597' },
-      { name: 'green', code: '#0080000' },
+      { name: 'green', code: '#008000' },
       { name: 'brown', code: '#804000' },
       { name: 'violet', code: '#800080' },
       { name: 'gray', code: '#808080' },
