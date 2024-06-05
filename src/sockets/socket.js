@@ -1,8 +1,11 @@
 // src/sockets/socket.js
 import io from 'socket.io-client';
 
-// Établir une connexion WebSocket. Assurez-vous que l'URL est correcte.
-const socket = io('http://localhost:4000');
+// Utilisez l'URL de votre domaine principal
+const socket = io('https://unitymanager.mohamedzerrouki.com', {
+  path: '/socket.io', // Chemin correct pour les WebSockets
+  transports: ['websocket', 'polling']
+});
 
 const connecting = (firstname) => {
   try {

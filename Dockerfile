@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 5173
 
 # Définir la commande qui sera exécuté automatiquement à l'instanciation d'un conteneur ==> démarrer mon serveur Node
-CMD ["dev", "vite"]
+CMD ["npm", "run", "dev"]
