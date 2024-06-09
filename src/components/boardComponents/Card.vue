@@ -130,7 +130,6 @@ export default {
     async deleteCard(cardId) {
       try {
         await deleteCard(cardId);
-        console.log(`Card with ID ${cardId} deleted`);
       } catch (error) {
         console.error(`Error deleting card with ID ${cardId}:`, error);
       }

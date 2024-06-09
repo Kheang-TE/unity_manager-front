@@ -4,14 +4,14 @@ import { createTag, updateTag, deleteTag } from '@/api/tag.js';
 const useTagStore = defineStore('tag', {
   state: () => ({
     colors: [
-      { name: 'red', code: '#ae2e25' },
-      { name: 'yellow', code: '#c7ad00' },
-      { name: 'orange', code: '#a54800' },
-      { name: 'blue', code: '#267699' },
-      { name: 'green', code: '#216e4e' },
-      { name: 'brown', code: '#7f5f01' },
-      { name: 'violet', code: '#5e4db2' },
-      { name: 'gray', code: '#777777' },
+      { name: 'red', code: '#800000' },
+      { name: 'yellow', code: '#FFAC26' },
+      { name: 'orange', code: '#FF8000' },
+      { name: 'blue', code: '#247597' },
+      { name: 'green', code: '#008000' },
+      { name: 'brown', code: '#804000' },
+      { name: 'violet', code: '#800080' },
+      { name: 'gray', code: '#808080' },
     ],
     tag: {
       name: '',

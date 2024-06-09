@@ -2,7 +2,7 @@ import axios from 'axios';
 import handleTokenExpiry from '@/utils/handleTokenExpiry';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL = 'https://unitymanager.mohamedzerrouki.com/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Add a request interceptor

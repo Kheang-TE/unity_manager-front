@@ -55,8 +55,6 @@ export async function updateList(listData) {
 export async function getListByProject(projectId) {
   try {
     const lists = await axios.get(`/lists/projects/${projectId}`);
-    console.log(lists);
-    console.log(lists.data);
     return lists.data;
   } catch (error) {
     console.error(error);

@@ -13,7 +13,7 @@
             <List :list="list" :key="list.id" />
           </template>
         </draggable>
-        <b-button class="new-list" v-b-modal.add-new-list>
+        <b-button v-if="boardStore.project.name" class="new-list" v-b-modal.add-new-list>
           <font-awesome-icon :icon="['fas', 'plus']" />[ Add new list ]
         </b-button>
         <b-modal id="add-new-list" title="Add new list" centered @ok="addList">
@@ -75,7 +75,6 @@ export default {
           code_color: this.newList.code_color,
           project_id: this.boardStore.project.id,
         };
-        console.log(list);
         await createList(list);
         this.newList.name = '';
       } catch (error) {

@@ -12,13 +12,13 @@
           </b-dropdown-item>
           <b-dropdown-item>
             <b-link v-b-modal="'edit-list-' + list.id.toString()">Edit</b-link>
-            <b-modal :id="'edit-list-' + list.id.toString()" title="Edit list" centered @ok="submitUpdateList(list)">
+            <b-modal :id="'edit-list-' + list.id.toString()" title="Edit list" centered @ok="submitUpdateList(list)"  @show="setEditList(list)">
               <b-form @submit.prevent="submitUpdateList(list)">
                 <label> List Name:
-                  <input class="form-control" type="text" v-model="this.editList.name" required />
+                  <input class="form-control" type="text" v-model="editList.name" required />
                 </label>
                 <label> List Color:
-                  <input class="form-control" type="color" v-model="this.editList.code_color" />
+                  <input class="form-control" type="color" v-model="editList.code_color" />
                 </label>
               </b-form>
             </b-modal>
@@ -120,7 +120,11 @@ export default {
   methods: {
     async selectColor(color) {
       this.newCard.code_color = color;
-      console.log(this.newCard.code_color);
+    },
+
+    setEditList(list) {
+      this.editList.name = list.name;
+      this.editList.code_color = list.code_color;
     },
 
     async submitAddCard(id) {
@@ -145,9 +149,8 @@ export default {
     async deleteListFromDatabase(listId) {
       try {
         await deleteList(listId);
-        console.log(`List with ID ${listId} deleted`);
       } catch (error) {
-        console.error('Error deleting the list:', error);
+        console.error('Error deleting the card:', error);
       }
     },
     async submitUpdateList(list) {
@@ -156,7 +159,7 @@ export default {
           id: list.id,
           name: this.editList.name,
           code_color: this.editList.code_color,
-          position: 1,
+          position: list.position,
           project_id: list.project_id,
         });
       } catch (error) {
@@ -165,9 +168,6 @@ export default {
     },
 
     updatePositionCard(listId, event) {
-      console.log('list id : ', listId);
-      console.log('card : ', event);
-
       if (Object.hasOwn(event, 'moved')) {
         const movedCard = this.list.cards[event.moved.newIndex];
         const beforeMovedCard = this.list.cards[event.moved.newIndex - 1];
