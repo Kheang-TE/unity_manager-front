@@ -19,11 +19,11 @@ Make sure you have the following installed:
 ### Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/projet-gestionnaire-projet-front.git
+    git clone git@github.com:Kheang-TE/unity_manager-front.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd projet-gestionnaire-projet-front
+    cd unity_manager-front
     ```
 3. Install the dependencies:
     ```sh
