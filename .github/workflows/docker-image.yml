@@ -36,6 +36,10 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Definir le nom de l'image en minuscules pour eviter les problemes de casse.
+      - name: Set image name
+        run: echo "IMAGE_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
       
         # Construit l'image depuis le Dockerfile, puis la publie avec deux tags.
         # Le tag latest pointe vers la derniere version et le tag SHA identifie
