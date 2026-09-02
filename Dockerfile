@@ -1,11 +1,11 @@
 # Utiliser une image de base officielle Node.js comme runtime
 # on part d'une image existante
-# Ce node:20 lui même part d'un Linux 
-FROM node:20
+# Ce node:22 lui même part d'un Linux 
+FROM node:22
 
 # Définir un répertoire de travail à l'intérieur du conteneur (au choix, mais typique pour les projets Node)
-# Dans le conteneur, on fait un cd /usr/src/app
-WORKDIR /usr/src/app
+# Dans le conteneur, on fait un cd /usr/app
+WORKDIR /usr/app
 
 # Copier le package.json et le package-lock.json (local) dans le répertoire de travail courant du conteneur (./)
 COPY package*.json ./
