@@ -2,7 +2,7 @@ import axios from 'axios';
 import handleTokenExpiry from '@/utils/handleTokenExpiry';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'https://unitymanager.mohamedzerrouki.com/api';
+axios.defaults.baseURL = `${import.meta.env.VITE_DOMAIN_NAME_URL}/api`;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Add a request interceptor

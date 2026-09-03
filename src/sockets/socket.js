@@ -2,9 +2,9 @@
 import io from 'socket.io-client';
 
 // Utilisez l'URL de votre domaine principal
-const socket = io('https://unitymanager.mohamedzerrouki.com', {
+const socket = io(`${import.meta.env.VITE_DOMAIN_NAME_URL}`, {
   path: '/socket.io', // Chemin correct pour les WebSockets
-  transports: ['websocket', 'polling']
+  transports: ['websocket', 'polling'],
 });
 
 const connecting = (firstname) => {
