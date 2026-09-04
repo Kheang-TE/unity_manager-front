@@ -22,12 +22,12 @@ export default defineConfig({
     port: 5173, // Assurez-vous que le port est correct
     proxy: {
       '/api': {
-        target: 'http://localhost:4000', // Remplacez par l'URL du backend
+        target: 'http://backend:4000', // Remplacez par l'URL du backend
         changeOrigin: true,
       },
 
       '/socket.io': {
-        target: 'http://localhost:4000', // Remplacez par l'URL du backend
+        target: 'http://backend:4000', // Remplacez par l'URL du backend
         ws: true, // Activer le proxy WebSocket
         changeOrigin: true,
       },
