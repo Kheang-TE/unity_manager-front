@@ -2,7 +2,7 @@
 import io from 'socket.io-client';
 
 // Utilisez l'URL de votre domaine principal
-const socket = io(`${import.meta.env.VITE_DOMAIN_NAME_URL}`, {
+const socket = io({
   path: '/socket.io', // Chemin correct pour les WebSockets
   transports: ['websocket', 'polling'],
 });
