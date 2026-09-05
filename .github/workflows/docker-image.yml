@@ -49,14 +49,14 @@ jobs:
       - name: Set image name
         run: echo "IMAGE_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
 
-      # Construit et publie les images AMD64 et ARM64.
+      # Construit et publie l'image ARM64.
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./Dockerfile.prod
+          file: ./Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
